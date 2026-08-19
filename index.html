@@ -23,23 +23,19 @@
     :root {
       --bg: #07111d;
       --bg2: #0d1d31;
-      --surface: rgba(14, 23, 37, 0.82);
-      --surface-strong: rgba(19, 31, 49, 0.94);
+      --surface: rgba(14, 23, 37, 0.86);
       --stroke: rgba(255,255,255,0.09);
       --text: #edf4fb;
       --muted: #91a6bc;
       --accent: #62b8ff;
-      --accent-soft: rgba(98,184,255,0.16);
       --legendary: #d4a440;
       --legendary-soft: rgba(212,164,64,0.16);
-      --shadow: 0 22px 44px rgba(0,0,0,0.31);
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --max: 980px;
+      --shadow: 0 18px 34px rgba(0,0,0,0.28);
+      --radius-xl: 20px;
+      --radius-lg: 16px;
+      --max: 860px;
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -100,13 +96,12 @@
       z-index: 1;
       max-width: var(--max);
       margin: 0 auto;
-      padding: 18px 14px 32px;
+      padding: 14px 12px 24px;
     }
     .hero {
       position: relative;
       overflow: hidden;
-      margin-bottom: 14px;
-      padding: 18px;
+      padding: 16px;
       background: linear-gradient(160deg, rgba(16,27,43,0.94), rgba(12,20,33,0.86));
       border: 1px solid var(--stroke);
       border-radius: var(--radius-xl);
@@ -120,96 +115,58 @@
       pointer-events: none;
     }
     .hero::before {
-      width: 220px;
-      height: 220px;
-      top: -90px;
+      width: 170px;
+      height: 170px;
+      top: -70px;
       right: -40px;
       background: radial-gradient(circle, rgba(98,184,255,0.22), transparent 68%);
       animation: pulse 10s ease-in-out infinite;
     }
     .hero::after {
-      width: 160px;
-      height: 160px;
+      width: 120px;
+      height: 120px;
       left: -40px;
-      bottom: -90px;
+      bottom: -50px;
       background: radial-gradient(circle, rgba(212,164,64,0.16), transparent 72%);
       animation: pulse 13s ease-in-out infinite reverse;
     }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
-      gap: 14px;
-      align-items: stretch;
-    }
-    .eyebrow {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 8px;
-      padding: 7px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(98,184,255,0.16);
-      background: rgba(98,184,255,0.08);
-      color: #c9e6ff;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      backdrop-filter: blur(10px);
-    }
     h1 {
-      margin: 0 0 8px;
-      font-size: clamp(28px, 5vw, 40px);
+      margin: 0 0 6px;
+      font-size: clamp(26px, 4.4vw, 34px);
       line-height: 0.96;
       letter-spacing: -0.04em;
     }
     .lead {
       margin: 0 0 12px;
       color: var(--muted);
-      max-width: 580px;
-      font-size: 14px;
-      line-height: 1.46;
-    }
-    .quick-line {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 10px;
-      margin-top: 10px;
-    }
-    .quick-chip {
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: #bfd1e3;
-      font-size: 12px;
-      white-space: nowrap;
+      max-width: 620px;
+      font-size: 13px;
+      line-height: 1.42;
     }
     .entry-card {
       position: relative;
       display: block;
       color: inherit;
       text-decoration: none;
-      padding: 16px;
-      border-radius: 20px;
+      padding: 14px;
+      border-radius: var(--radius-lg);
       background:
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
         linear-gradient(180deg, rgba(19,31,49,0.98), rgba(10,16,27,0.92));
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: var(--shadow);
+      border: 1px solid var(--stroke);
       overflow: hidden;
       transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
     }
     .entry-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(98,184,255,0.28);
-      box-shadow: 0 28px 52px rgba(0,0,0,0.35);
+      transform: translateY(-2px);
+      border-color: rgba(98,184,255,0.24);
+      box-shadow: 0 22px 40px rgba(0,0,0,0.30);
     }
     .badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 10px;
+      gap: 6px;
+      margin-bottom: 8px;
     }
     .badge {
       display: inline-flex;
@@ -233,18 +190,11 @@
     .entry-card::after {
       content: "";
       position: absolute;
-      inset: auto -80px -80px auto;
-      width: 180px;
-      height: 180px;
+      inset: auto -70px -70px auto;
+      width: 150px;
+      height: 150px;
       border-radius: 999px;
       background: radial-gradient(circle, rgba(98,184,255,0.14), transparent 72%);
-    }
-    .entry-top {
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 6px;
     }
     .entry-body {
       position: relative;
@@ -252,42 +202,42 @@
     }
     .entry-body h2 {
       margin: 0;
-      font-size: 24px;
+      font-size: 22px;
       line-height: 1.05;
       letter-spacing: -0.03em;
     }
     .entry-copy {
-      margin: 8px 0 12px;
+      margin: 8px 0 10px;
       color: #b8c9db;
       line-height: 1.42;
-      font-size: 14px;
+      font-size: 13px;
     }
     .meta-line {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px 10px;
-      margin-bottom: 12px;
+      gap: 6px 8px;
+      margin-bottom: 10px;
     }
     .meta-pill {
-      padding: 7px 10px;
+      padding: 6px 9px;
       border-radius: 999px;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.06);
       color: #d8eaf9;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
     }
     .entry-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
     .entry-note {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.35;
-      max-width: 260px;
+      max-width: 280px;
     }
     .cta {
       display: inline-flex;
@@ -304,9 +254,9 @@
       transform: translateX(4px);
     }
     .foot {
-      margin-top: 18px;
+      margin-top: 12px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
       text-align: center;
     }
     @keyframes float {
@@ -325,14 +275,6 @@
       100% {
         opacity: 1;
         transform: translateY(0);
-      }
-    }
-    @media (max-width: 920px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero {
-        padding: 20px 18px;
       }
     }
     @media (max-width: 720px) {
@@ -361,42 +303,29 @@
 
   <div class="wrap">
     <section class="hero">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">Библиотека STW</div>
-          <h1>Визуальные карточки STW</h1>
-          <p class="lead">
-            Короткие игровые карточки по механикам Space Text World. Открыл, нажал, сразу понял эффект.
-          </p>
-          <div class="quick-line">
-            <span class="quick-chip">Интерактив</span>
-            <span class="quick-chip">Telegram-friendly</span>
-            <span class="quick-chip">Быстрый вход в механику</span>
+      <h1>Визуальные карточки STW</h1>
+      <p class="lead">Один модуль, один понятный вход, без дублей и лишних витрин.</p>
+
+      <a class="entry-card" href="./modules/stasis_anchor.html">
+        <div class="entry-body">
+          <div class="badges">
+            <span class="badge legendary">Legendary</span>
+            <span class="badge">Tactical</span>
+            <span class="badge">Модуль</span>
+          </div>
+          <h2>Стазис-якорь</h2>
+          <p class="entry-copy">Сверху тапалки и результат рядом, ниже спокойные пояснения по модулю и команде <code>/pin</code>.</p>
+          <div class="meta-line">
+            <span class="meta-pill">L1-L9</span>
+            <span class="meta-pill">−1% / ур.</span>
+            <span class="meta-pill">/pin</span>
+          </div>
+          <div class="entry-footer">
+            <span class="entry-note">Открой и сразу сравни значения без прокрутки вверх-вниз.</span>
+            <span class="cta">Открыть карточку</span>
           </div>
         </div>
-        <a class="entry-card" href="./modules/stasis_anchor.html">
-          <div class="entry-top">Первый модуль</div>
-          <div class="entry-body">
-            <div class="badges">
-              <span class="badge legendary">Legendary</span>
-              <span class="badge">Tactical</span>
-              <span class="badge">Модуль</span>
-            </div>
-            <h2>Стазис-якорь</h2>
-            <p class="entry-copy">Анти-уклонение, уровни L1-L9, <code>/pin</code> и шанс попадания в одном компактном экране.</p>
-            <div class="meta-line">
-              <span class="meta-pill">L1-L9</span>
-              <span class="meta-pill">−1% / ур.</span>
-              <span class="meta-pill">/pin</span>
-              <span class="meta-pill">Интерактив</span>
-            </div>
-            <div class="entry-footer">
-              <span class="entry-note">Сразу открывает рабочий экран модуля, без дублей и лишнего лендинга.</span>
-              <span class="cta">Открыть карточку</span>
-            </div>
-          </div>
-        </a>
-      </div>
+      </a>
     </section>
 
     <p class="foot">Space Text World · visual-cards</p>

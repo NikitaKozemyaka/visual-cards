@@ -225,18 +225,23 @@
     }
     .main-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.8fr);
       gap: 10px;
     }
-    .sim-grid {
+    .sim-panel {
       display: grid;
-      gap: 8px;
+      gap: 10px;
     }
-    .control-row {
+    .top-board {
       display: grid;
-      grid-template-columns: 1.15fr 0.95fr;
-      gap: 8px;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+      gap: 10px;
       align-items: start;
+    }
+    .controls-side,
+    .result-side,
+    .info-grid {
+      display: grid;
+      gap: 8px;
     }
     .control-card {
       padding: 11px 12px;
@@ -328,8 +333,6 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
-      margin-top: 8px;
-      margin-bottom: 8px;
     }
     .stat {
       padding: 11px 12px;
@@ -389,21 +392,15 @@
       height: 100%;
       transition: width 320ms ease;
     }
-    .side-stack {
-      display: grid;
-      gap: 10px;
+    .info-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-    .summary-card,
     .info-card {
       padding: 13px 14px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
       transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
-    }
-    .summary-card {
-      display: grid;
-      gap: 8px;
     }
     .summary-row {
       display: grid;
@@ -464,8 +461,8 @@
       100% { opacity: 1; transform: translateY(0); }
     }
     @media (max-width: 920px) {
-      .main-layout,
-      .control-row {
+      .top-board,
+      .info-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -524,10 +521,11 @@
     </header>
 
     <div class="main-layout">
-      <section aria-labelledby="sim-title">
+      <section class="sim-panel" aria-labelledby="sim-title">
         <h2 id="sim-title">Симулятор</h2>
-        <div class="sim-grid">
-          <div class="control-row">
+
+        <div class="top-board">
+          <div class="controls-side">
             <div class="control-card">
               <div class="control-label">Уровень модуля</div>
               <div class="pill-row" id="level-pills" role="group" aria-label="Уровень модуля"></div>
@@ -536,94 +534,84 @@
             <div class="toggle-row">
               <div>
                 <label for="pin-toggle">Команда /pin</label>
-                <span class="hint">включить усиление</span>
+                <span class="hint">усиление перед боем</span>
               </div>
               <input type="checkbox" id="pin-toggle" checked aria-label="Команда pin активна">
             </div>
-          </div>
 
-          <div class="control-card">
-            <div class="control-label">Уклонение врага</div>
-            <div class="pill-row" id="enemy-pills" role="group" aria-label="Уклонение врага"></div>
-            <input type="range" id="enemy-range" min="0" max="60" step="1" value="20" aria-label="Уклонение врага проценты">
-            <div class="range-labels"><span>0%</span><span id="enemy-range-val">20%</span><span>60%</span></div>
-          </div>
-
-          <div class="stat-grid">
-            <div class="stat">
-              <div class="label">Dodge после якоря</div>
-              <div class="value ok" id="stat-effective">2%</div>
-            </div>
-            <div class="stat">
-              <div class="label">Шанс попадания</div>
-              <div class="value ok" id="stat-hit">98%</div>
-            </div>
-            <div class="stat">
-              <div class="label">Пассив</div>
-              <div class="value" id="stat-passive">-3%</div>
-            </div>
-            <div class="stat">
-              <div class="label">/pin</div>
-              <div class="value accent" id="stat-pin">-15%</div>
+            <div class="control-card">
+              <div class="control-label">Уклонение врага</div>
+              <div class="pill-row" id="enemy-pills" role="group" aria-label="Уклонение врага"></div>
+              <input type="range" id="enemy-range" min="0" max="60" step="1" value="20" aria-label="Уклонение врага проценты">
+              <div class="range-labels"><span>0%</span><span id="enemy-range-val">20%</span><span>60%</span></div>
             </div>
           </div>
 
-          <div class="details-card">
-            <div class="summary-row">
-              <div class="summary-key">Раундов /pin</div>
-              <div class="summary-value" id="stat-rounds">9</div>
+          <div class="result-side">
+            <div class="stat-grid">
+              <div class="stat">
+                <div class="label">Dodge после якоря</div>
+                <div class="value ok" id="stat-effective">2%</div>
+              </div>
+              <div class="stat">
+                <div class="label">Шанс попадания</div>
+                <div class="value ok" id="stat-hit">98%</div>
+              </div>
+              <div class="stat">
+                <div class="label">Пассив</div>
+                <div class="value" id="stat-passive">-3%</div>
+              </div>
+              <div class="stat">
+                <div class="label">/pin</div>
+                <div class="value accent" id="stat-pin">-15%</div>
+              </div>
             </div>
-            <div class="summary-row">
-              <div class="summary-key">Суммарный штраф</div>
-              <div class="summary-value" id="stat-total">-18%</div>
-            </div>
-            <div class="summary-row">
-              <div class="summary-key">КД команды</div>
-              <div class="summary-value"><span id="cd-min">20</span> мин</div>
+
+            <div class="details-card">
+              <div class="summary-row">
+                <div class="summary-key">Раундов /pin</div>
+                <div class="summary-value" id="stat-rounds">9</div>
+              </div>
+              <div class="summary-row">
+                <div class="summary-key">Суммарный штраф</div>
+                <div class="summary-value" id="stat-total">-18%</div>
+              </div>
+              <div class="summary-row">
+                <div class="summary-key">КД команды</div>
+                <div class="summary-value"><span id="cd-min">20</span> мин</div>
+              </div>
             </div>
           </div>
-
-          <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
         </div>
+
+        <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
       </section>
 
-      <div class="side-stack">
-        <section class="summary-card">
-          <h2>Коротко</h2>
-          <div class="summary-row">
-            <div class="summary-key">Редкость</div>
-            <div class="summary-value">Legendary</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-key">Команда</div>
-            <div class="summary-value">/pin</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-key">Уровни</div>
-            <div class="summary-value">L1-L9</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-key">Пассив</div>
-            <div class="summary-value">−1% / ур.</div>
-          </div>
+      <div class="info-grid">
+        <section class="info-card">
+          <h2>Что делает модуль</h2>
+          <ul class="compact">
+            <li>Этот модуль предназначен для боёв против врагов с заметным уклонением.</li>
+            <li>Пассивный эффект снижает шанс уворота цели на каждый уровень модуля.</li>
+            <li><code>/pin</code> даёт более сильный штраф к dodge на несколько раундов перед началом боя.</li>
+          </ul>
         </section>
 
         <section class="info-card">
           <h2>Как использовать</h2>
           <ul class="compact">
-            <li>Поставь модуль на броню.</li>
-            <li>Перед боем введи <code>/pin</code>.</li>
-            <li>Пассив работает весь бой.</li>
-            <li>Модуль режет dodge, а не обнуляет его.</li>
+            <li>Установи модуль на экипированную броню.</li>
+            <li>На карточке встречи до старта боя введи команду <code>/pin</code>.</li>
+            <li>Сверху можно сразу сравнивать уровни, dodge врага и итоговый шанс попадания без скролла.</li>
           </ul>
         </section>
 
         <section class="info-card">
           <h2>Где взять</h2>
           <ul class="compact">
-            <li>Крафт v2</li>
-            <li>Магазин арены</li>
-            <li>Legendary-клетка поиска</li>
+            <li>Крафт v2 по legendary-рецепту.</li>
+            <li>Магазин арены за 3600 очков на prestige tier.</li>
+            <li>Редкий дроп с legendary-клеток поиска.</li>
           </ul>
         </section>
       </div>
