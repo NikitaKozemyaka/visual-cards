@@ -176,20 +176,35 @@
       line-height: 1.4;
       max-width: 720px;
     }
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .hero-meta span {
-      padding: 6px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: #d4e7f7;
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      text-decoration: none;
       font-size: 12px;
+      font-weight: 600;
+    }
+    .back-link::before {
+      content: "←";
+    }
+    .sim-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .live-pill {
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(94,184,255,0.18);
+      background: rgba(94,184,255,0.08);
+      color: #cfe9ff;
+      font-size: 11px;
       font-weight: 700;
+      text-transform: lowercase;
     }
     section {
       position: relative;
@@ -359,7 +374,6 @@
       line-height: 1.35;
     }
     .secondary-grid,
-    .bar-chart,
     .details-card {
       padding: 11px 12px;
       border-radius: var(--radius-md);
@@ -387,32 +401,6 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       color: #dff0ff;
-    }
-    .bar-row {
-      display: grid;
-      grid-template-columns: 42px 1fr 52px;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-      font-size: 12px;
-      color: #bfd2e5;
-    }
-    .bar-track {
-      height: 8px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 999px;
-      overflow: hidden;
-      display: flex;
-    }
-    .bar-fill-passive {
-      background: linear-gradient(90deg, rgba(255,255,255,0.35), rgba(255,255,255,0.60));
-      height: 100%;
-      transition: width 320ms ease;
-    }
-    .bar-fill-pin {
-      background: linear-gradient(90deg, rgba(94,184,255,0.55), rgba(94,184,255,0.95));
-      height: 100%;
-      transition: width 320ms ease;
     }
     .info-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -505,9 +493,6 @@
       .secondary-grid {
         grid-template-columns: 1fr;
       }
-      .bar-row {
-        grid-template-columns: 38px 1fr 48px;
-      }
     }
     @media (prefers-reduced-motion: reduce) {
       *,
@@ -529,6 +514,7 @@
 
   <div class="wrap">
     <header class="hero">
+      <a class="back-link" href="../index.html">Все карточки</a>
       <div class="hero-top">
         <span class="badge legendary">Legendary</span>
         <span class="badge">Tactical</span>
@@ -538,16 +524,14 @@
       <p class="lead">
         Легендарный модуль анти-уклонения. Ниже сразу симулятор: нажал и увидел итог.
       </p>
-      <div class="hero-meta">
-        <span>L1-L9</span>
-        <span>−1% / ур.</span>
-        <span>/pin</span>
-      </div>
     </header>
 
     <div class="main-layout">
       <section class="sim-panel" aria-labelledby="sim-title">
-        <h2 id="sim-title">Симулятор</h2>
+        <div class="sim-head">
+          <h2 id="sim-title">Симулятор</h2>
+          <span class="live-pill">live</span>
+        </div>
 
         <div class="top-board">
           <div class="controls-side">
@@ -608,7 +592,6 @@
           </div>
         </div>
 
-        <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
       </section>
 
       <div class="info-grid">
@@ -715,6 +698,9 @@
 
     function renderBars(lv, pin) {
       const host = document.getElementById("bar-chart");
+      if (!host) {
+        return;
+      }
       host.innerHTML = "";
       const p = passivePct(lv);
       const pinVal = pin ? pinPct(lv) : 0;

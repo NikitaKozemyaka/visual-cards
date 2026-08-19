@@ -143,6 +143,23 @@
       font-size: 13px;
       line-height: 1.42;
     }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 10px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+    .section-count {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
     .entry-card {
       position: relative;
       display: block;
@@ -304,7 +321,12 @@
   <div class="wrap">
     <section class="hero">
       <h1>Визуальные карточки STW</h1>
-      <p class="lead">Один модуль, один понятный вход, без дублей и лишних витрин.</p>
+      <p class="lead">Отдельная витрина визуальных карточек по модулям и предметам Space Text World.</p>
+
+      <div class="section-head">
+        <h2>Модули</h2>
+        <span class="section-count">01 шт.</span>
+      </div>
 
       <a class="entry-card" href="./modules/stasis_anchor.html">
         <div class="entry-body">
@@ -314,14 +336,14 @@
             <span class="badge">Модуль</span>
           </div>
           <h2>Стазис-якорь</h2>
-          <p class="entry-copy">Сверху тапалки и результат рядом, ниже спокойные пояснения по модулю и команде <code>/pin</code>.</p>
+          <p class="entry-copy">Интерактивная карточка анти-уклонения: уровни L1-L9, <code>/pin</code> и примерный шанс попадания.</p>
           <div class="meta-line">
             <span class="meta-pill">L1-L9</span>
             <span class="meta-pill">−1% / ур.</span>
             <span class="meta-pill">/pin</span>
           </div>
           <div class="entry-footer">
-            <span class="entry-note">Открой и сразу сравни значения без прокрутки вверх-вниз.</span>
+            <span class="entry-note">Открой и сразу сравни значения.</span>
             <span class="cta">Открыть карточку</span>
           </div>
         </div>
