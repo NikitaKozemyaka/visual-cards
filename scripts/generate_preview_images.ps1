@@ -66,25 +66,25 @@ function Build-SitePreview([string]$path) {
 
     Draw-RoundedRect $g (New-Brush "#122033") (New-Pen "#28445f" 1.5) 70 70 1060 490 26
 
-    Write-Text $g "STW Visual Cards" "Segoe UI" 30 "Bold" "#eef4fb" 110 110
-    Write-Text $g "Visual guides for modules and items" "Segoe UI" 18 "Regular" "#95a7ba" 110 158
+    Write-Text $g "Визуальные карточки STW" "Segoe UI" 30 "Bold" "#eef4fb" 110 110
+    Write-Text $g "Понятные гайды по модулям и предметам" "Segoe UI" 18 "Regular" "#95a7ba" 110 158
 
     Draw-RoundedRect $g (New-Brush "#1c2a3d") (New-Pen "#2b425c" 1) 110 220 420 240 20
-    Write-Text $g "Modules" "Segoe UI" 18 "Bold" "#5eb8ff" 140 250
-    Write-Text $g "Interactive cards" "Segoe UI" 28 "Bold" "#eef4fb" 140 290
-    Write-Text $g "Levels, commands, enemy dodge," "Segoe UI" 17 "Regular" "#95a7ba" 140 345
-    Write-Text $g "hit chance, examples" "Segoe UI" 17 "Regular" "#95a7ba" 140 375
+    Write-Text $g "Модули и предметы" "Segoe UI" 18 "Bold" "#5eb8ff" 140 250
+    Write-Text $g "Визуальные карточки" "Segoe UI" 28 "Bold" "#eef4fb" 140 290
+    Write-Text $g "Понятные примеры, механики," "Segoe UI" 17 "Regular" "#95a7ba" 140 345
+    Write-Text $g "уровни и эффекты" "Segoe UI" 17 "Regular" "#95a7ba" 140 375
 
     Draw-RoundedRect $g (New-Brush "#101a29") (New-Pen "#26415c" 1) 600 180 440 290 20
     Draw-RoundedRect $g (New-Brush "#253245") (New-Pen "#365170" 1) 640 225 120 34 17
-    Write-Text $g "LEGENDARY" "Segoe UI" 12 "Bold" "#d4a440" 665 234
+    Write-Text $g "ЛЕГЕНДАРНЫЙ" "Segoe UI" 12 "Bold" "#d4a440" 650 234
     Draw-RoundedRect $g (New-Brush "#253245") (New-Pen "#365170" 1) 772 225 100 34 17
-    Write-Text $g "TACTICAL" "Segoe UI" 12 "Bold" "#9cb0c3" 797 234
-    Write-Text $g "Stasis Anchor" "Segoe UI" 34 "Bold" "#eef4fb" 640 285
-    Write-Text $g "Tap the card and open the guide" "Segoe UI" 18 "Regular" "#95a7ba" 640 338
-    Write-Text $g "site catalog + separate module pages" "Segoe UI" 17 "Regular" "#95a7ba" 640 372
+    Write-Text $g "ТАКТИЧЕСКИЙ" "Segoe UI" 12 "Bold" "#9cb0c3" 782 234
+    Write-Text $g "Стазис-якорь" "Segoe UI" 34 "Bold" "#eef4fb" 640 285
+    Write-Text $g "Открой карточку и быстро разберись" "Segoe UI" 18 "Regular" "#95a7ba" 640 338
+    Write-Text $g "каталог сайта + отдельные гайды" "Segoe UI" 17 "Regular" "#95a7ba" 640 372
     Draw-RoundedRect $g (New-Brush "#152538") (New-Pen "#244e76" 1) 640 412 250 34 17
-    Write-Text $g "github pages preview ready" "Segoe UI" 14 "Bold" "#63b6ff" 660 419
+    Write-Text $g "гайды по игре в одном месте" "Segoe UI" 14 "Bold" "#63b6ff" 660 419
 
     Write-Text $g "Space Text World" "Segoe UI" 14 "Regular" "#778b9f" 110 520
 
@@ -111,26 +111,26 @@ function Build-StasisPreview([string]$path) {
     Draw-RoundedRect $g (New-Brush "#121c2b") (New-Pen "#2d4055" 1.5) 70 70 1060 490 26
 
     Draw-RoundedRect $g (New-Brush "#2b2414") (New-Pen "#5c4a1e" 1) 110 112 145 38 19
-    Write-Text $g "LEGENDARY" "Segoe UI" 12 "Bold" "#d4a440" 134 120
+    Write-Text $g "ЛЕГЕНДАРНЫЙ" "Segoe UI" 12 "Bold" "#d4a440" 120 120
     Draw-RoundedRect $g (New-Brush "#1f2733") (New-Pen "#39485a" 1) 270 112 120 38 19
-    Write-Text $g "TACTICAL" "Segoe UI" 12 "Bold" "#a3b5c5" 295 120
+    Write-Text $g "ТАКТИЧЕСКИЙ" "Segoe UI" 12 "Bold" "#a3b5c5" 280 120
 
-    Write-Text $g "Stasis Anchor" "Segoe UI" 46 "Bold" "#eef4fb" 110 190
-    Write-Text $g "Interactive module card" "Segoe UI" 22 "Regular" "#91a3b7" 110 248
-    Write-Text $g "Passive: -1% dodge per level" "Segoe UI" 24 "Regular" "#eef4fb" 110 320
-    Write-Text $g "/pin: pre-combat dodge shred" "Segoe UI" 24 "Bold" "#5eb8ff" 110 360
-    Write-Text $g "L1-L9  •  enemy dodge  •  hit chance" "Segoe UI" 20 "Regular" "#91a3b7" 110 424
+    Write-Text $g "Стазис-якорь" "Segoe UI" 46 "Bold" "#eef4fb" 110 190
+    Write-Text $g "Визуальная карточка модуля" "Segoe UI" 22 "Regular" "#91a3b7" 110 248
+    Write-Text $g "Пассив: -1% уклонения за уровень" "Segoe UI" 24 "Regular" "#eef4fb" 110 320
+    Write-Text $g "/pin: сильнее режет dodge до боя" "Segoe UI" 24 "Bold" "#5eb8ff" 110 360
+    Write-Text $g "L1-L9  •  уклонение врага  •  шанс попадания" "Segoe UI" 20 "Regular" "#91a3b7" 110 424
 
     Draw-RoundedRect $g (New-Brush "#0e1826") (New-Pen "#2a4561" 1) 740 175 290 86 18
-    Write-Text $g "Example" "Segoe UI" 16 "Regular" "#91a3b7" 770 195
-    Write-Text $g "L3 + /pin vs 20%" "Segoe UI" 28 "Bold" "#eef4fb" 770 222
+    Write-Text $g "Пример" "Segoe UI" 16 "Regular" "#91a3b7" 770 195
+    Write-Text $g "L3 + /pin против 20%" "Segoe UI" 26 "Bold" "#eef4fb" 770 222
 
     Draw-RoundedRect $g (New-Brush "#0e1826") (New-Pen "#2a4561" 1) 740 290 290 132 22
-    Write-Text $g "Enemy dodge after card" "Segoe UI" 18 "Regular" "#91a3b7" 770 320
+    Write-Text $g "Уклонение врага после карты" "Segoe UI" 18 "Regular" "#91a3b7" 770 320
     Write-Text $g "2%" "Segoe UI" 56 "Bold" "#63d3a7" 770 350
 
     Draw-RoundedRect $g (New-Brush "#18273a") (New-Pen "#396187" 1) 740 448 290 46 18
-    Write-Text $g "Tap the page and play with values" "Segoe UI" 16 "Bold" "#bfe0ff" 766 462
+    Write-Text $g "Открой страницу и потыкай значения" "Segoe UI" 15 "Bold" "#bfe0ff" 760 462
 
     Save-Png $bmp $path
     $g.Dispose()
