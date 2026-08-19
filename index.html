@@ -35,7 +35,7 @@
       --accent-strong: rgba(98,184,255,0.35);
       --legendary: #d4a440;
       --legendary-soft: rgba(212,164,64,0.16);
-      --shadow: 0 30px 60px rgba(0,0,0,0.35);
+      --shadow: 0 26px 48px rgba(0,0,0,0.33);
       --radius-xl: 28px;
       --radius-lg: 22px;
       --radius-md: 16px;
@@ -103,13 +103,13 @@
       z-index: 1;
       max-width: var(--max);
       margin: 0 auto;
-      padding: 30px 18px 56px;
+      padding: 22px 16px 40px;
     }
     .hero {
       position: relative;
       overflow: hidden;
-      margin-bottom: 30px;
-      padding: 32px;
+      margin-bottom: 20px;
+      padding: 24px;
       background: linear-gradient(160deg, rgba(16,27,43,0.94), rgba(12,20,33,0.86));
       border: 1px solid var(--stroke);
       border-radius: var(--radius-xl);
@@ -141,15 +141,15 @@
     .hero-grid {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 22px;
+      gap: 18px;
       align-items: stretch;
     }
     .eyebrow {
       display: inline-flex;
       gap: 8px;
       align-items: center;
-      margin-bottom: 14px;
-      padding: 8px 12px;
+      margin-bottom: 10px;
+      padding: 7px 11px;
       border-radius: 999px;
       border: 1px solid rgba(98,184,255,0.16);
       background: rgba(98,184,255,0.08);
@@ -162,25 +162,25 @@
     }
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(34px, 6vw, 58px);
+      font-size: clamp(30px, 5.4vw, 48px);
       line-height: 0.96;
       letter-spacing: -0.04em;
     }
     .lead {
-      margin: 0 0 20px;
+      margin: 0 0 16px;
       color: var(--muted);
       max-width: 680px;
-      font-size: 17px;
-      line-height: 1.62;
+      font-size: 15px;
+      line-height: 1.52;
     }
     .hero-stats {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 22px;
+      gap: 10px;
+      margin-top: 14px;
     }
     .mini-stat {
-      padding: 14px 14px 13px;
+      padding: 11px 12px 10px;
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 16px;
@@ -198,22 +198,22 @@
       margin-bottom: 6px;
     }
     .mini-value {
-      font-size: 22px;
+      font-size: 19px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
     .mini-note {
-      margin-top: 4px;
+      margin-top: 3px;
       color: #b5c6d8;
-      font-size: 12px;
+      font-size: 11px;
     }
     .showcase {
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 14px;
-      padding: 18px;
+      gap: 12px;
+      padding: 16px;
       border-radius: 24px;
       background: linear-gradient(180deg, rgba(19,31,49,0.96), rgba(10,17,27,0.84));
       border: 1px solid rgba(255,255,255,0.08);
@@ -234,21 +234,21 @@
       align-items: flex-start;
     }
     .showcase-title {
-      font-size: 24px;
+      font-size: 21px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
     .showcase-sub {
       margin-top: 4px;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.45;
     }
     .badges {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     .badge {
       display: inline-flex;
@@ -271,7 +271,7 @@
     }
     .preview-card {
       position: relative;
-      padding: 18px;
+      padding: 15px;
       border-radius: 20px;
       background:
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
@@ -298,21 +298,21 @@
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .preview-body {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
     .preview-body h2 {
       margin: 0;
-      font-size: 26px;
+      font-size: 23px;
       line-height: 1.05;
     }
     .preview-body p {
       margin: 0;
       color: #b8c9db;
-      line-height: 1.52;
+      line-height: 1.42;
     }
     .preview-link {
       display: inline-flex;
@@ -331,18 +331,18 @@
       transform: translateX(4px);
     }
     .section {
-      margin-top: 26px;
+      margin-top: 18px;
     }
     .section-title {
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.10em;
       color: var(--muted);
-      margin: 0 0 14px;
+      margin: 0 0 10px;
     }
     .catalog {
       display: grid;
-      gap: 16px;
+      gap: 14px;
       grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     }
     .module-card {
@@ -350,7 +350,7 @@
       display: block;
       color: inherit;
       text-decoration: none;
-      padding: 20px;
+      padding: 16px;
       border-radius: var(--radius-lg);
       background:
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
@@ -398,17 +398,17 @@
     }
     .module-title {
       margin: 0 0 8px;
-      font-size: 28px;
+      font-size: 24px;
       letter-spacing: -0.04em;
       line-height: 1.02;
     }
     .module-desc {
       margin: 0;
       color: #b6c7d8;
-      line-height: 1.56;
+      line-height: 1.45;
     }
     .level-chip {
-      padding: 10px 12px;
+      padding: 8px 10px;
       min-width: 76px;
       text-align: center;
       border-radius: 16px;
@@ -420,16 +420,16 @@
       margin-bottom: 2px;
     }
     .level-chip .mini-value {
-      font-size: 20px;
+      font-size: 18px;
     }
     .module-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
     .module-meta {
-      padding: 14px;
+      padding: 12px;
       border-radius: 16px;
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
@@ -445,7 +445,7 @@
       margin-bottom: 6px;
     }
     .module-meta .meta-value {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
@@ -458,8 +458,8 @@
     }
     .module-footer small {
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
+      font-size: 12px;
+      line-height: 1.35;
     }
     .cta {
       display: inline-flex;
@@ -476,7 +476,7 @@
       transform: translateX(4px);
     }
     .foot {
-      margin-top: 28px;
+      margin-top: 18px;
       color: var(--muted);
       font-size: 13px;
       text-align: center;
@@ -504,7 +504,7 @@
         grid-template-columns: 1fr;
       }
       .hero {
-        padding: 26px 20px;
+        padding: 20px 18px;
       }
     }
     @media (max-width: 720px) {
@@ -548,8 +548,8 @@
           <div class="eyebrow">Библиотека STW</div>
           <h1>Визуальные карточки STW</h1>
           <p class="lead">
-            Отдельная витрина понятных игровых гайдов: модули, предметы, редкие механики и быстрые
-            примеры для игроков. Не сухая вики, а живая и наглядная подача.
+            Короткие и наглядные игровые карточки по модулям и предметам Space Text World:
+            без сухой вики, с быстрым входом в механику.
           </p>
 
           <div class="hero-stats">
@@ -576,7 +576,7 @@
             <div>
               <div class="showcase-title">Первая карточка уже в эфире</div>
               <div class="showcase-sub">
-                Конкретный модуль, понятные эффекты, интерактивные значения и отдельная ссылка для постов.
+                Готовая карточка с понятными эффектами, быстрыми значениями и отдельной ссылкой для постов.
               </div>
             </div>
           </div>
@@ -590,7 +590,7 @@
                 <span class="badge">Модуль</span>
               </div>
               <h2>Стазис-якорь</h2>
-              <p>Интерактивная карточка анти-уклонения: уровни L1-L9, /pin, dodge врага и шанс попадания.</p>
+              <p>Анти-уклонение, уровни L1-L9, <code>/pin</code> и шанс попадания в одном экране.</p>
               <span class="preview-link">Открыть модуль</span>
             </div>
           </div>
@@ -611,8 +611,7 @@
               </div>
               <h2 class="module-title">Стазис-якорь</h2>
               <p class="module-desc">
-                Визуальный гайд по модулю анти-уклонения: игрок быстро понимает пассив,
-                эффект команды /pin и то, как меняется шанс попадания.
+                Короткий интерактивный гайд: пассив, <code>/pin</code> и итоговый шанс попадания без длинного текста.
               </p>
             </div>
             <div class="level-chip">
@@ -637,7 +636,7 @@
           </div>
 
           <div class="module-footer">
-            <small>Подходит для постов, гайдов и быстрых объяснений игрокам без длинного текста.</small>
+            <small>Удобно для постов и быстрых объяснений игрокам.</small>
             <span class="cta">Открыть карточку</span>
           </div>
         </a>

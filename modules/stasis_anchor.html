@@ -40,7 +40,7 @@
       --radius-xl: 28px;
       --radius-lg: 22px;
       --radius-md: 16px;
-      --shadow: 0 28px 56px rgba(0,0,0,0.34);
+      --shadow: 0 22px 42px rgba(0,0,0,0.32);
       --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -56,8 +56,8 @@
       line-height: 1.5;
       min-height: 100vh;
       overflow-x: hidden;
-      padding: 18px;
-      padding-bottom: max(28px, env(safe-area-inset-bottom));
+      padding: 14px;
+      padding-bottom: max(22px, env(safe-area-inset-bottom));
     }
     .bg {
       position: fixed;
@@ -104,7 +104,7 @@
     .wrap {
       position: relative;
       z-index: 1;
-      max-width: 780px;
+      max-width: 1120px;
       margin: 0 auto;
     }
     .hero {
@@ -115,9 +115,9 @@
         linear-gradient(135deg, rgba(255,255,255,0.03), transparent 45%);
       border: 1px solid var(--stroke);
       border-radius: var(--radius-xl);
-      padding: 24px 20px 18px;
+      padding: 18px 18px 14px;
       box-shadow: var(--shadow);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
     .hero::before,
     .hero::after {
@@ -146,7 +146,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
     .badge {
       display: inline-flex;
@@ -169,25 +169,25 @@
       background: var(--legendary-soft);
     }
     h1 {
-      font-size: clamp(30px, 7vw, 52px);
+      font-size: clamp(28px, 5vw, 42px);
       line-height: 0.95;
       letter-spacing: -0.05em;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .lead {
       color: var(--muted);
-      font-size: 15px;
-      line-height: 1.62;
-      max-width: 620px;
+      font-size: 14px;
+      line-height: 1.5;
+      max-width: 700px;
     }
     .hero-strip {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 18px;
+      gap: 8px;
+      margin-top: 12px;
     }
     .hero-mini {
-      padding: 12px 13px;
+      padding: 9px 11px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.06);
       background: rgba(255,255,255,0.03);
@@ -203,7 +203,7 @@
       margin-bottom: 5px;
     }
     .hero-mini .value {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 800;
       letter-spacing: -0.03em;
     }
@@ -215,8 +215,8 @@
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
       border: 1px solid var(--stroke);
       border-radius: var(--radius-lg);
-      padding: 18px;
-      margin-bottom: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
       box-shadow: var(--shadow);
       animation: riseIn 700ms ease both;
     }
@@ -237,20 +237,26 @@
       text-transform: uppercase;
       letter-spacing: 0.10em;
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .intro-copy {
       color: #b8cadb;
-      font-size: 14px;
-      line-height: 1.56;
-      margin-bottom: 14px;
+      font-size: 13px;
+      line-height: 1.46;
+      margin-bottom: 10px;
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
+      gap: 12px;
+      align-items: start;
     }
     .sim-grid {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
     .control-card {
-      padding: 14px;
+      padding: 11px 12px;
       border-radius: var(--radius-md);
       border: 1px solid rgba(255,255,255,0.06);
       background: rgba(255,255,255,0.03);
@@ -262,14 +268,14 @@
       background: rgba(94,184,255,0.05);
     }
     .control-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
     .pill-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 7px;
     }
     .pill {
       appearance: none;
@@ -277,13 +283,13 @@
       background: rgba(255,255,255,0.04);
       color: var(--text);
       font: inherit;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      padding: 10px 14px;
-      border-radius: 12px;
+      padding: 8px 11px;
+      border-radius: 11px;
       cursor: pointer;
       min-width: 46px;
-      min-height: 44px;
+      min-height: 40px;
       touch-action: manipulation;
       transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
     }
@@ -301,21 +307,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      padding: 14px;
+      gap: 12px;
+      padding: 11px 12px;
       background: rgba(255,255,255,0.03);
       border-radius: var(--radius-md);
       border: 1px solid rgba(255,255,255,0.06);
     }
     .toggle-row label {
       display: block;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       margin-bottom: 3px;
     }
     .toggle-row span.hint {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
       font-weight: 400;
     }
@@ -326,25 +332,26 @@
     }
     input[type="range"] {
       width: 100%;
-      margin: 10px 0 6px;
+      margin: 8px 0 4px;
       accent-color: var(--accent);
     }
     .range-labels {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
     }
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 14px;
-      margin-bottom: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
     .stat {
-      padding: 14px;
-      border-radius: 18px;
+      padding: 11px 12px;
+      border-radius: 16px;
       background:
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
         linear-gradient(180deg, rgba(19,31,49,0.96), rgba(13,21,33,0.90));
@@ -361,7 +368,7 @@
       margin-bottom: 6px;
     }
     .stat .value {
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.04em;
     }
@@ -369,7 +376,7 @@
     .stat .value.ok { color: var(--ok); }
     .stat.wide { grid-column: 1 / -1; }
     .bar-chart {
-      padding: 14px;
+      padding: 11px 12px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
@@ -384,7 +391,7 @@
       color: #bfd2e5;
     }
     .bar-track {
-      height: 10px;
+      height: 8px;
       background: rgba(255,255,255,0.06);
       border-radius: 999px;
       overflow: hidden;
@@ -400,17 +407,43 @@
       height: 100%;
       transition: width 320ms ease;
     }
-    .info-grid {
+    .side-stack {
       display: grid;
       gap: 12px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    .summary-card,
     .info-card {
-      padding: 16px;
+      padding: 13px 14px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
       transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+    }
+    .summary-card {
+      display: grid;
+      gap: 10px;
+    }
+    .summary-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .summary-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+    .summary-key {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .summary-value {
+      font-size: 15px;
+      font-weight: 800;
+      color: #d9ecfb;
+      text-align: right;
     }
     .info-card:hover {
       transform: translateY(-2px);
@@ -420,15 +453,15 @@
     ul.compact {
       padding-left: 18px;
       color: #b8cadb;
-      font-size: 14px;
-      line-height: 1.58;
+      font-size: 13px;
+      line-height: 1.48;
     }
-    ul.compact li { margin-bottom: 7px; }
+    ul.compact li { margin-bottom: 5px; }
     .foot {
       font-size: 12px;
       color: var(--muted);
       text-align: center;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     code {
       font-size: 12px;
@@ -448,21 +481,25 @@
       0% { opacity: 0; transform: translateY(14px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+    @media (max-width: 920px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
     @media (max-width: 620px) {
       body {
-        padding: 14px;
-        padding-bottom: max(24px, env(safe-area-inset-bottom));
+        padding: 12px;
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
       }
       .hero-strip,
-      .stat-grid,
-      .info-grid {
+      .stat-grid {
         grid-template-columns: 1fr;
       }
       .hero {
-        padding: 20px 16px 16px;
+        padding: 16px 14px 13px;
       }
       .stat .value {
-        font-size: 24px;
+        font-size: 21px;
       }
       .bar-row {
         grid-template-columns: 38px 1fr 48px;
@@ -495,8 +532,8 @@
       </div>
       <h1>Стазис-якорь</h1>
       <p class="lead">
-        Легендарный модуль анти-уклонения. Эта карточка помогает быстро понять пассив,
-        силу команды <code>/pin</code> и итоговый шанс попадания в реальном бою.
+        Легендарный модуль анти-уклонения: пассив, <code>/pin</code> и шанс попадания
+        собраны в одном компактном экране.
       </p>
 
       <div class="hero-strip">
@@ -515,67 +552,87 @@
       </div>
     </header>
 
-    <section aria-labelledby="sim-title">
-      <h2 id="sim-title">Симулятор</h2>
-      <p class="intro-copy">
-        Потыкай уровень модуля, включи или выключи <code>/pin</code> и посмотри,
-        как меняется уклонение врага и шанс твоего попадания.
-      </p>
+    <div class="main-layout">
+      <section aria-labelledby="sim-title">
+        <h2 id="sim-title">Симулятор</h2>
+        <p class="intro-copy">
+          Выбери уровень, переключи <code>/pin</code> и сразу посмотри итог по dodge и попаданию.
+        </p>
 
-      <div class="sim-grid">
-        <div class="control-card">
-          <div class="control-label">Уровень модуля</div>
-          <div class="pill-row" id="level-pills" role="group" aria-label="Уровень модуля"></div>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <label for="pin-toggle">Команда /pin активна</label>
-            <span class="hint">Заряд перед боем на карточке врага</span>
+        <div class="sim-grid">
+          <div class="control-card">
+            <div class="control-label">Уровень модуля</div>
+            <div class="pill-row" id="level-pills" role="group" aria-label="Уровень модуля"></div>
           </div>
-          <input type="checkbox" id="pin-toggle" checked aria-label="Команда pin активна">
+
+          <div class="toggle-row">
+            <div>
+              <label for="pin-toggle">Команда /pin активна</label>
+              <span class="hint">заряд перед боем</span>
+            </div>
+            <input type="checkbox" id="pin-toggle" checked aria-label="Команда pin активна">
+          </div>
+
+          <div class="control-card">
+            <div class="control-label">Уклонение врага</div>
+            <div class="pill-row" id="enemy-pills" role="group" aria-label="Уклонение врага"></div>
+            <input type="range" id="enemy-range" min="0" max="60" step="1" value="20" aria-label="Уклонение врага проценты">
+            <div class="range-labels"><span>0%</span><span id="enemy-range-val">20%</span><span>60%</span></div>
+          </div>
         </div>
 
-        <div class="control-card">
-          <div class="control-label">Уклонение врага</div>
-          <div class="pill-row" id="enemy-pills" role="group" aria-label="Уклонение врага"></div>
-          <input type="range" id="enemy-range" min="0" max="60" step="1" value="20" aria-label="Уклонение врага проценты">
-          <div class="range-labels"><span>0%</span><span id="enemy-range-val">20%</span><span>60%</span></div>
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="label">Пассив</div>
+            <div class="value" id="stat-passive">-3%</div>
+          </div>
+          <div class="stat">
+            <div class="label">/pin</div>
+            <div class="value accent" id="stat-pin">-15%</div>
+          </div>
+          <div class="stat">
+            <div class="label">Раундов /pin</div>
+            <div class="value" id="stat-rounds">9</div>
+          </div>
+          <div class="stat">
+            <div class="label">Суммарный штраф</div>
+            <div class="value accent" id="stat-total">-18%</div>
+          </div>
+          <div class="stat wide">
+            <div class="label">Уклонение врага после якоря</div>
+            <div class="value ok" id="stat-effective">2%</div>
+          </div>
+          <div class="stat wide">
+            <div class="label">Твой шанс попадания</div>
+            <div class="value ok" id="stat-hit">98%</div>
+          </div>
         </div>
-      </div>
 
-      <div class="stat-grid">
-        <div class="stat">
-          <div class="label">Пассив</div>
-          <div class="value" id="stat-passive">-3%</div>
-        </div>
-        <div class="stat">
-          <div class="label">/pin</div>
-          <div class="value accent" id="stat-pin">-15%</div>
-        </div>
-        <div class="stat">
-          <div class="label">Раундов /pin</div>
-          <div class="value" id="stat-rounds">9</div>
-        </div>
-        <div class="stat">
-          <div class="label">Суммарный штраф</div>
-          <div class="value accent" id="stat-total">-18%</div>
-        </div>
-        <div class="stat wide">
-          <div class="label">Уклонение врага после якоря</div>
-          <div class="value ok" id="stat-effective">2%</div>
-        </div>
-        <div class="stat wide">
-          <div class="label">Твой шанс попадания</div>
-          <div class="value ok" id="stat-hit">98%</div>
-        </div>
-      </div>
+        <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
+      </section>
 
-      <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
-    </section>
+      <div class="side-stack">
+        <section class="summary-card">
+          <h2>Сводка</h2>
+          <div class="summary-row">
+            <div class="summary-key">Редкость</div>
+            <div class="summary-value">Legendary</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">Команда</div>
+            <div class="summary-value">/pin</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">КД команды</div>
+            <div class="summary-value"><span id="cd-min">20</span> мин</div>
+          </div>
+          <div class="summary-row">
+            <div class="summary-key">Диапазон</div>
+            <div class="summary-value">L1-L9</div>
+          </div>
+        </section>
 
-    <div class="info-grid">
-      <section>
+        <section class="info-card">
         <h2>Как пользоваться</h2>
         <ul class="compact">
           <li>Установи модуль на экипированную броню.</li>
@@ -583,16 +640,17 @@
           <li>Пассив работает весь бой, а команда усиливает эффект на несколько раундов.</li>
           <li>Это не отключение dodge, а контролируемое снижение шанса уворота.</li>
         </ul>
-      </section>
+        </section>
 
-      <section>
+        <section class="info-card">
         <h2>Где взять</h2>
         <ul class="compact">
           <li>Крафт v2 (legendary рецепт)</li>
           <li>Магазин арены — 3600 очков, tier prestige</li>
           <li>Редкий дроп с legendary-клетки поиска</li>
         </ul>
-      </section>
+        </section>
+      </div>
     </div>
 
     <p class="foot">Space Text World · tactical_stasis_anchor · данные из module_balance.json</p>
