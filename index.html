@@ -23,23 +23,20 @@
     :root {
       --bg: #07111d;
       --bg2: #0d1d31;
-      --surface: rgba(14, 23, 37, 0.76);
-      --surface-strong: rgba(19, 31, 49, 0.92);
-      --surface-soft: rgba(25, 39, 60, 0.72);
+      --surface: rgba(14, 23, 37, 0.82);
+      --surface-strong: rgba(19, 31, 49, 0.94);
       --stroke: rgba(255,255,255,0.09);
-      --stroke-strong: rgba(255,255,255,0.16);
       --text: #edf4fb;
       --muted: #91a6bc;
       --accent: #62b8ff;
-      --accent-soft: rgba(98,184,255,0.18);
-      --accent-strong: rgba(98,184,255,0.35);
+      --accent-soft: rgba(98,184,255,0.16);
       --legendary: #d4a440;
       --legendary-soft: rgba(212,164,64,0.16);
-      --shadow: 0 26px 48px rgba(0,0,0,0.33);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --max: 1140px;
+      --shadow: 0 22px 44px rgba(0,0,0,0.31);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --max: 980px;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -103,13 +100,13 @@
       z-index: 1;
       max-width: var(--max);
       margin: 0 auto;
-      padding: 22px 16px 40px;
+      padding: 18px 14px 32px;
     }
     .hero {
       position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
-      padding: 24px;
+      margin-bottom: 14px;
+      padding: 18px;
       background: linear-gradient(160deg, rgba(16,27,43,0.94), rgba(12,20,33,0.86));
       border: 1px solid var(--stroke);
       border-radius: var(--radius-xl);
@@ -123,32 +120,32 @@
       pointer-events: none;
     }
     .hero::before {
-      width: 280px;
-      height: 280px;
-      top: -120px;
+      width: 220px;
+      height: 220px;
+      top: -90px;
       right: -40px;
       background: radial-gradient(circle, rgba(98,184,255,0.22), transparent 68%);
       animation: pulse 10s ease-in-out infinite;
     }
     .hero::after {
-      width: 220px;
-      height: 220px;
-      left: -60px;
-      bottom: -120px;
+      width: 160px;
+      height: 160px;
+      left: -40px;
+      bottom: -90px;
       background: radial-gradient(circle, rgba(212,164,64,0.16), transparent 72%);
       animation: pulse 13s ease-in-out infinite reverse;
     }
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 18px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+      gap: 14px;
       align-items: stretch;
     }
     .eyebrow {
       display: inline-flex;
       gap: 8px;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       padding: 7px 11px;
       border-radius: 999px;
       border: 1px solid rgba(98,184,255,0.16);
@@ -161,94 +158,58 @@
       backdrop-filter: blur(10px);
     }
     h1 {
-      margin: 0 0 14px;
-      font-size: clamp(30px, 5.4vw, 48px);
+      margin: 0 0 8px;
+      font-size: clamp(28px, 5vw, 40px);
       line-height: 0.96;
       letter-spacing: -0.04em;
     }
     .lead {
-      margin: 0 0 16px;
+      margin: 0 0 12px;
       color: var(--muted);
-      max-width: 680px;
-      font-size: 15px;
-      line-height: 1.52;
+      max-width: 580px;
+      font-size: 14px;
+      line-height: 1.46;
     }
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 14px;
-    }
-    .mini-stat {
-      padding: 11px 12px 10px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      backdrop-filter: blur(12px);
-      transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
-    }
-    .mini-stat:hover {
-      transform: translateY(-2px);
-      border-color: rgba(98,184,255,0.22);
-      background: rgba(98,184,255,0.06);
-    }
-    .mini-label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-    .mini-value {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-    .mini-note {
-      margin-top: 3px;
-      color: #b5c6d8;
-      font-size: 11px;
-    }
-    .showcase {
-      position: relative;
+    .quick-line {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 16px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(19,31,49,0.96), rgba(10,17,27,0.84));
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      margin-top: 10px;
+    }
+    .quick-chip {
+      padding: 7px 10px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.04);
+      color: #bfd1e3;
+      font-size: 12px;
+      white-space: nowrap;
     }
-    .showcase::before {
-      content: "";
-      position: absolute;
-      inset: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(98,184,255,0.12);
-      pointer-events: none;
+    .entry-card {
+      position: relative;
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
+        linear-gradient(180deg, rgba(19,31,49,0.98), rgba(10,16,27,0.92));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
     }
-    .showcase-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    .showcase-title {
-      font-size: 21px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-    .showcase-sub {
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
+    .entry-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(98,184,255,0.28);
+      box-shadow: 0 28px 52px rgba(0,0,0,0.35);
     }
     .badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 7px;
+      margin-bottom: 10px;
     }
     .badge {
       display: inline-flex;
@@ -269,22 +230,7 @@
       border-color: rgba(212,164,64,0.34);
       background: var(--legendary-soft);
     }
-    .preview-card {
-      position: relative;
-      padding: 15px;
-      border-radius: 20px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
-        linear-gradient(180deg, rgba(98,184,255,0.06), rgba(98,184,255,0.02));
-      border: 1px solid rgba(98,184,255,0.14);
-      overflow: hidden;
-      transition: transform 260ms ease, border-color 260ms ease;
-    }
-    .preview-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(98,184,255,0.24);
-    }
-    .preview-card::after {
+    .entry-card::after {
       content: "";
       position: absolute;
       inset: auto -80px -80px auto;
@@ -293,173 +239,55 @@
       border-radius: 999px;
       background: radial-gradient(circle, rgba(98,184,255,0.14), transparent 72%);
     }
-    .preview-top {
+    .entry-top {
       color: var(--muted);
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .preview-body {
-      display: grid;
-      gap: 8px;
-    }
-    .preview-body h2 {
-      margin: 0;
-      font-size: 23px;
-      line-height: 1.05;
-    }
-    .preview-body p {
-      margin: 0;
-      color: #b8c9db;
-      line-height: 1.42;
-    }
-    .preview-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      margin-top: 2px;
-      color: #d7eeff;
-      font-weight: 700;
-    }
-    .preview-link::after {
-      content: "→";
-      transition: transform 200ms ease;
-    }
-    .preview-card:hover .preview-link::after {
-      transform: translateX(4px);
-    }
-    .section {
-      margin-top: 18px;
-    }
-    .section-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.10em;
-      color: var(--muted);
-      margin: 0 0 10px;
-    }
-    .catalog {
-      display: grid;
-      gap: 14px;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    }
-    .module-card {
-      position: relative;
-      display: block;
-      color: inherit;
-      text-decoration: none;
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
-        linear-gradient(180deg, rgba(19,31,49,0.98), rgba(10,16,27,0.92));
-      border: 1px solid var(--stroke);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
-      animation: riseIn 700ms ease both;
-    }
-    .module-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(98,184,255,0.28);
-      box-shadow: 0 38px 70px rgba(0,0,0,0.42);
-    }
-    .module-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(98,184,255,0.10), transparent 42%, transparent 58%, rgba(212,164,64,0.08));
-      opacity: 0.8;
-      pointer-events: none;
-    }
-    .module-card::after {
-      content: "";
-      position: absolute;
-      top: -50px;
-      right: -70px;
-      width: 180px;
-      height: 180px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(98,184,255,0.16), transparent 72%);
-      pointer-events: none;
-    }
-    .module-card > * {
+    .entry-body {
       position: relative;
       z-index: 1;
     }
-    .module-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .module-title {
-      margin: 0 0 8px;
-      font-size: 24px;
-      letter-spacing: -0.04em;
-      line-height: 1.02;
-    }
-    .module-desc {
+    .entry-body h2 {
       margin: 0;
-      color: #b6c7d8;
-      line-height: 1.45;
-    }
-    .level-chip {
-      padding: 8px 10px;
-      min-width: 76px;
-      text-align: center;
-      border-radius: 16px;
-      border: 1px solid rgba(98,184,255,0.18);
-      background: rgba(98,184,255,0.08);
-      backdrop-filter: blur(12px);
-    }
-    .level-chip .mini-label {
-      margin-bottom: 2px;
-    }
-    .level-chip .mini-value {
-      font-size: 18px;
-    }
-    .module-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .module-meta {
-      padding: 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: transform 200ms ease, background 200ms ease;
-    }
-    .module-card:hover .module-meta {
-      transform: translateY(-1px);
-      background: rgba(98,184,255,0.05);
-    }
-    .module-meta .meta-label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-    .module-meta .meta-value {
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 24px;
+      line-height: 1.05;
       letter-spacing: -0.03em;
     }
-    .module-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      color: #d4eafc;
+    .entry-copy {
+      margin: 8px 0 12px;
+      color: #b8c9db;
+      line-height: 1.42;
+      font-size: 14px;
     }
-    .module-footer small {
+    .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      margin-bottom: 12px;
+    }
+    .meta-pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #d8eaf9;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .entry-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .entry-note {
       color: var(--muted);
       font-size: 12px;
       line-height: 1.35;
+      max-width: 260px;
     }
     .cta {
       display: inline-flex;
@@ -472,7 +300,7 @@
       content: "→";
       transition: transform 180ms ease;
     }
-    .module-card:hover .cta::after {
+    .entry-card:hover .cta::after {
       transform: translateX(4px);
     }
     .foot {
@@ -508,19 +336,9 @@
       }
     }
     @media (max-width: 720px) {
-      .hero-stats,
-      .module-grid {
-        grid-template-columns: 1fr;
-      }
-      .module-head {
-        flex-direction: column;
-      }
-      .module-footer {
+      .entry-footer {
         flex-direction: column;
         align-items: flex-start;
-      }
-      .level-chip {
-        min-width: 0;
       }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -548,96 +366,34 @@
           <div class="eyebrow">Библиотека STW</div>
           <h1>Визуальные карточки STW</h1>
           <p class="lead">
-            Короткие и наглядные игровые карточки по модулям и предметам Space Text World:
-            без сухой вики, с быстрым входом в механику.
+            Короткие игровые карточки по механикам Space Text World. Открыл, нажал, сразу понял эффект.
           </p>
-
-          <div class="hero-stats">
-            <div class="mini-stat">
-              <div class="mini-label">Формат</div>
-              <div class="mini-value">Интерактив</div>
-              <div class="mini-note">тапы, примеры, быстрые выводы</div>
-            </div>
-            <div class="mini-stat">
-              <div class="mini-label">Подходит для</div>
-              <div class="mini-value">Telegram</div>
-              <div class="mini-note">ссылки, анонсы, быстрый вход</div>
-            </div>
-            <div class="mini-stat">
-              <div class="mini-label">Текущий фокус</div>
-              <div class="mini-value">Модули</div>
-              <div class="mini-note">дальше можно добавить предметы</div>
-            </div>
+          <div class="quick-line">
+            <span class="quick-chip">Интерактив</span>
+            <span class="quick-chip">Telegram-friendly</span>
+            <span class="quick-chip">Быстрый вход в механику</span>
           </div>
         </div>
-
-        <div class="showcase">
-          <div class="showcase-head">
-            <div>
-              <div class="showcase-title">Первая карточка уже в эфире</div>
-              <div class="showcase-sub">
-                Готовая карточка с понятными эффектами, быстрыми значениями и отдельной ссылкой для постов.
-              </div>
+        <a class="entry-card" href="./modules/stasis_anchor.html">
+          <div class="entry-top">Первый модуль</div>
+          <div class="entry-body">
+            <div class="badges">
+              <span class="badge legendary">Legendary</span>
+              <span class="badge">Tactical</span>
+              <span class="badge">Модуль</span>
             </div>
-          </div>
-
-          <div class="preview-card">
-            <div class="preview-top">Featured module</div>
-            <div class="preview-body">
-              <div class="badges">
-                <span class="badge legendary">Legendary</span>
-                <span class="badge">Tactical</span>
-                <span class="badge">Модуль</span>
-              </div>
-              <h2>Стазис-якорь</h2>
-              <p>Анти-уклонение, уровни L1-L9, <code>/pin</code> и шанс попадания в одном экране.</p>
-              <span class="preview-link">Открыть модуль</span>
+            <h2>Стазис-якорь</h2>
+            <p class="entry-copy">Анти-уклонение, уровни L1-L9, <code>/pin</code> и шанс попадания в одном компактном экране.</p>
+            <div class="meta-line">
+              <span class="meta-pill">L1-L9</span>
+              <span class="meta-pill">−1% / ур.</span>
+              <span class="meta-pill">/pin</span>
+              <span class="meta-pill">Интерактив</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <p class="section-title">Модули</p>
-      <div class="catalog">
-        <a class="module-card" href="./modules/stasis_anchor.html">
-          <div class="module-head">
-            <div>
-              <div class="badges">
-                <span class="badge legendary">Legendary</span>
-                <span class="badge">Tactical</span>
-                <span class="badge">Модуль</span>
-              </div>
-              <h2 class="module-title">Стазис-якорь</h2>
-              <p class="module-desc">
-                Короткий интерактивный гайд: пассив, <code>/pin</code> и итоговый шанс попадания без длинного текста.
-              </p>
+            <div class="entry-footer">
+              <span class="entry-note">Сразу открывает рабочий экран модуля, без дублей и лишнего лендинга.</span>
+              <span class="cta">Открыть карточку</span>
             </div>
-            <div class="level-chip">
-              <div class="mini-label">Диапазон</div>
-              <div class="mini-value">L1-L9</div>
-            </div>
-          </div>
-
-          <div class="module-grid">
-            <div class="module-meta">
-              <div class="meta-label">Пассив</div>
-              <div class="meta-value">−1% / ур.</div>
-            </div>
-            <div class="module-meta">
-              <div class="meta-label">Команда</div>
-              <div class="meta-value">/pin</div>
-            </div>
-            <div class="module-meta">
-              <div class="meta-label">Формат</div>
-              <div class="meta-value">Интерактив</div>
-            </div>
-          </div>
-
-          <div class="module-footer">
-            <small>Удобно для постов и быстрых объяснений игрокам.</small>
-            <span class="cta">Открыть карточку</span>
           </div>
         </a>
       </div>

@@ -24,23 +24,19 @@
     :root {
       --bg: #071018;
       --bg2: #0b1725;
-      --surface: rgba(15, 24, 37, 0.80);
-      --surface-soft: rgba(20, 31, 48, 0.78);
-      --surface-strong: rgba(17, 28, 43, 0.95);
+      --surface: rgba(15, 24, 37, 0.86);
       --stroke: rgba(255,255,255,0.09);
-      --stroke-strong: rgba(255,255,255,0.16);
       --text: #e9f1f8;
       --muted: #92a6ba;
       --accent: #5eb8ff;
       --accent-soft: rgba(94,184,255,0.16);
-      --accent-strong: rgba(94,184,255,0.28);
       --legendary: #d0a23f;
       --legendary-soft: rgba(208,162,63,0.15);
       --ok: #5fd4a4;
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --shadow: 0 22px 42px rgba(0,0,0,0.32);
+      --radius-xl: 20px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --shadow: 0 18px 34px rgba(0,0,0,0.28);
       --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -56,8 +52,8 @@
       line-height: 1.5;
       min-height: 100vh;
       overflow-x: hidden;
-      padding: 14px;
-      padding-bottom: max(22px, env(safe-area-inset-bottom));
+      padding: 12px;
+      padding-bottom: max(18px, env(safe-area-inset-bottom));
     }
     .bg {
       position: fixed;
@@ -104,7 +100,7 @@
     .wrap {
       position: relative;
       z-index: 1;
-      max-width: 1120px;
+      max-width: 1000px;
       margin: 0 auto;
     }
     .hero {
@@ -115,9 +111,9 @@
         linear-gradient(135deg, rgba(255,255,255,0.03), transparent 45%);
       border: 1px solid var(--stroke);
       border-radius: var(--radius-xl);
-      padding: 18px 18px 14px;
+      padding: 14px 14px 12px;
       box-shadow: var(--shadow);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .hero::before,
     .hero::after {
@@ -127,18 +123,18 @@
       pointer-events: none;
     }
     .hero::before {
-      width: 210px;
-      height: 210px;
-      top: -80px;
+      width: 170px;
+      height: 170px;
+      top: -70px;
       right: -30px;
       background: radial-gradient(circle, rgba(94,184,255,0.16), transparent 72%);
       animation: pulse 11s ease-in-out infinite;
     }
     .hero::after {
-      width: 160px;
-      height: 160px;
+      width: 120px;
+      height: 120px;
       left: -40px;
-      bottom: -60px;
+      bottom: -50px;
       background: radial-gradient(circle, rgba(208,162,63,0.12), transparent 72%);
       animation: pulse 15s ease-in-out infinite reverse;
     }
@@ -146,7 +142,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .badge {
       display: inline-flex;
@@ -169,43 +165,31 @@
       background: var(--legendary-soft);
     }
     h1 {
-      font-size: clamp(28px, 5vw, 42px);
+      font-size: clamp(26px, 4.5vw, 34px);
       line-height: 0.95;
       letter-spacing: -0.05em;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .lead {
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-      max-width: 700px;
+      font-size: 13px;
+      line-height: 1.4;
+      max-width: 720px;
     }
-    .hero-strip {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
       gap: 8px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
-    .hero-mini {
-      padding: 9px 11px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.03);
-      transition: transform 220ms ease, border-color 220ms ease;
-    }
-    .hero-mini:hover {
-      transform: translateY(-2px);
-      border-color: rgba(94,184,255,0.22);
-    }
-    .hero-mini .label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 5px;
-    }
-    .hero-mini .value {
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
+    .hero-meta span {
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: #d4e7f7;
+      font-size: 12px;
+      font-weight: 700;
     }
     section {
       position: relative;
@@ -215,7 +199,7 @@
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
       border: 1px solid var(--stroke);
       border-radius: var(--radius-lg);
-      padding: 14px;
+      padding: 12px;
       margin-bottom: 12px;
       box-shadow: var(--shadow);
       animation: riseIn 700ms ease both;
@@ -232,28 +216,27 @@
       z-index: 1;
     }
     h2 {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.10em;
       color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .intro-copy {
-      color: #b8cadb;
-      font-size: 13px;
-      line-height: 1.46;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .main-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
-      gap: 12px;
-      align-items: start;
+      grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.8fr);
+      gap: 10px;
     }
     .sim-grid {
       display: grid;
-      gap: 10px;
+      gap: 8px;
+    }
+    .control-row {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 8px;
+      align-items: start;
     }
     .control-card {
       padding: 11px 12px;
@@ -270,12 +253,12 @@
     .control-label {
       font-size: 11px;
       color: var(--muted);
-      margin-bottom: 7px;
+      margin-bottom: 6px;
     }
     .pill-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 7px;
+      gap: 6px;
     }
     .pill {
       appearance: none;
@@ -283,13 +266,13 @@
       background: rgba(255,255,255,0.04);
       color: var(--text);
       font: inherit;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      padding: 8px 11px;
+      padding: 8px 10px;
       border-radius: 11px;
       cursor: pointer;
-      min-width: 46px;
-      min-height: 40px;
+      min-width: 42px;
+      min-height: 38px;
       touch-action: manipulation;
       transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
     }
@@ -307,7 +290,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       padding: 11px 12px;
       background: rgba(255,255,255,0.03);
       border-radius: var(--radius-md);
@@ -326,13 +309,13 @@
       font-weight: 400;
     }
     input[type="checkbox"] {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       accent-color: var(--accent);
     }
     input[type="range"] {
       width: 100%;
-      margin: 8px 0 4px;
+      margin: 7px 0 2px;
       accent-color: var(--accent);
     }
     .range-labels {
@@ -344,10 +327,9 @@
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-top: 8px;
+      margin-bottom: 8px;
     }
     .stat {
       padding: 11px 12px;
@@ -365,17 +347,17 @@
     .stat .label {
       font-size: 11px;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .stat .value {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 800;
       letter-spacing: -0.04em;
     }
     .stat .value.accent { color: #cfe9ff; }
     .stat .value.ok { color: var(--ok); }
-    .stat.wide { grid-column: 1 / -1; }
-    .bar-chart {
+    .bar-chart,
+    .details-card {
       padding: 11px 12px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.03);
@@ -409,7 +391,7 @@
     }
     .side-stack {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
     .summary-card,
     .info-card {
@@ -421,14 +403,14 @@
     }
     .summary-card {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
     .summary-row {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 10px;
       align-items: center;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .summary-row:last-child {
@@ -440,7 +422,7 @@
       color: var(--muted);
     }
     .summary-value {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: #d9ecfb;
       text-align: right;
@@ -453,8 +435,8 @@
     ul.compact {
       padding-left: 18px;
       color: #b8cadb;
-      font-size: 13px;
-      line-height: 1.48;
+      font-size: 12px;
+      line-height: 1.42;
     }
     ul.compact li { margin-bottom: 5px; }
     .foot {
@@ -482,24 +464,24 @@
       100% { opacity: 1; transform: translateY(0); }
     }
     @media (max-width: 920px) {
-      .main-layout {
+      .main-layout,
+      .control-row {
         grid-template-columns: 1fr;
       }
     }
     @media (max-width: 620px) {
       body {
-        padding: 12px;
+        padding: 10px;
         padding-bottom: max(20px, env(safe-area-inset-bottom));
       }
-      .hero-strip,
       .stat-grid {
         grid-template-columns: 1fr;
       }
       .hero {
-        padding: 16px 14px 13px;
+        padding: 12px 12px 10px;
       }
       .stat .value {
-        font-size: 21px;
+        font-size: 20px;
       }
       .bar-row {
         grid-template-columns: 38px 1fr 48px;
@@ -532,45 +514,32 @@
       </div>
       <h1>Стазис-якорь</h1>
       <p class="lead">
-        Легендарный модуль анти-уклонения: пассив, <code>/pin</code> и шанс попадания
-        собраны в одном компактном экране.
+        Легендарный модуль анти-уклонения. Ниже сразу симулятор: нажал и увидел итог.
       </p>
-
-      <div class="hero-strip">
-        <div class="hero-mini">
-          <div class="label">Пассив</div>
-          <div class="value">−1% / ур.</div>
-        </div>
-        <div class="hero-mini">
-          <div class="label">Команда</div>
-          <div class="value">/pin</div>
-        </div>
-        <div class="hero-mini">
-          <div class="label">Формат</div>
-          <div class="value">Интерактив</div>
-        </div>
+      <div class="hero-meta">
+        <span>L1-L9</span>
+        <span>−1% / ур.</span>
+        <span>/pin</span>
       </div>
     </header>
 
     <div class="main-layout">
       <section aria-labelledby="sim-title">
         <h2 id="sim-title">Симулятор</h2>
-        <p class="intro-copy">
-          Выбери уровень, переключи <code>/pin</code> и сразу посмотри итог по dodge и попаданию.
-        </p>
-
         <div class="sim-grid">
-          <div class="control-card">
-            <div class="control-label">Уровень модуля</div>
-            <div class="pill-row" id="level-pills" role="group" aria-label="Уровень модуля"></div>
-          </div>
-
-          <div class="toggle-row">
-            <div>
-              <label for="pin-toggle">Команда /pin активна</label>
-              <span class="hint">заряд перед боем</span>
+          <div class="control-row">
+            <div class="control-card">
+              <div class="control-label">Уровень модуля</div>
+              <div class="pill-row" id="level-pills" role="group" aria-label="Уровень модуля"></div>
             </div>
-            <input type="checkbox" id="pin-toggle" checked aria-label="Команда pin активна">
+
+            <div class="toggle-row">
+              <div>
+                <label for="pin-toggle">Команда /pin</label>
+                <span class="hint">включить усиление</span>
+              </div>
+              <input type="checkbox" id="pin-toggle" checked aria-label="Команда pin активна">
+            </div>
           </div>
 
           <div class="control-card">
@@ -579,41 +548,48 @@
             <input type="range" id="enemy-range" min="0" max="60" step="1" value="20" aria-label="Уклонение врага проценты">
             <div class="range-labels"><span>0%</span><span id="enemy-range-val">20%</span><span>60%</span></div>
           </div>
-        </div>
 
-        <div class="stat-grid">
-          <div class="stat">
-            <div class="label">Пассив</div>
-            <div class="value" id="stat-passive">-3%</div>
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="label">Dodge после якоря</div>
+              <div class="value ok" id="stat-effective">2%</div>
+            </div>
+            <div class="stat">
+              <div class="label">Шанс попадания</div>
+              <div class="value ok" id="stat-hit">98%</div>
+            </div>
+            <div class="stat">
+              <div class="label">Пассив</div>
+              <div class="value" id="stat-passive">-3%</div>
+            </div>
+            <div class="stat">
+              <div class="label">/pin</div>
+              <div class="value accent" id="stat-pin">-15%</div>
+            </div>
           </div>
-          <div class="stat">
-            <div class="label">/pin</div>
-            <div class="value accent" id="stat-pin">-15%</div>
-          </div>
-          <div class="stat">
-            <div class="label">Раундов /pin</div>
-            <div class="value" id="stat-rounds">9</div>
-          </div>
-          <div class="stat">
-            <div class="label">Суммарный штраф</div>
-            <div class="value accent" id="stat-total">-18%</div>
-          </div>
-          <div class="stat wide">
-            <div class="label">Уклонение врага после якоря</div>
-            <div class="value ok" id="stat-effective">2%</div>
-          </div>
-          <div class="stat wide">
-            <div class="label">Твой шанс попадания</div>
-            <div class="value ok" id="stat-hit">98%</div>
-          </div>
-        </div>
 
-        <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
+          <div class="details-card">
+            <div class="summary-row">
+              <div class="summary-key">Раундов /pin</div>
+              <div class="summary-value" id="stat-rounds">9</div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-key">Суммарный штраф</div>
+              <div class="summary-value" id="stat-total">-18%</div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-key">КД команды</div>
+              <div class="summary-value"><span id="cd-min">20</span> мин</div>
+            </div>
+          </div>
+
+          <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
+        </div>
       </section>
 
       <div class="side-stack">
         <section class="summary-card">
-          <h2>Сводка</h2>
+          <h2>Коротко</h2>
           <div class="summary-row">
             <div class="summary-key">Редкость</div>
             <div class="summary-value">Legendary</div>
@@ -623,32 +599,32 @@
             <div class="summary-value">/pin</div>
           </div>
           <div class="summary-row">
-            <div class="summary-key">КД команды</div>
-            <div class="summary-value"><span id="cd-min">20</span> мин</div>
-          </div>
-          <div class="summary-row">
-            <div class="summary-key">Диапазон</div>
+            <div class="summary-key">Уровни</div>
             <div class="summary-value">L1-L9</div>
           </div>
+          <div class="summary-row">
+            <div class="summary-key">Пассив</div>
+            <div class="summary-value">−1% / ур.</div>
+          </div>
         </section>
 
         <section class="info-card">
-        <h2>Как пользоваться</h2>
-        <ul class="compact">
-          <li>Установи модуль на экипированную броню.</li>
-          <li>На карточке встречи до старта боя введи <code>/pin</code>.</li>
-          <li>Пассив работает весь бой, а команда усиливает эффект на несколько раундов.</li>
-          <li>Это не отключение dodge, а контролируемое снижение шанса уворота.</li>
-        </ul>
+          <h2>Как использовать</h2>
+          <ul class="compact">
+            <li>Поставь модуль на броню.</li>
+            <li>Перед боем введи <code>/pin</code>.</li>
+            <li>Пассив работает весь бой.</li>
+            <li>Модуль режет dodge, а не обнуляет его.</li>
+          </ul>
         </section>
 
         <section class="info-card">
-        <h2>Где взять</h2>
-        <ul class="compact">
-          <li>Крафт v2 (legendary рецепт)</li>
-          <li>Магазин арены — 3600 очков, tier prestige</li>
-          <li>Редкий дроп с legendary-клетки поиска</li>
-        </ul>
+          <h2>Где взять</h2>
+          <ul class="compact">
+            <li>Крафт v2</li>
+            <li>Магазин арены</li>
+            <li>Legendary-клетка поиска</li>
+          </ul>
         </section>
       </div>
     </div>
