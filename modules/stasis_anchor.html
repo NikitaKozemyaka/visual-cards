@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>Стазис-якорь — карточка модуля</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --surface: #111827;
+      --surface2: #1a2332;
+      --stroke: rgba(255,255,255,0.08);
+      --text: #e8eef5;
+      --muted: #8a9bb0;
+      --accent: #5eb8ff;
+      --accent-dim: rgba(94,184,255,0.15);
+      --legendary: #c4a035;
+      --legendary-dim: rgba(196,160,53,0.18);
+      --ok: #5fd4a4;
+      --radius: 12px;
+      --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      min-height: 100vh;
+      padding: 16px;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+    }
+    .wrap { max-width: 520px; margin: 0 auto; }
+    .hero {
+      background: linear-gradient(145deg, var(--surface2), var(--surface));
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 14px;
+    }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+    }
+    .badge.legendary { color: var(--legendary); background: var(--legendary-dim); border-color: rgba(196,160,53,0.35); }
+    .badge.neutral { color: var(--muted); background: rgba(255,255,255,0.04); }
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .lead { color: var(--muted); font-size: 14px; }
+    section {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 12px; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stat {
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--stroke);
+    }
+    .stat .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .stat .value { font-size: 20px; font-weight: 700; }
+    .stat .value.accent { color: var(--accent); }
+    .stat .value.ok { color: var(--ok); }
+    .stat.wide { grid-column: 1 / -1; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      appearance: none;
+      border: 1px solid var(--stroke);
+      background: var(--surface2);
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      min-width: 44px;
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+    .pill:active { transform: scale(0.98); }
+    .pill.active {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      background: var(--surface2);
+      border-radius: 10px;
+      border: 1px solid var(--stroke);
+      margin-top: 10px;
+    }
+    .toggle-row label { font-size: 14px; font-weight: 600; }
+    .toggle-row span.hint { display: block; font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+    input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--accent);
+    }
+    input[type="range"] {
+      width: 100%;
+      margin: 8px 0 4px;
+      accent-color: var(--accent);
+    }
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .bar-chart { margin-top: 8px; }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 36px 1fr 44px;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+    .bar-track {
+      height: 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+    .bar-fill-passive { background: rgba(255,255,255,0.35); height: 100%; }
+    .bar-fill-pin { background: var(--accent); height: 100%; }
+    ul.compact { padding-left: 18px; color: var(--muted); font-size: 13px; }
+    ul.compact li { margin-bottom: 6px; }
+    .foot { font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; }
+    code { font-size: 12px; background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="badges">
+        <span class="badge legendary">Legendary</span>
+        <span class="badge neutral">Tactical</span>
+        <span class="badge neutral">1 слот</span>
+      </div>
+      <h1>Стазис-якорь</h1>
+      <p class="lead">Давит уклонение врага при ваших атаках. Пассив всегда; <code>/pin</code> — усиление перед боем на несколько раундов.</p>
+    </header>
+
+    <section aria-labelledby="sim-title">
+      <h2 id="sim-title">Симулятор</h2>
+      <p class="lead" style="margin-bottom:12px;font-size:13px">Выбери уровень модуля и dodge врага — цифры пересчитаются.</p>
+
+      <div style="margin-bottom:12px">
+        <div class="label" style="font-size:12px;color:var(--muted);margin-bottom:8px">Уровень модуля</div>
+        <div class="pill-row" id="level-pills" role="group" aria-label="Уровень модуля"></div>
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <label for="pin-toggle">Команда /pin активна</label>
+          <span class="hint">Заряд перед боем на карточке врага</span>
+        </div>
+        <input type="checkbox" id="pin-toggle" checked aria-label="Команда pin активна">
+      </div>
+
+      <div style="margin-top:14px">
+        <div class="label" style="font-size:12px;color:var(--muted);margin-bottom:8px">Уклонение врага</div>
+        <div class="pill-row" id="enemy-pills" role="group" aria-label="Уклонение врага"></div>
+        <input type="range" id="enemy-range" min="0" max="60" step="1" value="20" aria-label="Уклонение врага проценты">
+        <div class="range-labels"><span>0%</span><span id="enemy-range-val">20%</span><span>60%</span></div>
+      </div>
+
+      <div class="stat-grid" style="margin-top:14px">
+        <div class="stat">
+          <div class="label">Пассив</div>
+          <div class="value" id="stat-passive">-3%</div>
+        </div>
+        <div class="stat">
+          <div class="label">/pin</div>
+          <div class="value accent" id="stat-pin">-15%</div>
+        </div>
+        <div class="stat">
+          <div class="label">Раундов /pin</div>
+          <div class="value" id="stat-rounds">9</div>
+        </div>
+        <div class="stat">
+          <div class="label">Суммарный штраф</div>
+          <div class="value accent" id="stat-total">-18%</div>
+        </div>
+        <div class="stat wide">
+          <div class="label">Dodge врага после якоря</div>
+          <div class="value ok" id="stat-effective">2%</div>
+        </div>
+        <div class="stat wide">
+          <div class="label">Ваш шанс попадания (оценка)</div>
+          <div class="value ok" id="stat-hit">98%</div>
+        </div>
+      </div>
+
+      <div class="bar-chart" id="bar-chart" aria-hidden="true"></div>
+    </section>
+
+    <section>
+      <h2>Как пользоваться</h2>
+      <ul class="compact">
+        <li>Установи модуль на экипированную броню.</li>
+        <li>На карточке встречи (до старта боя) введи <code>/pin</code>.</li>
+        <li>КД команды: <span id="cd-min">20</span> мин. Пассив работает весь бой.</li>
+        <li>Не обнуляет dodge полностью — вычитает проценты из шанса врага.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Где взять</h2>
+      <ul class="compact">
+        <li>Крафт v2 (legendary рецепт)</li>
+        <li>Магазин арены — 3600 очков, tier prestige</li>
+        <li>Редкий дроп с legendary-клетки поиска</li>
+      </ul>
+    </section>
+
+    <p class="foot">Space Text World · tactical_stasis_anchor · данные из module_balance.json</p>
+  </div>
+
+  <script>
+    const CFG = {"passive_per_level": 0.01, "pin_penalty_per_level": 0.05, "pin_rounds_per_level": 3, "pin_rounds_cap": 27, "pin_cooldown_sec": 1200};
+    const LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const ENEMY_PRESETS = [
+      { label: "10%", value: 10 },
+      { label: "20%", value: 20 },
+      { label: "35%", value: 35 },
+      { label: "50%", value: 50 },
+    ];
+
+    let level = 3;
+    let enemyEvasion = 20;
+    let pinActive = true;
+
+    function passivePct(lv) { return CFG.passive_per_level * lv * 100; }
+    function pinPct(lv) { return Math.min(95, CFG.pin_penalty_per_level * lv * 100); }
+    function pinRounds(lv) { return Math.min(CFG.pin_rounds_cap, CFG.pin_rounds_per_level * lv); }
+    function totalPct(lv, pin) {
+      return passivePct(lv) + (pin ? pinPct(lv) : 0);
+    }
+    function effectiveEvasion(raw, penalty) {
+      return Math.max(0, raw - penalty);
+    }
+    function fmtPct(n) {
+      const r = Math.round(n * 10) / 10;
+      return (r % 1 === 0 ? r.toFixed(0) : r.toFixed(1)) + "%";
+    }
+
+    const levelPills = document.getElementById("level-pills");
+    const enemyPills = document.getElementById("enemy-pills");
+    const pinToggle = document.getElementById("pin-toggle");
+    const enemyRange = document.getElementById("enemy-range");
+    const enemyRangeVal = document.getElementById("enemy-range-val");
+
+    function renderLevelPills() {
+      levelPills.innerHTML = "";
+      LEVELS.forEach(function (lv) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pill" + (lv === level ? " active" : "");
+        btn.textContent = "L" + lv;
+        btn.setAttribute("aria-pressed", lv === level ? "true" : "false");
+        btn.addEventListener("click", function () {
+          level = lv;
+          renderLevelPills();
+          update();
+        });
+        levelPills.appendChild(btn);
+      });
+    }
+
+    function renderEnemyPills() {
+      enemyPills.innerHTML = "";
+      ENEMY_PRESETS.forEach(function (preset) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pill" + (preset.value === enemyEvasion ? " active" : "");
+        btn.textContent = preset.label;
+        btn.setAttribute("aria-pressed", preset.value === enemyEvasion ? "true" : "false");
+        btn.addEventListener("click", function () {
+          enemyEvasion = preset.value;
+          enemyRange.value = String(enemyEvasion);
+          renderEnemyPills();
+          update();
+        });
+        enemyPills.appendChild(btn);
+      });
+    }
+
+    function renderBars(lv, pin) {
+      const host = document.getElementById("bar-chart");
+      host.innerHTML = "";
+      const p = passivePct(lv);
+      const pinVal = pin ? pinPct(lv) : 0;
+      const rows = [
+        { label: "Пасс", value: p, kind: "passive" },
+        { label: "/pin", value: pinVal, kind: "pin" },
+      ];
+      const max = Math.max(50, p + pinVal, 1);
+      rows.forEach(function (row) {
+        const wrap = document.createElement("div");
+        wrap.className = "bar-row";
+        const pct = Math.min(100, (row.value / max) * 100);
+        wrap.innerHTML =
+          "<span>" + row.label + "</span>" +
+          '<div class="bar-track"><div class="bar-fill-' + row.kind + '" style="width:' + pct + '%"></div></div>' +
+          "<span>" + fmtPct(row.value).replace("-", "−") + "</span>";
+        host.appendChild(wrap);
+      });
+    }
+
+    function update() {
+      const passive = passivePct(level);
+      const pin = pinActive ? pinPct(level) : 0;
+      const total = totalPct(level, pinActive);
+      const eff = effectiveEvasion(enemyEvasion, total);
+      const hit = 100 - eff;
+
+      document.getElementById("stat-passive").textContent = "−" + fmtPct(passive).replace("%", "") + "%";
+      document.getElementById("stat-pin").textContent = pinActive ? ("−" + fmtPct(pin).replace("%", "") + "%") : "—";
+      document.getElementById("stat-rounds").textContent = pinActive ? String(pinRounds(level)) : "—";
+      document.getElementById("stat-total").textContent = "−" + fmtPct(total).replace("%", "") + "%";
+      document.getElementById("stat-effective").textContent = fmtPct(eff);
+      document.getElementById("stat-hit").textContent = fmtPct(hit);
+      enemyRangeVal.textContent = fmtPct(enemyEvasion);
+      document.getElementById("cd-min").textContent = String(Math.round(CFG.pin_cooldown_sec / 60));
+
+      renderEnemyPills();
+      renderBars(level, pinActive);
+    }
+
+    pinToggle.addEventListener("change", function () {
+      pinActive = pinToggle.checked;
+      update();
+    });
+    enemyRange.addEventListener("input", function () {
+      enemyEvasion = Number(enemyRange.value) || 0;
+      update();
+    });
+
+    renderLevelPills();
+    renderEnemyPills();
+    update();
+  </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STW Visual Cards</title>
+  <style>
+    :root {
+      --bg: #08111b;
+      --surface: #121c2b;
+      --surface2: #172436;
+      --stroke: rgba(255,255,255,0.08);
+      --text: #ebf1f8;
+      --muted: #91a3b7;
+      --accent: #61b7ff;
+      --accent-dim: rgba(97,183,255,0.16);
+      --legendary: #d1a03e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #10243c 0, var(--bg) 40%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 28px 16px 48px;
+    }
+    .hero {
+      margin-bottom: 24px;
+      padding: 24px;
+      background: rgba(18, 28, 43, 0.9);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 680px;
+      line-height: 1.55;
+    }
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .card:hover {
+      border-color: rgba(97,183,255,0.35);
+      background: var(--surface2);
+    }
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 5px 9px;
+      border: 1px solid var(--stroke);
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+    }
+    .badge.legendary {
+      color: var(--legendary);
+      border-color: rgba(209,160,62,0.35);
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+    .card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .link-text {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .foot {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>STW Visual Cards</h1>
+      <p class="lead">
+        Отдельная витрина визуальных карточек по модулям и предметам Space Text World.
+        Здесь можно открыть интерактивный гайд, потыкать примеры и быстро понять, как работает нужная вещь.
+      </p>
+    </section>
+
+    <section>
+      <p class="section-title">Модули</p>
+      <div class="grid">
+        <a class="card" href="./modules/stasis_anchor.html">
+          <div class="badge-row">
+            <span class="badge legendary">Legendary</span>
+            <span class="badge">Tactical</span>
+            <span class="badge">Модуль</span>
+          </div>
+          <h2>Стазис-якорь</h2>
+          <p>
+            Интерактивная карточка анти-уклонения: уровни L1-L9, /pin, dodge врага и примерный шанс попадания.
+          </p>
+          <div class="link-text">Открыть карточку</div>
+        </a>
+      </div>
+    </section>
+
+    <p class="foot">Space Text World · visual-cards</p>
+  </div>
+</body>
+</html>
