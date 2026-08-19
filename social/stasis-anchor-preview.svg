@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">!B078A-O:>@L  287C0;L=0O :0@B>G:0 <>4C;O</title>
+  <desc id="desc">@52LN 8=B5@0:B82=>9 :0@B>G:8 <>4C;O STW A> A@02=5=85< ?0AA820 8 :><0=4K /pin.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1522"/>
+      <stop offset="100%" stop-color="#16273c"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#172436"/>
+      <stop offset="100%" stop-color="#101b2a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="930" cy="100" r="180" fill="#5eb8ff" opacity="0.12"/>
+  <circle cx="180" cy="510" r="220" fill="#d1a03e" opacity="0.08"/>
+
+  <rect x="70" y="70" width="1060" height="490" rx="28" fill="url(#panel)" stroke="rgba(255,255,255,0.10)"/>
+
+  <rect x="110" y="115" width="150" height="42" rx="21" fill="rgba(209,160,62,0.16)" stroke="rgba(209,160,62,0.45)"/>
+  <text x="185" y="142" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#d1a03e">LEGENDARY</text>
+
+  <rect x="278" y="115" width="130" height="42" rx="21" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.10)"/>
+  <text x="343" y="142" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#8fa3b8">TACTICAL</text>
+
+  <text x="110" y="235" font-family="Segoe UI, Arial, sans-serif" font-size="64" font-weight="800" fill="#eef4fb">!B078A-O:>@L</text>
+  <text x="110" y="286" font-family="Segoe UI, Arial, sans-serif" font-size="29" fill="#b5c4d3">=B5@0:B82=0O :0@B>G:0 <>4C;O STW</text>
+  <text x="110" y="340" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#e7edf5">0AA82: 1% dodge 70 C@>25=L</text>
+  <text x="110" y="386" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#5eb8ff">/pin: CA8;5=85 ?5@54 1>5< =0 =5A:>;L:> @0C=4>2</text>
+  <text x="110" y="454" font-family="Segoe UI, Arial, sans-serif" font-size="24" fill="#91a3b7">L1-L9 " dodge 2@030 " H0=A ?>?040=8O " =03;O4=K9 3094</text>
+
+  <rect x="760" y="170" width="290" height="70" rx="18" fill="#111a28" stroke="rgba(255,255,255,0.09)"/>
+  <text x="795" y="198" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#91a3b7">@8<5@</text>
+  <text x="795" y="228" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#eef4fb">L3 + /pin ?@>B82 20%</text>
+
+  <rect x="760" y="265" width="290" height="110" rx="22" fill="#0f1623" stroke="rgba(255,255,255,0.08)"/>
+  <text x="795" y="302" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#91a3b7">AB0B>G=K9 dodge 2@030</text>
+  <text x="795" y="352" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="800" fill="#63d3a7">2%</text>
+
+  <rect x="760" y="405" width="290" height="90" rx="20" fill="rgba(94,184,255,0.15)" stroke="rgba(94,184,255,0.30)"/>
+  <text x="795" y="440" font-family="Segoe UI, Arial, sans-serif" font-size="20" fill="#bfe0ff">B:@KBL :0@B>G:C 8 ?>BK:0BL C@>2=8</text>
+  <text x="795" y="474" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#ffffff">visual-cards / modules</text>
+</svg>
