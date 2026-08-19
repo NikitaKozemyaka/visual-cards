@@ -66,27 +66,27 @@ function Build-SitePreview([string]$path) {
 
     Draw-RoundedRect $g (New-Brush "#122033") (New-Pen "#28445f" 1.5) 70 70 1060 490 26
 
-    Write-Text $g "Визуальные карточки STW" "Segoe UI" 30 "Bold" "#eef4fb" 110 110
-    Write-Text $g "Понятные гайды по модулям и предметам" "Segoe UI" 18 "Regular" "#95a7ba" 110 158
+    Write-Text -g $g -text "Визуальные карточки STW" -fontName "Segoe UI" -size 30 -style "Bold" -color "#eef4fb" -x 110 -y 110
+    Write-Text -g $g -text "Понятные гайды по модулям и предметам" -fontName "Segoe UI" -size 18 -style "Regular" -color "#95a7ba" -x 110 -y 158
 
     Draw-RoundedRect $g (New-Brush "#1c2a3d") (New-Pen "#2b425c" 1) 110 220 420 240 20
-    Write-Text $g "Модули и предметы" "Segoe UI" 18 "Bold" "#5eb8ff" 140 250
-    Write-Text $g "Визуальные карточки" "Segoe UI" 28 "Bold" "#eef4fb" 140 290
-    Write-Text $g "Понятные примеры, механики," "Segoe UI" 17 "Regular" "#95a7ba" 140 345
-    Write-Text $g "уровни и эффекты" "Segoe UI" 17 "Regular" "#95a7ba" 140 375
+    Write-Text -g $g -text "Модули и предметы" -fontName "Segoe UI" -size 18 -style "Bold" -color "#5eb8ff" -x 140 -y 250
+    Write-Text -g $g -text "Визуальные карточки" -fontName "Segoe UI" -size 28 -style "Bold" -color "#eef4fb" -x 140 -y 290
+    Write-Text -g $g -text "Понятные примеры, механики," -fontName "Segoe UI" -size 17 -style "Regular" -color "#95a7ba" -x 140 -y 345
+    Write-Text -g $g -text "уровни и эффекты" -fontName "Segoe UI" -size 17 -style "Regular" -color "#95a7ba" -x 140 -y 375
 
     Draw-RoundedRect $g (New-Brush "#101a29") (New-Pen "#26415c" 1) 600 180 440 290 20
     Draw-RoundedRect $g (New-Brush "#253245") (New-Pen "#365170" 1) 640 225 120 34 17
-    Write-Text $g "ЛЕГЕНДАРНЫЙ" "Segoe UI" 12 "Bold" "#d4a440" 650 234
+    Write-Text -g $g -text "ЛЕГЕНДАРНЫЙ" -fontName "Segoe UI" -size 12 -style "Bold" -color "#d4a440" -x 650 -y 234
     Draw-RoundedRect $g (New-Brush "#253245") (New-Pen "#365170" 1) 772 225 100 34 17
-    Write-Text $g "ТАКТИЧЕСКИЙ" "Segoe UI" 12 "Bold" "#9cb0c3" 782 234
-    Write-Text $g "Стазис-якорь" "Segoe UI" 34 "Bold" "#eef4fb" 640 285
-    Write-Text $g "Открой карточку и быстро разберись" "Segoe UI" 18 "Regular" "#95a7ba" 640 338
-    Write-Text $g "каталог сайта + отдельные гайды" "Segoe UI" 17 "Regular" "#95a7ba" 640 372
+    Write-Text -g $g -text "ТАКТИЧЕСКИЙ" -fontName "Segoe UI" -size 12 -style "Bold" -color "#9cb0c3" -x 782 -y 234
+    Write-Text -g $g -text "Стазис-якорь" -fontName "Segoe UI" -size 34 -style "Bold" -color "#eef4fb" -x 640 -y 285
+    Write-Text -g $g -text "Открой карточку и быстро разберись" -fontName "Segoe UI" -size 18 -style "Regular" -color "#95a7ba" -x 640 -y 338
+    Write-Text -g $g -text "каталог сайта + отдельные гайды" -fontName "Segoe UI" -size 17 -style "Regular" -color "#95a7ba" -x 640 -y 372
     Draw-RoundedRect $g (New-Brush "#152538") (New-Pen "#244e76" 1) 640 412 250 34 17
-    Write-Text $g "гайды по игре в одном месте" "Segoe UI" 14 "Bold" "#63b6ff" 660 419
+    Write-Text -g $g -text "гайды по игре в одном месте" -fontName "Segoe UI" -size 14 -style "Bold" -color "#63b6ff" -x 660 -y 419
 
-    Write-Text $g "Space Text World" "Segoe UI" 14 "Regular" "#778b9f" 110 520
+    Write-Text -g $g -text "Space Text World" -fontName "Segoe UI" -size 14 -style "Regular" -color "#778b9f" -x 110 -y 520
 
     Save-Png $bmp $path
     $g.Dispose()
@@ -111,26 +111,26 @@ function Build-StasisPreview([string]$path) {
     Draw-RoundedRect $g (New-Brush "#121c2b") (New-Pen "#2d4055" 1.5) 70 70 1060 490 26
 
     Draw-RoundedRect $g (New-Brush "#2b2414") (New-Pen "#5c4a1e" 1) 110 112 145 38 19
-    Write-Text $g "ЛЕГЕНДАРНЫЙ" "Segoe UI" 12 "Bold" "#d4a440" 120 120
+    Write-Text -g $g -text "ЛЕГЕНДАРНЫЙ" -fontName "Segoe UI" -size 12 -style "Bold" -color "#d4a440" -x 120 -y 120
     Draw-RoundedRect $g (New-Brush "#1f2733") (New-Pen "#39485a" 1) 270 112 120 38 19
-    Write-Text $g "ТАКТИЧЕСКИЙ" "Segoe UI" 12 "Bold" "#a3b5c5" 280 120
+    Write-Text -g $g -text "ТАКТИЧЕСКИЙ" -fontName "Segoe UI" -size 12 -style "Bold" -color "#a3b5c5" -x 280 -y 120
 
-    Write-Text $g "Стазис-якорь" "Segoe UI" 46 "Bold" "#eef4fb" 110 190
-    Write-Text $g "Визуальная карточка модуля" "Segoe UI" 22 "Regular" "#91a3b7" 110 248
-    Write-Text $g "Пассив: -1% уклонения за уровень" "Segoe UI" 24 "Regular" "#eef4fb" 110 320
-    Write-Text $g "/pin: сильнее режет dodge до боя" "Segoe UI" 24 "Bold" "#5eb8ff" 110 360
-    Write-Text $g "L1-L9  •  уклонение врага  •  шанс попадания" "Segoe UI" 20 "Regular" "#91a3b7" 110 424
+    Write-Text -g $g -text "Стазис-якорь" -fontName "Segoe UI" -size 46 -style "Bold" -color "#eef4fb" -x 110 -y 190
+    Write-Text -g $g -text "Визуальная карточка модуля" -fontName "Segoe UI" -size 22 -style "Regular" -color "#91a3b7" -x 110 -y 248
+    Write-Text -g $g -text "Пассив: -1% уклонения за уровень" -fontName "Segoe UI" -size 24 -style "Regular" -color "#eef4fb" -x 110 -y 320
+    Write-Text -g $g -text "/pin: сильнее режет dodge до боя" -fontName "Segoe UI" -size 24 -style "Bold" -color "#5eb8ff" -x 110 -y 360
+    Write-Text -g $g -text "L1-L9  •  уклонение врага  •  шанс попадания" -fontName "Segoe UI" -size 20 -style "Regular" -color "#91a3b7" -x 110 -y 424
 
     Draw-RoundedRect $g (New-Brush "#0e1826") (New-Pen "#2a4561" 1) 740 175 290 86 18
-    Write-Text $g "Пример" "Segoe UI" 16 "Regular" "#91a3b7" 770 195
-    Write-Text $g "L3 + /pin против 20%" "Segoe UI" 26 "Bold" "#eef4fb" 770 222
+    Write-Text -g $g -text "Пример" -fontName "Segoe UI" -size 16 -style "Regular" -color "#91a3b7" -x 770 -y 195
+    Write-Text -g $g -text "L3 + /pin против 20%" -fontName "Segoe UI" -size 26 -style "Bold" -color "#eef4fb" -x 770 -y 222
 
     Draw-RoundedRect $g (New-Brush "#0e1826") (New-Pen "#2a4561" 1) 740 290 290 132 22
-    Write-Text $g "Уклонение врага после карты" "Segoe UI" 18 "Regular" "#91a3b7" 770 320
-    Write-Text $g "2%" "Segoe UI" 56 "Bold" "#63d3a7" 770 350
+    Write-Text -g $g -text "Уклонение врага после карты" -fontName "Segoe UI" -size 18 -style "Regular" -color "#91a3b7" -x 770 -y 320
+    Write-Text -g $g -text "2%" -fontName "Segoe UI" -size 56 -style "Bold" -color "#63d3a7" -x 770 -y 350
 
     Draw-RoundedRect $g (New-Brush "#18273a") (New-Pen "#396187" 1) 740 448 290 46 18
-    Write-Text $g "Открой страницу и потыкай значения" "Segoe UI" 15 "Bold" "#bfe0ff" 760 462
+    Write-Text -g $g -text "Открой страницу и потыкай значения" -fontName "Segoe UI" -size 15 -style "Bold" -color "#bfe0ff" -x 760 -y 462
 
     Save-Png $bmp $path
     $g.Dispose()
