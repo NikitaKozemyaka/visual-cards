@@ -21,169 +21,93 @@
   <link rel="canonical" href="https://nikitakozemyaka.github.io/visual-cards/">
   <style>
     :root {
-      --bg: #07111d;
-      --bg2: #0d1d31;
-      --surface: rgba(14, 23, 37, 0.86);
-      --stroke: rgba(255,255,255,0.09);
-      --text: #edf4fb;
-      --muted: #91a6bc;
-      --accent: #62b8ff;
+      --bg: #08111b;
+      --bg2: #0d1b2d;
+      --surface: #121c2b;
+      --surface-soft: #1a2536;
+      --stroke: rgba(255,255,255,0.08);
+      --text: #edf3fa;
+      --muted: #92a4b8;
+      --accent: #5eb8ff;
       --legendary: #d4a440;
-      --legendary-soft: rgba(212,164,64,0.16);
-      --shadow: 0 18px 34px rgba(0,0,0,0.28);
-      --radius-xl: 20px;
-      --radius-lg: 16px;
-      --max: 860px;
+      --shadow: 0 18px 30px rgba(0,0,0,0.25);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --max: 900px;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       background:
-        radial-gradient(circle at 20% 0%, rgba(73, 140, 225, 0.24), transparent 30%),
-        radial-gradient(circle at 85% 12%, rgba(148, 93, 255, 0.14), transparent 22%),
-        radial-gradient(circle at 65% 70%, rgba(98, 184, 255, 0.08), transparent 28%),
+        radial-gradient(circle at 20% 0%, rgba(73, 140, 225, 0.18), transparent 30%),
+        radial-gradient(circle at 80% 8%, rgba(122, 150, 255, 0.10), transparent 22%),
         linear-gradient(180deg, var(--bg2) 0%, var(--bg) 32%, #050b14 100%);
       color: var(--text);
       min-height: 100vh;
-      overflow-x: hidden;
-    }
-    .bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-    .orb,
-    .orb2,
-    .grid-glow {
-      position: absolute;
-      border-radius: 999px;
-      filter: blur(24px);
-      opacity: 0.55;
-      animation: float 12s ease-in-out infinite;
-    }
-    .orb {
-      width: 300px;
-      height: 300px;
-      top: 70px;
-      left: -60px;
-      background: rgba(98,184,255,0.22);
-    }
-    .orb2 {
-      width: 240px;
-      height: 240px;
-      right: -30px;
-      top: 220px;
-      background: rgba(166, 98, 255, 0.18);
-      animation-duration: 15s;
-      animation-delay: -4s;
-    }
-    .grid-glow {
-      width: 540px;
-      height: 200px;
-      left: 50%;
-      bottom: 80px;
-      transform: translateX(-50%);
-      background: rgba(98,184,255,0.10);
-      filter: blur(46px);
-      animation-duration: 18s;
-      animation-delay: -8s;
     }
     .wrap {
-      position: relative;
-      z-index: 1;
       max-width: var(--max);
       margin: 0 auto;
-      padding: 14px 12px 24px;
+      padding: 26px 14px 40px;
     }
     .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 16px;
-      background: linear-gradient(160deg, rgba(16,27,43,0.94), rgba(12,20,33,0.86));
+      padding: 22px 20px;
+      background: rgba(18, 28, 43, 0.88);
       border: 1px solid var(--stroke);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
     }
-    .hero::before,
-    .hero::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      pointer-events: none;
-    }
-    .hero::before {
-      width: 170px;
-      height: 170px;
-      top: -70px;
-      right: -40px;
-      background: radial-gradient(circle, rgba(98,184,255,0.22), transparent 68%);
-      animation: pulse 10s ease-in-out infinite;
-    }
-    .hero::after {
-      width: 120px;
-      height: 120px;
-      left: -40px;
-      bottom: -50px;
-      background: radial-gradient(circle, rgba(212,164,64,0.16), transparent 72%);
-      animation: pulse 13s ease-in-out infinite reverse;
-    }
     h1 {
       margin: 0 0 6px;
-      font-size: clamp(26px, 4.4vw, 34px);
-      line-height: 0.96;
+      font-size: clamp(32px, 4.8vw, 42px);
+      line-height: 1;
       letter-spacing: -0.04em;
     }
     .lead {
-      margin: 0 0 12px;
+      margin: 0 0 22px;
       color: var(--muted);
-      max-width: 620px;
-      font-size: 13px;
-      line-height: 1.42;
+      max-width: 700px;
+      font-size: 17px;
+      line-height: 1.5;
     }
     .section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin: 0 0 10px;
+      margin: 0 0 14px;
     }
     .section-head h2 {
       margin: 0;
-      font-size: 15px;
+      font-size: 18px;
       letter-spacing: -0.02em;
     }
     .section-count {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
     }
     .entry-card {
-      position: relative;
       display: block;
       color: inherit;
       text-decoration: none;
-      padding: 14px;
+      padding: 18px;
       border-radius: var(--radius-lg);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
-        linear-gradient(180deg, rgba(19,31,49,0.98), rgba(10,16,27,0.92));
+      background: var(--surface);
       border: 1px solid var(--stroke);
-      overflow: hidden;
       transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
     }
     .entry-card:hover {
       transform: translateY(-2px);
       border-color: rgba(98,184,255,0.24);
-      box-shadow: 0 22px 40px rgba(0,0,0,0.30);
+      box-shadow: 0 22px 36px rgba(0,0,0,0.24);
     }
     .badges {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .badge {
       display: inline-flex;
@@ -201,60 +125,41 @@
     }
     .badge.legendary {
       color: var(--legendary);
-      border-color: rgba(212,164,64,0.34);
-      background: var(--legendary-soft);
-    }
-    .entry-card::after {
-      content: "";
-      position: absolute;
-      inset: auto -70px -70px auto;
-      width: 150px;
-      height: 150px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(98,184,255,0.14), transparent 72%);
-    }
-    .entry-body {
-      position: relative;
-      z-index: 1;
+      border-color: rgba(212,164,64,0.30);
+      background: rgba(212,164,64,0.10);
     }
     .entry-body h2 {
       margin: 0;
-      font-size: 22px;
+      font-size: 30px;
       line-height: 1.05;
       letter-spacing: -0.03em;
     }
     .entry-copy {
-      margin: 8px 0 10px;
+      margin: 10px 0 14px;
       color: #b8c9db;
-      line-height: 1.42;
-      font-size: 13px;
+      line-height: 1.5;
+      font-size: 15px;
     }
     .meta-line {
       display: flex;
       flex-wrap: wrap;
       gap: 6px 8px;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
     .meta-pill {
       padding: 6px 9px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
       color: #d8eaf9;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
     }
     .entry-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-    }
-    .entry-note {
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.35;
-      max-width: 280px;
+      gap: 10px;
     }
     .cta {
       display: inline-flex;
@@ -276,52 +181,21 @@
       font-size: 12px;
       text-align: center;
     }
-    @keyframes float {
-      0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -18px, 0); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.45; transform: scale(1); }
-      50% { opacity: 0.78; transform: scale(1.08); }
-    }
-    @keyframes riseIn {
-      0% {
-        opacity: 0;
-        transform: translateY(14px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
     @media (max-width: 720px) {
       .entry-footer {
         flex-direction: column;
         align-items: flex-start;
       }
     }
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="bg" aria-hidden="true">
-    <div class="orb"></div>
-    <div class="orb2"></div>
-    <div class="grid-glow"></div>
-  </div>
-
   <div class="wrap">
     <section class="hero">
-      <h1>Визуальные карточки STW</h1>
-      <p class="lead">Отдельная витрина визуальных карточек по модулям и предметам Space Text World.</p>
+      <div style="color: var(--muted); font-size: 13px; margin-bottom: 8px;">Space Text World</div>
+      <div style="color: var(--muted); font-size: 13px; margin-bottom: 12px;">visual-cards</div>
+      <h1>STW Visual Cards</h1>
+      <p class="lead">Отдельная витрина визуальных карточек по модулям и предметам Space Text World. Здесь можно открыть интерактивный гайд, потыкать примеры и быстро понять, как работает нужная вещь.</p>
 
       <div class="section-head">
         <h2>Модули</h2>
@@ -336,14 +210,13 @@
             <span class="badge">Модуль</span>
           </div>
           <h2>Стазис-якорь</h2>
-          <p class="entry-copy">Интерактивная карточка анти-уклонения: уровни L1-L9, <code>/pin</code> и примерный шанс попадания.</p>
+          <p class="entry-copy">Интерактивная карточка анти-уклонения: уровни L1-L9, <code>/pin</code>, dodge врага и примерный шанс попадания.</p>
           <div class="meta-line">
             <span class="meta-pill">L1-L9</span>
             <span class="meta-pill">−1% / ур.</span>
             <span class="meta-pill">/pin</span>
           </div>
           <div class="entry-footer">
-            <span class="entry-note">Открой и сразу сравни значения.</span>
             <span class="cta">Открыть карточку</span>
           </div>
         </div>

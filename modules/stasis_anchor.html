@@ -22,9 +22,9 @@
   <link rel="canonical" href="https://nikitakozemyaka.github.io/visual-cards/modules/stasis_anchor.html">
   <style>
     :root {
-      --bg: #071018;
-      --bg2: #0b1725;
-      --surface: rgba(15, 24, 37, 0.86);
+      --bg: #08111b;
+      --bg2: #0d1b2d;
+      --surface: #121c2b;
       --stroke: rgba(255,255,255,0.09);
       --text: #e9f1f8;
       --muted: #92a6ba;
@@ -36,7 +36,7 @@
       --radius-xl: 20px;
       --radius-lg: 16px;
       --radius-md: 12px;
-      --shadow: 0 18px 34px rgba(0,0,0,0.28);
+      --shadow: 0 18px 30px rgba(0,0,0,0.25);
       --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,9 +44,8 @@
     body {
       font-family: var(--font);
       background:
-        radial-gradient(circle at 18% 0%, rgba(94,184,255,0.18), transparent 28%),
-        radial-gradient(circle at 92% 14%, rgba(208,162,63,0.12), transparent 20%),
-        radial-gradient(circle at 80% 65%, rgba(112, 87, 255, 0.10), transparent 24%),
+        radial-gradient(circle at 18% 0%, rgba(94,184,255,0.16), transparent 28%),
+        radial-gradient(circle at 92% 14%, rgba(208,162,63,0.10), transparent 20%),
         linear-gradient(180deg, var(--bg2) 0%, var(--bg) 38%, #040a12 100%);
       color: var(--text);
       line-height: 1.5;
@@ -63,86 +62,45 @@
       overflow: hidden;
     }
     .orb,
-    .orb2,
-    .orb3 {
+    .orb2 {
       position: absolute;
       border-radius: 999px;
       filter: blur(30px);
-      opacity: 0.52;
-      animation: float 14s ease-in-out infinite;
+      opacity: 0.42;
     }
     .orb {
-      width: 240px;
-      height: 240px;
-      top: 110px;
-      left: -50px;
+      width: 200px;
+      height: 200px;
+      top: 120px;
+      left: -40px;
       background: rgba(94,184,255,0.18);
     }
     .orb2 {
-      width: 220px;
-      height: 220px;
-      right: -40px;
-      top: 220px;
-      background: rgba(208,162,63,0.12);
-      animation-duration: 17s;
-      animation-delay: -5s;
-    }
-    .orb3 {
       width: 180px;
       height: 180px;
-      left: 50%;
-      bottom: 120px;
-      transform: translateX(-50%);
-      background: rgba(106, 87, 255, 0.10);
-      animation-duration: 12s;
-      animation-delay: -3s;
+      right: -40px;
+      top: 200px;
+      background: rgba(208,162,63,0.12);
     }
     .wrap {
       position: relative;
       z-index: 1;
-      max-width: 1000px;
+      max-width: 920px;
       margin: 0 auto;
     }
     .hero {
-      position: relative;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(19,31,49,0.95), rgba(9,17,27,0.88)),
-        linear-gradient(135deg, rgba(255,255,255,0.03), transparent 45%);
+      background: rgba(18, 28, 43, 0.90);
       border: 1px solid var(--stroke);
       border-radius: var(--radius-xl);
-      padding: 14px 14px 12px;
+      padding: 14px;
       box-shadow: var(--shadow);
       margin-bottom: 10px;
-    }
-    .hero::before,
-    .hero::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      pointer-events: none;
-    }
-    .hero::before {
-      width: 170px;
-      height: 170px;
-      top: -70px;
-      right: -30px;
-      background: radial-gradient(circle, rgba(94,184,255,0.16), transparent 72%);
-      animation: pulse 11s ease-in-out infinite;
-    }
-    .hero::after {
-      width: 120px;
-      height: 120px;
-      left: -40px;
-      bottom: -50px;
-      background: radial-gradient(circle, rgba(208,162,63,0.12), transparent 72%);
-      animation: pulse 15s ease-in-out infinite reverse;
     }
     .hero-top {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .badge {
       display: inline-flex;
@@ -165,16 +123,16 @@
       background: var(--legendary-soft);
     }
     h1 {
-      font-size: clamp(26px, 4.5vw, 34px);
-      line-height: 0.95;
+      font-size: clamp(34px, 4.8vw, 42px);
+      line-height: 1;
       letter-spacing: -0.05em;
       margin-bottom: 6px;
     }
     .lead {
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-      max-width: 720px;
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 760px;
     }
     .back-link {
       display: inline-flex;
@@ -183,7 +141,7 @@
       margin-bottom: 10px;
       color: var(--muted);
       text-decoration: none;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
     }
     .back-link::before {
@@ -207,28 +165,12 @@
       text-transform: lowercase;
     }
     section {
-      position: relative;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(18,28,43,0.92), rgba(10,17,27,0.84)),
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      background: rgba(18, 28, 43, 0.90);
       border: 1px solid var(--stroke);
       border-radius: var(--radius-lg);
       padding: 12px;
       margin-bottom: 12px;
       box-shadow: var(--shadow);
-      animation: riseIn 700ms ease both;
-    }
-    section::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(94,184,255,0.06), transparent 40%, transparent 60%, rgba(208,162,63,0.04));
-      pointer-events: none;
-    }
-    section > * {
-      position: relative;
-      z-index: 1;
     }
     h2 {
       font-size: 11px;
@@ -349,7 +291,7 @@
       border-radius: 16px;
       background:
         linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
-        linear-gradient(180deg, rgba(19,31,49,0.96), rgba(13,21,33,0.90));
+        linear-gradient(180deg, rgba(22,36,56,0.98), rgba(15,25,39,0.94));
       border: 1px solid rgba(255,255,255,0.07);
       transition: transform 220ms ease, border-color 220ms ease;
     }
@@ -363,9 +305,10 @@
       margin-bottom: 4px;
     }
     .primary-result .value {
-      font-size: 38px;
+      font-size: 54px;
       font-weight: 800;
       letter-spacing: -0.05em;
+      color: #63d3a7;
     }
     .primary-result .sub {
       margin-top: 4px;
@@ -373,8 +316,7 @@
       font-size: 12px;
       line-height: 1.35;
     }
-    .secondary-grid,
-    .details-card {
+    .secondary-grid {
       padding: 11px 12px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.03);
@@ -458,18 +400,6 @@
       padding: 2px 6px;
       border-radius: 6px;
     }
-    @keyframes float {
-      0%, 100% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(0, -16px, 0); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.46; transform: scale(1); }
-      50% { opacity: 0.72; transform: scale(1.07); }
-    }
-    @keyframes riseIn {
-      0% { opacity: 0; transform: translateY(14px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
     @media (max-width: 920px) {
       .top-board,
       .info-grid {
@@ -487,20 +417,8 @@
       .hero {
         padding: 12px 12px 10px;
       }
-      .primary-result .value {
-        font-size: 32px;
-      }
       .secondary-grid {
         grid-template-columns: 1fr;
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -509,7 +427,6 @@
   <div class="bg" aria-hidden="true">
     <div class="orb"></div>
     <div class="orb2"></div>
-    <div class="orb3"></div>
   </div>
 
   <div class="wrap">
@@ -522,7 +439,7 @@
       </div>
       <h1>Стазис-якорь</h1>
       <p class="lead">
-        Легендарный модуль анти-уклонения. Ниже сразу симулятор: нажал и увидел итог.
+        Давит уклонение врага при ваших атаках. Пассив работает всегда; <code>/pin</code> — усиление перед боем на несколько раундов.
       </p>
     </header>
 
@@ -558,16 +475,12 @@
 
           <div class="result-side">
             <div class="primary-result">
-              <div class="label">Главный итог</div>
+              <div class="label">Ваш шанс попадания (оценка)</div>
               <div class="value" id="stat-hit">98%</div>
-              <div class="sub">Примерный шанс попадания после учёта выбранного уровня модуля и состояния <code>/pin</code>.</div>
+              <div class="sub">Цифра пересчитывается сразу после выбора уровня модуля, dodge врага и состояния <code>/pin</code>.</div>
             </div>
 
             <div class="secondary-grid">
-              <div class="secondary-item">
-                <div class="label">Dodge после якоря</div>
-                <div class="value" id="stat-effective">2%</div>
-              </div>
               <div class="secondary-item">
                 <div class="label">Пассив</div>
                 <div class="value" id="stat-passive">-3%</div>
@@ -583,6 +496,10 @@
               <div class="secondary-item">
                 <div class="label">Суммарный штраф</div>
                 <div class="value" id="stat-total">-18%</div>
+              </div>
+              <div class="secondary-item">
+                <div class="label">Dodge врага после якоря</div>
+                <div class="value" id="stat-effective">2%</div>
               </div>
               <div class="secondary-item">
                 <div class="label">КД команды</div>
