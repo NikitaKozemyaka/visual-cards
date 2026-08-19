@@ -329,12 +329,7 @@
       font-size: 11px;
       color: var(--muted);
     }
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-    .stat {
+    .primary-result {
       padding: 11px 12px;
       border-radius: 16px;
       background:
@@ -343,28 +338,55 @@
       border: 1px solid rgba(255,255,255,0.07);
       transition: transform 220ms ease, border-color 220ms ease;
     }
-    .stat:hover {
+    .primary-result:hover {
       transform: translateY(-2px);
       border-color: rgba(94,184,255,0.20);
     }
-    .stat .label {
+    .primary-result .label {
       font-size: 11px;
       color: var(--muted);
       margin-bottom: 4px;
     }
-    .stat .value {
-      font-size: 21px;
+    .primary-result .value {
+      font-size: 38px;
       font-weight: 800;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
     }
-    .stat .value.accent { color: #cfe9ff; }
-    .stat .value.ok { color: var(--ok); }
+    .primary-result .sub {
+      margin-top: 4px;
+      color: #bfd2e5;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .secondary-grid,
     .bar-chart,
     .details-card {
       padding: 11px 12px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
+    }
+    .secondary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .secondary-item {
+      padding: 10px 10px 9px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+    }
+    .secondary-item .label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .secondary-item .value {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #dff0ff;
     }
     .bar-row {
       display: grid;
@@ -465,20 +487,23 @@
       .info-grid {
         grid-template-columns: 1fr;
       }
+      .secondary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
     @media (max-width: 620px) {
       body {
         padding: 10px;
         padding-bottom: max(20px, env(safe-area-inset-bottom));
       }
-      .stat-grid {
-        grid-template-columns: 1fr;
-      }
       .hero {
         padding: 12px 12px 10px;
       }
-      .stat .value {
-        font-size: 20px;
+      .primary-result .value {
+        font-size: 32px;
+      }
+      .secondary-grid {
+        grid-template-columns: 1fr;
       }
       .bar-row {
         grid-template-columns: 38px 1fr 48px;
@@ -548,37 +573,36 @@
           </div>
 
           <div class="result-side">
-            <div class="stat-grid">
-              <div class="stat">
+            <div class="primary-result">
+              <div class="label">Главный итог</div>
+              <div class="value" id="stat-hit">98%</div>
+              <div class="sub">Примерный шанс попадания после учёта выбранного уровня модуля и состояния <code>/pin</code>.</div>
+            </div>
+
+            <div class="secondary-grid">
+              <div class="secondary-item">
                 <div class="label">Dodge после якоря</div>
-                <div class="value ok" id="stat-effective">2%</div>
+                <div class="value" id="stat-effective">2%</div>
               </div>
-              <div class="stat">
-                <div class="label">Шанс попадания</div>
-                <div class="value ok" id="stat-hit">98%</div>
-              </div>
-              <div class="stat">
+              <div class="secondary-item">
                 <div class="label">Пассив</div>
                 <div class="value" id="stat-passive">-3%</div>
               </div>
-              <div class="stat">
+              <div class="secondary-item">
                 <div class="label">/pin</div>
-                <div class="value accent" id="stat-pin">-15%</div>
+                <div class="value" id="stat-pin">-15%</div>
               </div>
-            </div>
-
-            <div class="details-card">
-              <div class="summary-row">
-                <div class="summary-key">Раундов /pin</div>
-                <div class="summary-value" id="stat-rounds">9</div>
+              <div class="secondary-item">
+                <div class="label">Раундов /pin</div>
+                <div class="value" id="stat-rounds">9</div>
               </div>
-              <div class="summary-row">
-                <div class="summary-key">Суммарный штраф</div>
-                <div class="summary-value" id="stat-total">-18%</div>
+              <div class="secondary-item">
+                <div class="label">Суммарный штраф</div>
+                <div class="value" id="stat-total">-18%</div>
               </div>
-              <div class="summary-row">
-                <div class="summary-key">КД команды</div>
-                <div class="summary-value"><span id="cd-min">20</span> мин</div>
+              <div class="secondary-item">
+                <div class="label">КД команды</div>
+                <div class="value"><span id="cd-min">20</span> мин</div>
               </div>
             </div>
           </div>
@@ -592,8 +616,8 @@
           <h2>Что делает модуль</h2>
           <ul class="compact">
             <li>Этот модуль предназначен для боёв против врагов с заметным уклонением.</li>
-            <li>Пассивный эффект снижает шанс уворота цели на каждый уровень модуля.</li>
-            <li><code>/pin</code> даёт более сильный штраф к dodge на несколько раундов перед началом боя.</li>
+            <li>Пассивный эффект режет шанс уворота цели на каждый уровень модуля.</li>
+            <li>Команда <code>/pin</code> усиливает эффект на несколько раундов перед стартом боя.</li>
           </ul>
         </section>
 
@@ -601,8 +625,8 @@
           <h2>Как использовать</h2>
           <ul class="compact">
             <li>Установи модуль на экипированную броню.</li>
-            <li>На карточке встречи до старта боя введи команду <code>/pin</code>.</li>
-            <li>Сверху можно сразу сравнивать уровни, dodge врага и итоговый шанс попадания без скролла.</li>
+            <li>На карточке встречи до старта боя введи команду <code>/pin</code>, если хочешь усилить дебафф.</li>
+            <li>Сверху выбери уровень и dodge врага, затем сразу смотри главный итог по шансу попадания.</li>
           </ul>
         </section>
 
