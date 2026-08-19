@@ -139,4 +139,6 @@ function Build-StasisPreview([string]$path) {
 
 Build-SitePreview (Join-Path $socialDir "site-preview.png")
 Build-StasisPreview (Join-Path $socialDir "stasis-anchor-preview.png")
+Copy-Item (Join-Path $socialDir "site-preview.png") (Join-Path $root "site-preview.png") -Force
+Copy-Item (Join-Path $socialDir "stasis-anchor-preview.png") (Join-Path $root "stasis-anchor-preview.png") -Force
 Write-Output "Generated preview PNGs in social/"
