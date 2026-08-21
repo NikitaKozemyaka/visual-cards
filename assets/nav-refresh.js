@@ -1,8 +1,12 @@
 (function () {
   "use strict";
 
-  var PRESS_SEL = "a.group.relative.block, a.inline-flex, .vc-card, section[aria-labelledby='sim-title'] button";
+  var PRESS_SEL =
+    "a.group.relative.block, a.inline-flex, .vc-card, section[aria-labelledby='sim-title'] button";
+  var MIN_PRESS_MS = 170;
   var killTimer = null;
+  var pressClearTimer = null;
+  var pressStartedAt = 0;
 
   function replayRise() {
     var nodes = document.querySelectorAll(".vc-rise");
@@ -33,6 +37,7 @@
 
   // Force Safari/Chrome to drop sticky :hover after in-site navigations (bfcache).
   function killStickyHover() {
+    window.clearTimeout(pressClearTimer);
     clearPress();
     clearFocus();
     document.documentElement.classList.add("vc-kill-hover");
@@ -41,6 +46,28 @@
     killTimer = window.setTimeout(function () {
       document.documentElement.classList.remove("vc-kill-hover");
     }, 40);
+  }
+
+  function schedulePressClear() {
+    window.clearTimeout(pressClearTimer);
+    var elapsed = Date.now() - pressStartedAt;
+    var wait = Math.max(MIN_PRESS_MS - elapsed, 40);
+    pressClearTimer = window.setTimeout(function () {
+      clearPress();
+      clearFocus();
+    }, wait);
+  }
+
+  function startPress(target) {
+    if (!target || !target.closest) return;
+    var pressable = target.closest(PRESS_SEL);
+    if (!pressable) return;
+    window.clearTimeout(pressClearTimer);
+    clearPress();
+    pressable.classList.add("vc-press");
+    // Force a paint so a quick tap still flashes before navigation.
+    void pressable.offsetWidth;
+    pressStartedAt = Date.now();
   }
 
   window.addEventListener("pageshow", function (e) {
@@ -55,28 +82,34 @@
   document.addEventListener(
     "touchstart",
     function (e) {
-      clearPress();
-      var t = e.target;
-      if (!t || !t.closest) return;
-      var pressable = t.closest(PRESS_SEL);
-      if (pressable) pressable.classList.add("vc-press");
+      startPress(e.target);
     },
     { passive: true }
   );
 
-  function endTouch() {
-    window.setTimeout(function () {
-      clearPress();
-      clearFocus();
-      killStickyHover();
-    }, 30);
-  }
+  document.addEventListener(
+    "pointerdown",
+    function (e) {
+      if (e.pointerType === "mouse") return;
+      startPress(e.target);
+    },
+    { passive: true }
+  );
 
-  document.addEventListener("touchend", endTouch, { passive: true });
-  document.addEventListener("touchcancel", endTouch, { passive: true });
+  document.addEventListener("touchend", schedulePressClear, { passive: true });
+  document.addEventListener("touchcancel", schedulePressClear, { passive: true });
 
-  // Mouse leave safety for hybrid devices
+  document.addEventListener(
+    "pointerup",
+    function (e) {
+      if (e.pointerType === "mouse") return;
+      schedulePressClear();
+    },
+    { passive: true }
+  );
+
   document.addEventListener("mouseup", function () {
+    window.clearTimeout(pressClearTimer);
     clearPress();
   });
 })();

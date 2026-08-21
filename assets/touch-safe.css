@@ -68,9 +68,10 @@ html.vc-kill-hover * {
   }
 }
 
-/* Press feedback via JS class — never sticks after navigation */
+/* Press feedback via JS class — short flash even on quick taps */
 a.group.relative.block.vc-press,
 .vc-card.vc-press {
+  transition-duration: 70ms;
   transform: translateY(-3px) scale(0.995);
   border-color: rgba(94, 184, 255, 0.5) !important;
   box-shadow:
