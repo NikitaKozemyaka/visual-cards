@@ -1,13 +1,79 @@
 /* Rarity accents for STW Visual Cards */
 
 :root {
+  --rarity-uncommon: #5ecf8a;
+  --rarity-uncommon-glow: rgba(94, 207, 138, 0.42);
+  --rarity-rare: #5eb8ff;
+  --rarity-rare-glow: rgba(94, 184, 255, 0.45);
+  --rarity-epic: #b07cff;
+  --rarity-epic-glow: rgba(176, 124, 255, 0.45);
   --rarity-legendary: #d4a440;
   --rarity-legendary-soft: rgba(212, 164, 64, 0.14);
   --rarity-legendary-mid: rgba(212, 164, 64, 0.28);
   --rarity-legendary-glow: rgba(212, 164, 64, 0.45);
 }
 
-/* Catalog tile */
+/* Utility text/bg used in generated badges (Tailwind-like tokens) */
+.text-uncommon { color: var(--rarity-uncommon) !important; }
+.text-rare { color: var(--rarity-rare) !important; }
+.text-epic { color: var(--rarity-epic) !important; }
+.text-legendary { color: var(--rarity-legendary) !important; }
+
+.border-uncommon\/40 { border-color: rgba(94, 207, 138, 0.4) !important; }
+.border-rare\/40 { border-color: rgba(94, 184, 255, 0.4) !important; }
+.border-epic\/40 { border-color: rgba(176, 124, 255, 0.4) !important; }
+.border-legendary\/40 { border-color: rgba(212, 164, 64, 0.4) !important; }
+
+.bg-uncommon\/10 { background-color: rgba(94, 207, 138, 0.1) !important; }
+.bg-rare\/10 { background-color: rgba(94, 184, 255, 0.1) !important; }
+.bg-epic\/10 { background-color: rgba(176, 124, 255, 0.1) !important; }
+.bg-legendary\/10 { background-color: rgba(212, 164, 64, 0.1) !important; }
+
+.before\:bg-uncommon\/70::before { background: rgba(94, 207, 138, 0.7) !important; }
+.before\:bg-rare\/70::before { background: rgba(94, 184, 255, 0.7) !important; }
+.before\:bg-epic\/70::before { background: rgba(176, 124, 255, 0.7) !important; }
+.before\:bg-legendary\/70::before { background: rgba(212, 164, 64, 0.7) !important; }
+
+/* Catalog tiles */
+a.vc-rarity-uncommon.group.relative.block {
+  border-color: rgba(94, 207, 138, 0.32);
+  background:
+    linear-gradient(135deg, rgba(94, 207, 138, 0.1), transparent 42%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+  box-shadow: 0 0 0 1px rgba(94, 207, 138, 0.06);
+}
+a.vc-rarity-uncommon.group.relative.block::before {
+  width: 3px;
+  background: var(--rarity-uncommon) !important;
+  box-shadow: 0 0 18px 1px var(--rarity-uncommon-glow);
+}
+
+a.vc-rarity-rare.group.relative.block {
+  border-color: rgba(94, 184, 255, 0.34);
+  background:
+    linear-gradient(135deg, rgba(94, 184, 255, 0.1), transparent 42%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+  box-shadow: 0 0 0 1px rgba(94, 184, 255, 0.06);
+}
+a.vc-rarity-rare.group.relative.block::before {
+  width: 3px;
+  background: var(--rarity-rare) !important;
+  box-shadow: 0 0 18px 1px var(--rarity-rare-glow);
+}
+
+a.vc-rarity-epic.group.relative.block {
+  border-color: rgba(176, 124, 255, 0.34);
+  background:
+    linear-gradient(135deg, rgba(176, 124, 255, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+  box-shadow: 0 0 0 1px rgba(176, 124, 255, 0.08);
+}
+a.vc-rarity-epic.group.relative.block::before {
+  width: 3px;
+  background: var(--rarity-epic) !important;
+  box-shadow: 0 0 18px 1px var(--rarity-epic-glow);
+}
+
 a.vc-rarity-legendary.group.relative.block {
   border-color: rgba(212, 164, 64, 0.34);
   background:
@@ -15,7 +81,6 @@ a.vc-rarity-legendary.group.relative.block {
     linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
   box-shadow: 0 0 0 1px rgba(212, 164, 64, 0.08);
 }
-
 a.vc-rarity-legendary.group.relative.block::before {
   width: 3px;
   background: var(--rarity-legendary) !important;
@@ -23,6 +88,30 @@ a.vc-rarity-legendary.group.relative.block::before {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  a.vc-rarity-uncommon.group.relative.block:hover {
+    border-color: rgba(94, 207, 138, 0.58) !important;
+    box-shadow:
+      0 22px 44px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(94, 207, 138, 0.22),
+      0 0 32px rgba(94, 207, 138, 0.18);
+    filter: brightness(1.05);
+  }
+  a.vc-rarity-rare.group.relative.block:hover {
+    border-color: rgba(94, 184, 255, 0.58) !important;
+    box-shadow:
+      0 22px 44px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(94, 184, 255, 0.22),
+      0 0 32px rgba(94, 184, 255, 0.18);
+    filter: brightness(1.05);
+  }
+  a.vc-rarity-epic.group.relative.block:hover {
+    border-color: rgba(176, 124, 255, 0.6) !important;
+    box-shadow:
+      0 22px 44px rgba(0, 0, 0, 0.38),
+      0 0 0 1px rgba(176, 124, 255, 0.26),
+      0 0 34px rgba(176, 124, 255, 0.2);
+    filter: brightness(1.05);
+  }
   a.vc-rarity-legendary.group.relative.block:hover {
     border-color: rgba(212, 164, 64, 0.62) !important;
     box-shadow:
@@ -31,13 +120,30 @@ a.vc-rarity-legendary.group.relative.block::before {
       0 0 36px rgba(212, 164, 64, 0.22);
     filter: brightness(1.05);
   }
-
-  a.vc-rarity-legendary.group.relative.block:hover::before {
-    box-shadow: 0 0 24px 2px var(--rarity-legendary-glow);
-  }
 }
 
-/* Module page header */
+/* Module page headers */
+.vc-rarity-uncommon.vc-card,
+header.vc-rarity-uncommon {
+  border-color: rgba(94, 207, 138, 0.34);
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(94, 207, 138, 0.16), transparent 55%),
+    linear-gradient(180deg, rgba(14, 28, 22, 0.55), rgba(18, 28, 43, 0.92));
+}
+.vc-rarity-rare.vc-card,
+header.vc-rarity-rare {
+  border-color: rgba(94, 184, 255, 0.36);
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(94, 184, 255, 0.18), transparent 55%),
+    linear-gradient(180deg, rgba(12, 22, 36, 0.55), rgba(18, 28, 43, 0.92));
+}
+.vc-rarity-epic.vc-card,
+header.vc-rarity-epic {
+  border-color: rgba(176, 124, 255, 0.36);
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(176, 124, 255, 0.2), transparent 55%),
+    linear-gradient(180deg, rgba(24, 16, 36, 0.55), rgba(18, 28, 43, 0.92));
+}
 .vc-rarity-legendary.vc-card,
 header.vc-rarity-legendary {
   border-color: rgba(212, 164, 64, 0.38);
@@ -49,8 +155,25 @@ header.vc-rarity-legendary {
     0 18px 40px rgba(0, 0, 0, 0.28);
 }
 
-/* Simulator shell tint */
-section.vc-rarity-legendary[aria-labelledby="sim-title"],
+/* Simulator shells */
+.vc-rarity-uncommon-sim {
+  border-color: rgba(94, 207, 138, 0.28);
+  background:
+    linear-gradient(180deg, rgba(94, 207, 138, 0.05), transparent 28%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+}
+.vc-rarity-rare-sim {
+  border-color: rgba(94, 184, 255, 0.28);
+  background:
+    linear-gradient(180deg, rgba(94, 184, 255, 0.05), transparent 28%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+}
+.vc-rarity-epic-sim {
+  border-color: rgba(176, 124, 255, 0.3);
+  background:
+    linear-gradient(180deg, rgba(176, 124, 255, 0.06), transparent 28%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+}
 .vc-rarity-legendary-sim {
   border-color: rgba(212, 164, 64, 0.32);
   box-shadow:
@@ -61,7 +184,6 @@ section.vc-rarity-legendary[aria-labelledby="sim-title"],
     linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
 }
 
-/* Live indicator on legendary cards uses orange pulse */
 .vc-rarity-legendary .live-dot,
 .vc-rarity-legendary-sim .live-dot {
   background: var(--rarity-legendary) !important;
@@ -93,4 +215,18 @@ section.vc-rarity-legendary[aria-labelledby="sim-title"],
   }
 }
 
-/* Soft top wash on legendary module page — removed: grid tint looked noisy. */
+/* Legendary press flash (touch) */
+a.vc-rarity-legendary.group.relative.block.vc-press {
+  transform: translateY(-4px) scale(0.995) !important;
+  border-color: rgba(212, 164, 64, 0.78) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(212, 164, 64, 0.35),
+    0 0 36px rgba(212, 164, 64, 0.32) !important;
+  filter: brightness(1.08) !important;
+}
+a.vc-rarity-legendary.group.relative.block.vc-press::before {
+  width: 3px !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 26px 3px rgba(212, 164, 64, 0.7) !important;
+}

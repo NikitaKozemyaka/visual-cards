@@ -1,0 +1,595 @@
+{
+  "version": 1,
+  "source": "STW_GAME module_balance + global_items",
+  "modules": [
+    {
+      "id": "survival_vital_weave",
+      "filename": "survival_vital_weave.html",
+      "name": "Нейроимплант «Жизненная нить»",
+      "rarity": "uncommon",
+      "archetype": "survival",
+      "slots": 1,
+      "description": "Имплант переплетает нервные контуры с регенератором тканей. Стабилизирует пульс носителя в бою и увеличивает запас жизненных сил.",
+      "effect_text": "Усиливает максимальное здоровье и даёт +1 HP регенерации за ход в бою (фикс. за уровень модуля).",
+      "passive": {
+        "max_health_per_level": 10,
+        "health_regen_flat": 1
+      },
+      "command": {
+        "slash": "stabilize",
+        "context": "out_of_combat",
+        "cooldown_base_sec": 2700,
+        "cooldown_per_level_sec": -180,
+        "effect": {
+          "heal_pct_base": 0.22,
+          "heal_pct_per_level": 0.035
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": null,
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /stabilize доступна вне боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Усиливает максимальное здоровье и даёт +1 HP регенерации за ход в бою (фикс. за уровень модуля)."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /stabilize, экип вкл/выкл."
+    },
+    {
+      "id": "survival_detox_lattice",
+      "filename": "survival_detox_lattice.html",
+      "name": "️ Решётка «Детокс-канал»",
+      "rarity": "rare",
+      "archetype": "survival",
+      "slots": 1,
+      "description": "Многослойный фильтр очищает кровь от радиации и токсинов. Расширяет запас азота и защищает от негативных статусов.",
+      "effect_text": "Повышает лимиты азота и заражения; снижает урон от заражения и азота в бою (не шанс отравления).",
+      "passive": {
+        "max_nitrogen_per_level": 12,
+        "max_infection_per_level": 12,
+        "status_resist": 0.04
+      },
+      "command": {
+        "slash": "detox",
+        "context": "out_of_combat",
+        "cooldown_base_sec": 1800,
+        "cooldown_per_level_sec": -120,
+        "effect": {
+          "purge_pct_base": 0.55,
+          "purge_pct_per_level": 0.05
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 550,
+        "tier": "elite",
+        "rarity": "rare"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /detox доступна вне боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Повышает лимиты азота и заражения; снижает урон от заражения и азота в бою (не шанс отравления)."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 550 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /detox, экип вкл/выкл."
+    },
+    {
+      "id": "combat_crit_matrix",
+      "filename": "combat_crit_matrix.html",
+      "name": "Матрица критических попаданий",
+      "rarity": "epic",
+      "archetype": "combat",
+      "slots": 1,
+      "description": "Нейросеть усиливает критические попадания и двойной удар. Команда /focus заряжает окно крита к следующему бою.",
+      "effect_text": "Пассив: двойной удар и сила крит. урона за уровень. /focus — +шанс и сила крита на N раундов следующего боя.",
+      "passive": {
+        "double_tap_per_level": 0.03,
+        "crit_bonus_per_level": 0.025
+      },
+      "command": {
+        "slash": "focus",
+        "context": "pre_combat_buff",
+        "cooldown_base_sec": 1200,
+        "cooldown_per_level_sec": 0,
+        "effect": {
+          "crit_chance_base": 0.18,
+          "crit_chance_per_level": 0.04,
+          "crit_damage_base": 0.12,
+          "crit_damage_per_level": 0.04
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 1600,
+        "tier": "elite",
+        "rarity": "epic"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /focus доступна на карточке встречи до старта боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Пассив: двойной удар и сила крит. урона за уровень. /focus — +шанс и сила крита на N раундов следующего боя."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 1600 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /focus, экип вкл/выкл."
+    },
+    {
+      "id": "combat_kinetic_driver",
+      "filename": "combat_kinetic_driver.html",
+      "name": "️ Кинетический привод «Удар»",
+      "rarity": "rare",
+      "archetype": "combat",
+      "slots": 1,
+      "description": "Усилитель передаёт энергию от силового контура брони к оружию. Каждый выстрел и удар несут больший импульс.",
+      "effect_text": "Наращивает урон с каждым уровнем и усиливает добивание раненых врагов.",
+      "passive": {
+        "damage_pct_per_level": 0.025,
+        "execute_bonus": 0.03
+      },
+      "command": {
+        "slash": "overcharge",
+        "context": "pre_combat_buff",
+        "cooldown_base_sec": 1200,
+        "cooldown_per_level_sec": 0,
+        "effect": {
+          "damage_mult_base": 0.3,
+          "damage_mult_per_level": 0.05
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 580,
+        "tier": "elite",
+        "rarity": "rare"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /overcharge доступна на карточке встречи до старта боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Наращивает урон с каждым уровнем и усиливает добивание раненых врагов."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 580 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /overcharge, экип вкл/выкл."
+    },
+    {
+      "id": "economy_relic_hunter",
+      "filename": "economy_relic_hunter.html",
+      "name": "ПГМ «Охотник за реликвиями»",
+      "rarity": "rare",
+      "archetype": "economy",
+      "slots": 1,
+      "description": "Переносимый сканер артефактов и материи. Повышает шанс редкого лута и находок материи при поиске.",
+      "effect_text": "Повышает шанс редкого лута, лома и материи. /prospect — +1 tier следующего предмета (углубление 5+).",
+      "passive": {
+        "rare_find_bonus_per_level": 0.012,
+        "scrap_bonus_per_level": 0.005,
+        "bonus_rarity_tier_per_level": 0.002,
+        "matter_find_bonus_per_level": 0.006
+      },
+      "command": {
+        "slash": "prospect",
+        "context": "out_of_combat",
+        "cooldown_base_sec": 9600,
+        "cooldown_per_level_sec": -600,
+        "effect": {
+          "rarity_tier_boost": 1,
+          "ttl_sec": 2100
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 600,
+        "tier": "elite",
+        "rarity": "rare"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /prospect доступна вне боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "/prospect заряжает +1 tier следующего предмета (глубина 5+); КД при успехе."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 600 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /prospect, экип вкл/выкл."
+    },
+    {
+      "id": "economy_salvage_link",
+      "filename": "economy_salvage_link.html",
+      "name": "Ферросенсор «Связка утилизации»",
+      "rarity": "uncommon",
+      "archetype": "economy",
+      "slots": 1,
+      "description": "Магнитный сенсор сканирует грунт и обломки, вытягивая скрытый металлолом. Базовый модуль для выживальщиков.",
+      "effect_text": "Увеличивает шанс находок при поиске и количество добываемого лома.",
+      "passive": {
+        "base_chance_bonus_per_level": 0.004,
+        "scrap_range_bonus_per_level": 1
+      },
+      "command": {
+        "slash": "instant_search",
+        "context": "gathering",
+        "cooldown_base_sec": 12600,
+        "cooldown_per_level_sec": -720,
+        "effect": {}
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": null,
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /instant_search доступна во время поиска.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "/instant_search ускоряет текущий поиск; длинный КД — особенность модуля."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /instant_search, экип вкл/выкл."
+    },
+    {
+      "id": "mobility_vector_thruster",
+      "filename": "mobility_vector_thruster.html",
+      "name": "Векторный ускоритель «Рывок»",
+      "rarity": "rare",
+      "archetype": "mobility",
+      "slots": 1,
+      "description": "Микрореакторы на манжетах брони снижают расход тонуса и открывают аварийный телепорт.",
+      "effect_text": "Снижает тонус за шаг, даёт телепорт (/teleport) с несколькими использованиями за сессию.",
+      "passive": {
+        "vigor_step_reduction_per_level": 0.035,
+        "initiative_bonus_per_level": 0.015
+      },
+      "command": {
+        "slash": "teleport",
+        "context": "teleport",
+        "cooldown_base_sec": 5400,
+        "cooldown_per_level_sec": -120,
+        "effect": {
+          "uses_equals_level": true,
+          "uses_cap": 9
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 640,
+        "tier": "elite",
+        "rarity": "rare"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /teleport доступна команда телепорта.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Снижает тонус за шаг, даёт телепорт (/teleport) с несколькими использованиями за сессию."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 640 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /teleport, экип вкл/выкл."
+    },
+    {
+      "id": "mobility_load_anchor",
+      "filename": "mobility_load_anchor.html",
+      "name": "Якорь нагрузки «Тяжеловоз»",
+      "rarity": "uncommon",
+      "archetype": "mobility",
+      "slots": 1,
+      "description": "Гравитационный распределитель переносит вес груза на каркас брони. Носитель тащит больше, не теряя подвижности.",
+      "effect_text": "Добавляет слоты инвентаря и увеличивает переносимый вес за каждый уровень.",
+      "passive": {
+        "inventory_slots_per_level": 3,
+        "max_weight_per_level": 12
+      },
+      "command": {
+        "slash": "compress",
+        "context": "out_of_combat",
+        "cooldown_base_sec": 5400,
+        "cooldown_per_level_sec": -300,
+        "effect": {
+          "weight_reduction_base": 0.28,
+          "weight_reduction_per_level": 0.04,
+          "duration_sec": 2400
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": null,
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /compress доступна вне боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Добавляет слоты инвентаря и увеличивает переносимый вес за каждый уровень."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /compress, экип вкл/выкл."
+    },
+    {
+      "id": "defense_guard_bastion",
+      "filename": "defense_guard_bastion.html",
+      "name": "Бастион «Страж»",
+      "rarity": "epic",
+      "archetype": "defense",
+      "slots": 1,
+      "description": "Укреплённый контур выдерживает шквал атак и глушит попытки сбить носителя с ритма боя.",
+      "effect_text": "Повышает запас здоровья и устойчивость к оглушению (не ко всем видам контроля).",
+      "passive": {
+        "max_health_per_level": 8,
+        "control_resist": 0.05
+      },
+      "command": {
+        "slash": "brace",
+        "context": "pre_combat_buff",
+        "cooldown_base_sec": 1500,
+        "cooldown_per_level_sec": 0,
+        "effect": {
+          "damage_reduction_base": 0.2,
+          "damage_reduction_per_level": 0.035
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 1650,
+        "tier": "elite",
+        "rarity": "epic"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /brace доступна на карточке встречи до старта боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Повышает запас здоровья и устойчивость к оглушению (не ко всем видам контроля)."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 1650 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /brace, экип вкл/выкл."
+    },
+    {
+      "id": "defense_aegis_mesh",
+      "filename": "defense_aegis_mesh.html",
+      "name": "Эгида «Защитная сетка»",
+      "rarity": "rare",
+      "archetype": "defense",
+      "slots": 1,
+      "description": "Энергетическая сетка перехватывает удары до контакта с бронёй, усиливает энергощит и мифический слой.",
+      "effect_text": "Усиливает броню, энергощит и мифический щит. Команда /aegis — буф регенерации щита (25–45%) и миф. щита (75–115%) в следующем бою по уровню модуля.",
+      "passive": {
+        "armor_bonus_per_level": 2.0,
+        "shield_bonus_flat": 2,
+        "mythic_shield_per_level": 7,
+        "mythic_shield_regen_per_level": 1
+      },
+      "command": {
+        "slash": "aegis",
+        "context": "pre_combat_buff",
+        "cooldown_base_sec": 1500,
+        "cooldown_per_level_sec": -60,
+        "effect": {
+          "shield_regen_mult_base": 0.4,
+          "shield_regen_mult_per_level": 0.07,
+          "mythic_regen_mult_base": 1.0,
+          "mythic_regen_mult_per_level": 0.15
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 680,
+        "tier": "elite",
+        "rarity": "rare"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /aegis доступна на карточке встречи до старта боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Усиливает броню, энергощит и мифический щит. Команда /aegis — буф регенерации щита (25–45%) и миф. щита (75–115%) в следующем бою по уровню модуля."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 680 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /aegis, экип вкл/выкл."
+    },
+    {
+      "id": "tactical_recon_lens",
+      "filename": "tactical_recon_lens.html",
+      "name": "Линза тактического разбора",
+      "rarity": "rare",
+      "archetype": "tactical",
+      "slots": 1,
+      "description": "Оптика тактического сканирования цели на карточке встречи. Без боевых пассивок — только разведка.",
+      "effect_text": "На встрече: /analyze — тактический разбор (детализация по уровню модуля).",
+      "passive": {},
+      "command": {
+        "slash": "analyze",
+        "context": "encounter",
+        "cooldown_base_sec": 0,
+        "cooldown_per_level_sec": 0,
+        "effect": {
+          "analysis_cap": 9
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 620,
+        "tier": "elite",
+        "rarity": "rare"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /analyze доступна на карточке встречи.",
+        "У этой команды нет таймерного кулдауна (лимит — заряды / встреча).",
+        "Пассивок в бою нет — только /analyze (разбор цели на встрече)."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 620 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: L1–L9 и команда /analyze."
+    },
+    {
+      "id": "tactical_stasis_anchor",
+      "filename": "stasis_anchor.html",
+      "name": "Стазис-якорь",
+      "rarity": "legendary",
+      "archetype": "tactical",
+      "slots": 1,
+      "description": "Якорь стазиса давит уклонение цели при ваших атаках. Для автобоя и длинных схваток; не обнуляет dodge полностью.",
+      "effect_text": "Пассив: −1% уклонения врага за уровень при ваших атаках. /pin — доп. снижение уклонения на 3×уровень раундов (кап 27).",
+      "passive": {
+        "enemy_evasion_penalty_per_level": 0.01
+      },
+      "command": {
+        "slash": "pin",
+        "context": "pre_combat_buff",
+        "cooldown_base_sec": 1200,
+        "cooldown_per_level_sec": 0,
+        "effect": {
+          "enemy_evasion_penalty_per_level": 0.05,
+          "duration_rounds_per_level": 3,
+          "duration_rounds_cap": 27
+        }
+      },
+      "sim_kind": "stasis_anchor",
+      "craftable": true,
+      "arena": {
+        "cost": 3600,
+        "tier": "prestige",
+        "rarity": "legendary"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /pin доступна на карточке встречи до старта боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Пассив −1% уклонения врага за уровень при ваших атаках; /pin даёт доп. штраф на несколько раундов (кап 27)."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 3600 очков, tier prestige",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка анти-уклонения: уровни L1–L9, /pin, dodge врага и примерный шанс попадания."
+    },
+    {
+      "id": "tactical_entangle_node",
+      "filename": "tactical_entangle_node.html",
+      "name": "Узел квантового запутывания",
+      "rarity": "epic",
+      "archetype": "tactical",
+      "slots": 1,
+      "description": "Генерирует локальные аномалии, сбивающие врага с такта. Синергирует с модулями двойного удара.",
+      "effect_text": "Шанс заставить врага пропустить ход; усиливает двойные атаки. Команда /jam.",
+      "passive": {
+        "entangler_per_level": 0.015,
+        "double_tap_per_level": 0.015
+      },
+      "command": {
+        "slash": "jam",
+        "context": "pre_combat_buff",
+        "cooldown_base_sec": 1080,
+        "cooldown_per_level_sec": 0,
+        "effect": {
+          "entangle_bonus_base": 0.22,
+          "entangle_bonus_per_level": 0.02,
+          "duration_rounds_base": 2,
+          "duration_rounds_per_level": 1
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 1700,
+        "tier": "elite",
+        "rarity": "epic"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /jam доступна на карточке встречи до старта боя.",
+        "Кулдаун зависит от уровня модуля: base + per_level × (L−1), как в игре.",
+        "Шанс заставить врага пропустить ход; усиливает двойные атаки. Команда /jam."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 1700 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: пассивы по уровню, /jam, экип вкл/выкл."
+    },
+    {
+      "id": "tactical_stasis_tuner",
+      "filename": "tactical_stasis_tuner.html",
+      "name": "⏱️ Настройщик боевого стазиса",
+      "rarity": "rare",
+      "archetype": "tactical",
+      "slots": 1,
+      "description": "Калибрует дистанцию контакта на карточке встречи. Не даёт боевых пассивок — только переброс дистанции.",
+      "effect_text": "На встрече: /rerange — переброс дистанции (использования растут с уровнем).",
+      "passive": {},
+      "command": {
+        "slash": "rerange",
+        "context": "encounter",
+        "cooldown_base_sec": 0,
+        "cooldown_per_level_sec": 0,
+        "effect": {
+          "uses_base": 1,
+          "uses_per_two_levels": 1
+        }
+      },
+      "sim_kind": "generic",
+      "craftable": true,
+      "arena": {
+        "cost": 700,
+        "tier": "elite",
+        "rarity": "rare"
+      },
+      "howto": [
+        "Установи модуль на экипированную броню (нужен свободный слот).",
+        "Команда /rerange доступна на карточке встречи.",
+        "У этой команды нет таймерного кулдауна (лимит — заряды / встреча).",
+        "Пассивок в бою нет — только /rerange (переброс дистанции на встрече)."
+      ],
+      "sources": [
+        "Крафт v2 (рецепт модуля)",
+        "Магазин арены — 700 очков, tier elite",
+        "Редкий дроп при поиске"
+      ],
+      "catalog_blurb": "Интерактивная карточка: L1–L9 и команда /rerange."
+    }
+  ]
+}
