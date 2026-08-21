@@ -41,7 +41,7 @@
 a.group.relative.block,
 .vc-card,
 a.inline-flex {
-  -webkit-tap-highlight-color: rgba(94, 184, 255, 0.18);
+  -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
@@ -64,28 +64,6 @@ a.group.relative.block::before {
 
 a.group.relative.block .size-4 {
   transition: transform 160ms ease;
-}
-
-/* Touch / click feedback — works every tap, not only first sticky hover */
-a.group.relative.block:active,
-.vc-card:active {
-  transform: translateY(-3px) scale(0.995);
-  border-color: rgba(94, 184, 255, 0.5) !important;
-  box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(94, 184, 255, 0.2),
-    0 0 26px rgba(94, 184, 255, 0.16);
-  filter: brightness(1.05);
-}
-
-a.group.relative.block:active::before {
-  width: 3px;
-  opacity: 1;
-  box-shadow: 0 0 18px 2px rgba(94, 184, 255, 0.55);
-}
-
-a.group.relative.block:active .size-4 {
-  transform: translate(2px, -2px);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -122,14 +100,6 @@ a.group.relative.block:active .size-4 {
       background-color 160ms ease,
       color 160ms ease;
   }
-
-  section[aria-labelledby="sim-title"] button:active {
-    transform: scale(0.96);
-  }
-
-  section[aria-labelledby="sim-title"] button[aria-pressed="false"]:active {
-    border-color: rgba(94, 184, 255, 0.4);
-  }
 }
 
 /* Real mouse hover only — phones must not rely on sticky :hover */
@@ -154,6 +124,12 @@ a.group.relative.block:active .size-4 {
   a.group.relative.block:hover .size-4 {
     transform: translate(3px, -3px);
   }
+
+  /* Desktop mouse press fallback */
+  a.group.relative.block:active,
+  .vc-card:active {
+    transform: translateY(-3px) scale(0.995);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -164,9 +140,9 @@ a.group.relative.block:active .size-4 {
   }
 
   a.group.relative.block:hover,
-  a.group.relative.block:active,
+  a.group.relative.block.vc-press,
   .vc-card:hover,
-  .vc-card:active {
+  .vc-card.vc-press {
     transform: none;
     filter: none;
   }

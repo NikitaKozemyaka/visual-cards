@@ -22,19 +22,6 @@ a.vc-rarity-legendary.group.relative.block::before {
   box-shadow: 0 0 18px 1px var(--rarity-legendary-glow);
 }
 
-a.vc-rarity-legendary.group.relative.block:active {
-  border-color: rgba(212, 164, 64, 0.62) !important;
-  box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(212, 164, 64, 0.28),
-    0 0 28px rgba(212, 164, 64, 0.2);
-  filter: brightness(1.05);
-}
-
-a.vc-rarity-legendary.group.relative.block:active::before {
-  box-shadow: 0 0 22px 2px var(--rarity-legendary-glow);
-}
-
 @media (hover: hover) and (pointer: fine) {
   a.vc-rarity-legendary.group.relative.block:hover {
     border-color: rgba(212, 164, 64, 0.62) !important;

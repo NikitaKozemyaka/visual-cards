@@ -1,4 +1,10 @@
-/* Kill sticky hover/focus quirks on phones and coarse pointers. */
+/* Kill sticky hover/focus quirks on phones and after in-site navigations. */
+
+/* Brief pointer-events lock clears Safari sticky :hover (used by nav-refresh.js) */
+html.vc-kill-hover,
+html.vc-kill-hover * {
+  pointer-events: none !important;
+}
 
 @media (hover: none), (pointer: coarse) {
   /* Tailwind utility hovers used across the site */
@@ -23,44 +29,95 @@
     transform: none !important;
   }
 
-  /* Do not keep mouse-only lift styles after a sticky hover */
   a.group.relative.block:hover,
-  .vc-card:hover {
+  a.group.relative.block:active,
+  .vc-card:hover,
+  .vc-card:active,
+  a.inline-flex:hover,
+  a.inline-flex:active {
     transform: none !important;
     filter: none !important;
+  }
+
+  a.group.relative.block:hover,
+  .vc-card:hover {
     box-shadow: none !important;
   }
 
-  a.vc-rarity-legendary.group.relative.block:hover {
+  a.vc-rarity-legendary.group.relative.block:hover,
+  a.vc-rarity-legendary.group.relative.block:active {
     transform: none !important;
     filter: none !important;
-    /* keep base legendary frame from rarity.css, not the hover glow */
     box-shadow: 0 0 0 1px rgba(212, 164, 64, 0.08) !important;
     border-color: rgba(212, 164, 64, 0.34) !important;
   }
 
-  a.vc-rarity-legendary.group.relative.block:hover::before {
+  a.vc-rarity-legendary.group.relative.block:hover::before,
+  a.vc-rarity-legendary.group.relative.block:active::before {
     box-shadow: 0 0 18px 1px rgba(212, 164, 64, 0.45) !important;
+    width: 3px !important;
   }
 
-  /* Simulator level/dodge buttons: ignore sticky hover class from Tailwind */
   section[aria-labelledby="sim-title"] button.hover\:border-primary\/40:hover {
     border-color: var(--border, rgba(255, 255, 255, 0.1)) !important;
   }
 
-  section[aria-labelledby="sim-title"] button[aria-pressed="true"].hover\:border-primary\/40:hover {
+  section[aria-labelledby="sim-title"] button[aria-pressed="true"].hover\:border-primary\/40:hover,
+  section[aria-labelledby="sim-title"] button[aria-pressed="true"]:active {
     border-color: var(--primary, #5eb8ff) !important;
   }
 }
 
-/* Consistent press feedback for plain nav chips/links on touch */
-a.inline-flex:active {
+/* Press feedback via JS class — never sticks after navigation */
+a.group.relative.block.vc-press,
+.vc-card.vc-press {
+  transform: translateY(-3px) scale(0.995);
+  border-color: rgba(94, 184, 255, 0.5) !important;
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(94, 184, 255, 0.2),
+    0 0 26px rgba(94, 184, 255, 0.16);
+  filter: brightness(1.05);
+}
+
+a.group.relative.block.vc-press::before {
+  width: 3px;
+  opacity: 1;
+  box-shadow: 0 0 18px 2px rgba(94, 184, 255, 0.55);
+}
+
+a.group.relative.block.vc-press .size-4 {
+  transform: translate(2px, -2px);
+}
+
+a.vc-rarity-legendary.group.relative.block.vc-press {
+  border-color: rgba(212, 164, 64, 0.62) !important;
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(212, 164, 64, 0.28),
+    0 0 28px rgba(212, 164, 64, 0.2);
+  filter: brightness(1.05);
+}
+
+a.vc-rarity-legendary.group.relative.block.vc-press::before {
+  box-shadow: 0 0 22px 2px rgba(212, 164, 64, 0.45);
+}
+
+a.inline-flex.vc-press {
   filter: brightness(1.08);
 }
 
-a.inline-flex.rounded-lg:active {
+a.inline-flex.rounded-lg.vc-press {
   transform: translateY(-1px);
   border-color: rgba(94, 184, 255, 0.45) !important;
+}
+
+section[aria-labelledby="sim-title"] button.vc-press {
+  transform: scale(0.96);
+}
+
+section[aria-labelledby="sim-title"] button[aria-pressed="false"].vc-press {
+  border-color: rgba(94, 184, 255, 0.4);
 }
 
 /* Focus rings only for keyboard, not after every tap */
