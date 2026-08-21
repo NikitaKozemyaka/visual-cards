@@ -1,0 +1,120 @@
+/* Light motion layer for STW Visual Cards (hub + catalogs + stubs). */
+
+@keyframes vc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vc-live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent);
+  }
+  50% {
+    opacity: 0.72;
+    box-shadow: 0 0 0 6px color-mix(in srgb, currentColor 0%, transparent);
+  }
+}
+
+@keyframes vc-grid-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 48px 28px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vc-rise {
+    animation: vc-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .vc-rise-d1 {
+    animation-delay: 60ms;
+  }
+  .vc-rise-d2 {
+    animation-delay: 120ms;
+  }
+  .vc-rise-d3 {
+    animation-delay: 180ms;
+  }
+  .vc-rise-d4 {
+    animation-delay: 240ms;
+  }
+
+  .live-dot {
+    animation: vc-live-pulse 1.8s ease-in-out infinite;
+  }
+
+  .tactical-grid {
+    animation: vc-grid-drift 28s linear infinite;
+  }
+
+  a.group.relative.block,
+  .vc-card {
+    transition:
+      transform 220ms ease,
+      border-color 220ms ease,
+      background-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  a.group.relative.block:hover,
+  .vc-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  }
+
+  a.group.relative.block::before {
+    transition: opacity 220ms ease, box-shadow 220ms ease;
+  }
+
+  a.group.relative.block:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 18px color-mix(in srgb, var(--primary, #5eb8ff) 35%, transparent);
+  }
+
+  /* Soft glow on simulator result ring / primary values when they update */
+  .text-ok.font-mono.text-4xl,
+  .font-mono.text-4xl.text-ok {
+    transition: color 280ms ease, text-shadow 280ms ease, transform 280ms ease;
+  }
+
+  #sim-title ~ * .text-2xl,
+  section[aria-labelledby="sim-title"] .text-2xl {
+    transition: color 220ms ease, transform 220ms ease;
+  }
+
+  section[aria-labelledby="sim-title"] button {
+    transition:
+      transform 160ms ease,
+      border-color 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+
+  section[aria-labelledby="sim-title"] button:active {
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vc-rise,
+  .live-dot,
+  .tactical-grid {
+    animation: none !important;
+  }
+
+  a.group.relative.block:hover,
+  .vc-card:hover {
+    transform: none;
+  }
+}

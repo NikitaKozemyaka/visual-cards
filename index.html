@@ -7,6 +7,7 @@
   <link rel="preload" href="./_next/static/immutable/media/70bc3e132a0a741e-s.p.269kn9uafm0ti.woff2" as="font" crossorigin="" type="font/woff2"/>
   <link rel="preload" href="./_next/static/immutable/media/cc545e633e20c56d-s.p.2sb9jzhmrh7ny.woff2" as="font" crossorigin="" type="font/woff2"/>
   <link rel="stylesheet" href="./_next/static/immutable/chunks/265wr7d9-g86g.css" data-precedence="next"/>
+  <link rel="stylesheet" href="./assets/site-motion.css"/>
   <meta name="theme-color" content="#060911"/>
   <meta name="color-scheme" content="dark"/>
   <title>STW Visual Cards — витрина карточек и калькулятор</title>
@@ -33,7 +34,7 @@
   <div class="relative min-h-screen">
     <div class="pointer-events-none absolute inset-x-0 top-0 h-[420px] tactical-grid"></div>
     <div class="relative mx-auto w-full max-w-3xl px-5 py-8 sm:py-12">
-      <header class="flex items-center justify-between">
+      <header class="vc-rise flex items-center justify-between">
         <div class="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
           <span class="size-1.5 rounded-full bg-primary live-dot" aria-hidden="true"></span>
           Space Text World
@@ -41,7 +42,7 @@
         <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">visual-cards</span>
       </header>
 
-      <section class="mt-14 sm:mt-20">
+      <section class="vc-rise vc-rise-d1 mt-14 sm:mt-20">
         <h1 class="text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">STW Visual&nbsp;Cards</h1>
         <p class="mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
           Главная витрина. Отсюда можно открыть карточки модулей, позже — предметы и общий калькулятор боя.
@@ -49,13 +50,13 @@
       </section>
 
       <section class="mt-14">
-        <div class="mb-5 flex items-center justify-between border-b border-border pb-3">
+        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Разделы</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">03</span>
         </div>
 
         <div class="flex flex-col gap-4">
-          <a class="group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card/80 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-primary/70" href="./modules/">
+          <a class="vc-rise vc-rise-d2 group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card/80 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-primary/70" href="./modules/">
             <div class="mb-4 flex flex-wrap items-center gap-2">
               <span class="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Live</span>
               <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">01 карточка</span>
@@ -68,7 +69,7 @@
             </span>
           </a>
 
-          <a class="group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card/80 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-border" href="./items/">
+          <a class="vc-rise vc-rise-d3 group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card/80 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-border" href="./items/">
             <div class="mb-4 flex flex-wrap items-center gap-2">
               <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Скоро</span>
               <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Оружие / расходники</span>
@@ -81,7 +82,7 @@
             </span>
           </a>
 
-          <a class="group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card/80 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-border" href="./calculator/">
+          <a class="vc-rise vc-rise-d4 group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card/80 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-border" href="./calculator/">
             <div class="mb-4 flex flex-wrap items-center gap-2">
               <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Скоро</span>
               <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Бой / статы</span>
