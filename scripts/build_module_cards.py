@@ -57,7 +57,7 @@ EMOJI_RE = re.compile(
     flags=re.UNICODE,
 )
 
-CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=7"/>
+CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=8"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
   <link rel="stylesheet" href="../assets/touch-safe.css?v=6"/>
   <link rel="stylesheet" href="../assets/rarity.css?v=9"/>
@@ -368,6 +368,10 @@ def page_html(mod: dict) -> str:
     canonical = f"https://nikitakozemyaka.github.io/visual-cards/modules/{mod['filename']}"
     og_desc = esc(mod["catalog_blurb"])
     emoji_html = emoji_badge(emoji)
+    # Embed balance in-page so Telegram WebView / strict caches cannot break fetch.
+    mod_json = json.dumps(mod, ensure_ascii=False, separators=(",", ":")).replace(
+        "<", "\\u003c"
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="ru" class="dark bg-background space_grotesk_e6988195-module__RNs2Mq__variable jetbrains_mono_83faaeae-module__xxnQGG__variable">
@@ -426,7 +430,7 @@ def page_html(mod: dict) -> str:
         <section aria-labelledby="sim-title" data-module-id="{esc(mod["id"])}" class="rounded-2xl border border-border bg-card {sim_rarity}">
           <div class="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6">
             <h2 id="sim-title" class="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              <span class="size-1.5 rounded-full bg-ok live-dot" aria-hidden="true"></span>
+              <span class="size-1.5 rounded-full live-dot" aria-hidden="true"></span>
               Симулятор
             </h2>
             <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground/60">live</span>
@@ -448,6 +452,7 @@ def page_html(mod: dict) -> str:
               {bars_placeholder()}
             </div>
           </div>
+          <script type="application/json" id="stw-module-data">{mod_json}</script>
         </section>
       </div>
 
@@ -466,7 +471,7 @@ def page_html(mod: dict) -> str:
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=3" defer></script>
+  <script src="./module_sim.js?v=4" defer></script>
   <script src="../assets/nav-refresh.js?v=7" defer></script>
 </body>
 </html>

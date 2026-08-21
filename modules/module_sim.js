@@ -572,7 +572,32 @@
     var mid = root.getAttribute("data-module-id");
     if (!mid) return;
 
-    fetch("../data/modules.json?v=2")
+    function fail(err) {
+      console.error(err);
+      var hero = root.querySelector("[data-hero-value]");
+      if (hero) hero.textContent = "!";
+      var label = root.querySelector("[data-hero-label]");
+      if (label) label.textContent = "Не загрузился баланс";
+    }
+
+    function start(mod) {
+      if (!mod || mod.id !== mid) throw new Error("module mismatch: " + mid);
+      bootModule(mod, root);
+    }
+
+    // Prefer in-page embed (no network) — works in Telegram WebView / offline cache.
+    var embedded = document.getElementById("stw-module-data");
+    if (embedded && embedded.textContent) {
+      try {
+        start(JSON.parse(embedded.textContent));
+        return;
+      } catch (err) {
+        console.warn("embedded module JSON failed, falling back to fetch", err);
+      }
+    }
+
+    var jsonUrl = new URL("../data/modules.json?v=3", window.location.href).href;
+    fetch(jsonUrl)
       .then(function (r) {
         if (!r.ok) throw new Error("modules.json " + r.status);
         return r.json();
@@ -587,15 +612,9 @@
           }
         }
         if (!mod) throw new Error("module not found: " + mid);
-        bootModule(mod, root);
+        start(mod);
       })
-      .catch(function (err) {
-        console.error(err);
-        var hero = root.querySelector("[data-hero-value]");
-        if (hero) hero.textContent = "!";
-        var label = root.querySelector("[data-hero-label]");
-        if (label) label.textContent = "Не загрузился баланс";
-      });
+      .catch(fail);
   }
 
   if (document.readyState === "loading") {

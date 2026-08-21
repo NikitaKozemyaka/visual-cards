@@ -11,22 +11,22 @@
   }
 }
 
-/* Green live pulse (ok) — matches simulator status dot */
+/* Live pulse — color comes from currentColor (rarity) */
 @keyframes vc-live-pulse {
   0%,
   100% {
     transform: scale(1);
     opacity: 1;
     box-shadow:
-      0 0 0 0 rgba(94, 207, 138, 0.4),
-      0 0 6px 1px rgba(94, 207, 138, 0.3);
+      0 0 0 0 color-mix(in srgb, currentColor 42%, transparent),
+      0 0 6px 1px color-mix(in srgb, currentColor 32%, transparent);
   }
   50% {
     transform: scale(1.08);
     opacity: 0.82;
     box-shadow:
-      0 0 0 5px rgba(94, 207, 138, 0),
-      0 0 8px 2px rgba(94, 207, 138, 0.16);
+      0 0 0 5px color-mix(in srgb, currentColor 0%, transparent),
+      0 0 8px 2px color-mix(in srgb, currentColor 18%, transparent);
   }
 }
 
@@ -72,7 +72,29 @@ a.vc-mod-card .size-4 {
 }
 
 .live-dot {
-  background: #5ecf8a;
+  background: currentColor;
+  color: #5eb8ff; /* hub / default */
+}
+
+.vc-rarity-uncommon-sim .live-dot,
+.vc-rarity-uncommon .live-dot {
+  color: var(--rarity-uncommon);
+}
+
+.vc-rarity-rare-sim .live-dot,
+.vc-rarity-rare .live-dot {
+  color: var(--rarity-rare);
+}
+
+.vc-rarity-epic-sim .live-dot,
+.vc-rarity-epic .live-dot {
+  color: var(--rarity-epic);
+}
+
+.vc-rarity-legendary-sim .live-dot,
+.vc-rarity-legendary .live-dot,
+.vc-page-legendary .live-dot {
+  color: var(--rarity-legendary);
 }
 
 @media (prefers-reduced-motion: no-preference) {
