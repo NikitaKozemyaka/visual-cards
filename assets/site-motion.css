@@ -11,21 +11,22 @@
   }
 }
 
+/* Green live pulse (ok) — matches simulator status dot */
 @keyframes vc-live-pulse {
   0%,
   100% {
     transform: scale(1);
     opacity: 1;
     box-shadow:
-      0 0 0 0 rgba(94, 184, 255, 0.35),
-      0 0 6px 1px rgba(94, 184, 255, 0.28);
+      0 0 0 0 rgba(94, 207, 138, 0.4),
+      0 0 6px 1px rgba(94, 207, 138, 0.3);
   }
   50% {
     transform: scale(1.08);
     opacity: 0.82;
     box-shadow:
-      0 0 0 5px rgba(94, 184, 255, 0),
-      0 0 8px 2px rgba(94, 184, 255, 0.14);
+      0 0 0 5px rgba(94, 207, 138, 0),
+      0 0 8px 2px rgba(94, 207, 138, 0.16);
   }
 }
 
@@ -39,6 +40,7 @@
 }
 
 a.group.relative.block,
+a.vc-mod-card,
 .vc-card,
 a.inline-flex {
   -webkit-tap-highlight-color: transparent;
@@ -46,6 +48,7 @@ a.inline-flex {
 }
 
 a.group.relative.block,
+a.vc-mod-card,
 .vc-card {
   transition:
     transform 160ms ease,
@@ -55,15 +58,21 @@ a.group.relative.block,
     filter 160ms ease;
 }
 
-a.group.relative.block::before {
+a.group.relative.block::before,
+a.vc-mod-card::before {
   transition:
     opacity 160ms ease,
     box-shadow 160ms ease,
     width 160ms ease;
 }
 
-a.group.relative.block .size-4 {
+a.group.relative.block .size-4,
+a.vc-mod-card .size-4 {
   transition: transform 160ms ease;
+}
+
+.live-dot {
+  background: #5ecf8a;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -105,6 +114,7 @@ a.group.relative.block .size-4 {
 /* Real mouse hover only — phones must not rely on sticky :hover */
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   a.group.relative.block:hover,
+  a.vc-mod-card:hover,
   .vc-card:hover {
     transform: translateY(-6px);
     border-color: rgba(94, 184, 255, 0.55) !important;
@@ -115,18 +125,20 @@ a.group.relative.block .size-4 {
     filter: brightness(1.06);
   }
 
-  a.group.relative.block:hover::before {
+  a.group.relative.block:hover::before,
+  a.vc-mod-card:hover::before {
     width: 3px;
     opacity: 1;
     box-shadow: 0 0 22px 2px rgba(94, 184, 255, 0.65);
   }
 
-  a.group.relative.block:hover .size-4 {
+  a.group.relative.block:hover .size-4,
+  a.vc-mod-card:hover .size-4 {
     transform: translate(3px, -3px);
   }
 
-  /* Desktop mouse press fallback */
   a.group.relative.block:active,
+  a.vc-mod-card:active,
   .vc-card:active {
     transform: translateY(-3px) scale(0.995);
   }
@@ -141,6 +153,8 @@ a.group.relative.block .size-4 {
 
   a.group.relative.block:hover,
   a.group.relative.block.vc-press,
+  a.vc-mod-card:hover,
+  a.vc-mod-card.vc-press,
   .vc-card:hover,
   .vc-card.vc-press {
     transform: none;

@@ -183,7 +183,7 @@
       var heal = (c.heal_pct_base + c.heal_pct_per_level * (L - 1)) * 100;
       if (cmdOn) {
         out.hero = { value: pct(heal, 1), label: "/" + slash + " хил", sub: "от макс. HP" };
-        add("/" + slash + " хил", pct(heal, 1), "primary");
+        add("/" + slash + " хил", pct(heal, 1), "ok");
       } else {
         out.hero = { value: pct(heal, 1), label: "/" + slash + " (выкл)", sub: "включи команду" };
       }
@@ -191,7 +191,7 @@
       var purge = (c.purge_pct_base + c.purge_pct_per_level * (L - 1)) * 100;
       if (cmdOn) {
         out.hero = { value: pct(purge, 0), label: "/" + slash + " очистка", sub: "азот / заражение" };
-        add("/" + slash, pct(purge, 0), "primary");
+        add("/" + slash, pct(purge, 0), "ok");
       } else {
         out.hero = { value: pct(purge, 0), label: "/" + slash + " (выкл)", sub: "включи команду" };
       }
@@ -199,7 +199,7 @@
       var dm = (c.damage_mult_base + c.damage_mult_per_level * (L - 1)) * 100;
       if (cmdOn) {
         out.hero = { value: "+" + pct(dm, 0), label: "/" + slash + " урон", sub: "бафф к следующему бою" };
-        add("/" + slash, "+" + pct(dm, 0), "primary");
+        add("/" + slash, "+" + pct(dm, 0), "ok");
       } else {
         out.hero = { value: "+" + pct(dm, 0), label: "/" + slash + " (выкл)", sub: "включи команду" };
       }
@@ -208,8 +208,8 @@
       var cdmg = (c.crit_damage_base + c.crit_damage_per_level * (L - 1)) * 100;
       if (cmdOn) {
         out.hero = { value: "+" + pct(cc, 0), label: "/" + slash + " шанс крита", sub: "сила крита +" + pct(cdmg, 0) };
-        add("/" + slash + " шанс", "+" + pct(cc, 0), "primary");
-        add("/" + slash + " сила", "+" + pct(cdmg, 0), "primary");
+        add("/" + slash + " шанс", "+" + pct(cc, 0), "ok");
+        add("/" + slash + " сила", "+" + pct(cdmg, 0), "ok");
       } else {
         out.hero = { value: "+" + pct(cc, 0), label: "/" + slash + " (выкл)", sub: "сила +" + pct(cdmg, 0) };
       }
@@ -217,7 +217,7 @@
       var dr = (c.damage_reduction_base + c.damage_reduction_per_level * (L - 1)) * 100;
       if (cmdOn) {
         out.hero = { value: pct(dr, 1), label: "/" + slash + " DR", sub: "снижение входящего урона" };
-        add("/" + slash, pct(dr, 1), "primary");
+        add("/" + slash, pct(dr, 1), "ok");
       } else {
         out.hero = { value: pct(dr, 1), label: "/" + slash + " (выкл)", sub: "включи команду" };
       }
@@ -226,8 +226,8 @@
       var mr = (c.mythic_regen_mult_base + c.mythic_regen_mult_per_level * (L - 1)) * 100;
       if (cmdOn) {
         out.hero = { value: "+" + pct(sr, 0), label: "/" + slash + " реген щита", sub: "миф. реген +" + pct(mr, 0) };
-        add("/" + slash + " щит", "+" + pct(sr, 0), "primary");
-        add("/" + slash + " миф", "+" + pct(mr, 0), "primary");
+        add("/" + slash + " щит", "+" + pct(sr, 0), "ok");
+        add("/" + slash + " миф", "+" + pct(mr, 0), "ok");
       } else {
         out.hero = { value: "+" + pct(sr, 0), label: "/" + slash + " (выкл)", sub: "миф +" + pct(mr, 0) };
       }
@@ -236,7 +236,7 @@
       var dur = Number(c.duration_sec || 0);
       if (cmdOn) {
         out.hero = { value: "−" + pct(wr, 0), label: "/" + slash + " вес", sub: "длительность " + fmtCd(dur) };
-        add("/" + slash, "−" + pct(wr, 0), "primary");
+        add("/" + slash, "−" + pct(wr, 0), "ok");
         add("Длительность", fmtCd(dur));
       } else {
         out.hero = { value: "−" + pct(wr, 0), label: "/" + slash + " (выкл)", sub: fmtCd(dur) };
@@ -246,7 +246,7 @@
       var rounds = c.duration_rounds_base + c.duration_rounds_per_level * (L - 1);
       if (cmdOn) {
         out.hero = { value: "+" + pct(eb, 0), label: "/" + slash + " запутывание", sub: rounds + " раунд(ов)" };
-        add("/" + slash, "+" + pct(eb, 0), "primary");
+        add("/" + slash, "+" + pct(eb, 0), "ok");
         add("Раундов", String(rounds));
       } else {
         out.hero = { value: "+" + pct(eb, 0), label: "/" + slash + " (выкл)", sub: rounds + " раунд(ов)" };
@@ -255,7 +255,7 @@
       var uses = Math.min(Number(c.uses_cap || 9), L);
       if (cmdOn) {
         out.hero = { value: String(uses), label: "/" + slash + " hops", sub: "использований за сессию" };
-        add("/" + slash + " uses", String(uses), "primary");
+        add("/" + slash + " uses", String(uses), "ok");
       } else {
         out.hero = { value: String(uses), label: "/" + slash + " (выкл)", sub: "вкл. чтобы подсветить" };
       }
@@ -263,7 +263,7 @@
       var rUses = Number(c.uses_base || 1) + Math.floor(L / 2) * Number(c.uses_per_two_levels || 0);
       if (cmdOn) {
         out.hero = { value: String(rUses), label: "/" + slash + " uses", sub: "на карточке встречи" };
-        add("/" + slash, String(rUses), "primary");
+        add("/" + slash, String(rUses), "ok");
       } else {
         out.hero = { value: String(rUses), label: "/" + slash + " (выкл)", sub: "на встрече" };
       }
@@ -271,7 +271,7 @@
       var alvl = Math.min(Number(c.analysis_cap || 9), L);
       if (cmdOn) {
         out.hero = { value: String(alvl), label: "/" + slash + " уровень", sub: "детализация разбора" };
-        add("/" + slash, String(alvl), "primary");
+        add("/" + slash, String(alvl), "ok");
       } else {
         out.hero = { value: String(alvl), label: "/" + slash + " (выкл)", sub: "на встрече" };
       }
@@ -282,7 +282,7 @@
           label: "/" + slash,
           sub: "TTL " + fmtCd(Number(c.ttl_sec || 0))
         };
-        add("/" + slash, "+" + fmtNum(c.rarity_tier_boost, 0) + " tier", "primary");
+        add("/" + slash, "+" + fmtNum(c.rarity_tier_boost, 0) + " tier", "ok");
         add("TTL заряда", fmtCd(Number(c.ttl_sec || 0)));
       } else {
         out.hero = {
@@ -421,11 +421,19 @@
 
       if (mod.sim_kind === "stasis_anchor") {
         var p = calcStasis(mod, state.level, state.dodge, state.equipped, state.cmdOn);
-        if (heroValue) heroValue.textContent = pct(p.hit, 0);
+        if (heroValue) {
+          heroValue.textContent = pct(p.hit, 0);
+          heroValue.className =
+            "font-mono text-4xl font-bold tabular-nums " +
+            (state.equipped ? "text-ok" : "text-muted-foreground");
+        }
         if (heroLabel) heroLabel.textContent = "Ваш шанс попадания (оценка)";
         if (heroRing) {
           heroRing.setAttribute("stroke-dasharray", String(circ));
           heroRing.setAttribute("stroke-dashoffset", String(circ * (1 - p.hit / 100)));
+          heroRing.className =
+            "transition-[stroke-dashoffset] duration-500 ease-out " +
+            (state.equipped ? "text-ok" : "text-muted-foreground");
         }
         var rows = [
           {
@@ -436,7 +444,7 @@
           {
             label: "/" + slash,
             value: state.equipped && state.cmdOn ? "−" + pct(p.pin, 0) : "—",
-            tone: state.equipped && state.cmdOn ? "primary" : "muted"
+            tone: state.equipped && state.cmdOn ? "ok" : "muted"
           },
           {
             label: "Раундов /" + slash,
@@ -446,7 +454,7 @@
           {
             label: "Суммарный штраф",
             value: state.equipped ? "−" + pct(p.total, 0) : "—",
-            tone: state.equipped ? "primary" : "muted"
+            tone: state.equipped ? "ok" : "muted"
           },
           {
             label: "Dodge врага после якоря",
@@ -477,7 +485,12 @@
       }
 
       var g = calcGeneric(mod, state.level, state.equipped, state.cmdOn);
-      if (heroValue) heroValue.textContent = g.hero.value;
+      if (heroValue) {
+        heroValue.textContent = g.hero.value;
+        heroValue.className =
+          "mt-3 font-mono text-5xl font-bold tabular-nums " +
+          (state.equipped ? "text-ok" : "text-muted-foreground");
+      }
       if (heroLabel) heroLabel.textContent = g.hero.label;
       if (heroSub) heroSub.textContent = g.hero.sub || "";
       renderStats(statsGrid, g.rows);

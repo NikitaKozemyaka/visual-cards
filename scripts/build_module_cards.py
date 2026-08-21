@@ -57,11 +57,11 @@ EMOJI_RE = re.compile(
     flags=re.UNICODE,
 )
 
-CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=6"/>
+CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=7"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
-  <link rel="stylesheet" href="../assets/touch-safe.css?v=4"/>
-  <link rel="stylesheet" href="../assets/rarity.css?v=8"/>
-  <link rel="stylesheet" href="../assets/catalog.css?v=1"/>"""
+  <link rel="stylesheet" href="../assets/touch-safe.css?v=5"/>
+  <link rel="stylesheet" href="../assets/rarity.css?v=9"/>
+  <link rel="stylesheet" href="../assets/catalog.css?v=2"/>"""
 
 
 def extract_emoji(text: str) -> str:
@@ -158,7 +158,7 @@ def catalog_blurb(mod: dict) -> str:
 
 
 def cover_rel(mid: str, *, from_modules: bool = True) -> str:
-    name = f"{mid}.png"
+    name = f"{mid}.png?v=2"
     if from_modules:
         return f"../assets/covers/{name}"
     return f"./assets/covers/{name}"
@@ -316,7 +316,7 @@ def hero_shell(kind: str) -> str:
     return """
 <div class="relative flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/60 p-6 min-h-[11rem]">
   <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground" data-hero-label>Главный эффект</span>
-  <span class="mt-3 font-mono text-5xl font-bold tabular-nums text-primary" data-hero-value>—</span>
+  <span class="mt-3 font-mono text-5xl font-bold tabular-nums text-ok" data-hero-value>—</span>
   <span class="mt-2 max-w-[14rem] text-center text-[11px] leading-tight text-muted-foreground" data-hero-sub></span>
 </div>"""
 
@@ -467,8 +467,8 @@ def page_html(mod: dict) -> str:
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=1" defer></script>
-  <script src="../assets/nav-refresh.js?v=5" defer></script>
+  <script src="./module_sim.js?v=2" defer></script>
+  <script src="../assets/nav-refresh.js?v=6" defer></script>
 </body>
 </html>
 """
@@ -581,7 +581,7 @@ def write_catalog(modules: list[dict]) -> None:
       </footer>
     </div>
   </div>
-<script src="../assets/nav-refresh.js?v=5" defer></script></body>
+<script src="../assets/nav-refresh.js?v=6" defer></script></body>
 </html>
 """
     (OUT_MODULES / "index.html").write_text(html, encoding="utf-8")

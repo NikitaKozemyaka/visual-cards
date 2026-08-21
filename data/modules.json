@@ -12,7 +12,7 @@
       "slots": 1,
       "description": "Имплант переплетает нервные контуры с регенератором тканей. Стабилизирует пульс носителя в бою и увеличивает запас жизненных сил.",
       "effect_text": "Усиливает максимальное здоровье и даёт +1 HP регенерации за ход в бою (фикс. за уровень модуля).",
-      "cover": "../assets/covers/survival_vital_weave.png",
+      "cover": "../assets/covers/survival_vital_weave.png?v=2",
       "passive": {
         "max_health_per_level": 10,
         "health_regen_flat": 1
@@ -52,7 +52,7 @@
       "slots": 1,
       "description": "Многослойный фильтр очищает кровь от радиации и токсинов. Расширяет запас азота и защищает от негативных статусов.",
       "effect_text": "Повышает лимиты азота и заражения; снижает урон от заражения и азота в бою (не шанс отравления).",
-      "cover": "../assets/covers/survival_detox_lattice.png",
+      "cover": "../assets/covers/survival_detox_lattice.png?v=2",
       "passive": {
         "max_nitrogen_per_level": 12,
         "max_infection_per_level": 12,
@@ -98,7 +98,7 @@
       "slots": 1,
       "description": "Нейросеть усиливает критические попадания и двойной удар. Команда /focus заряжает окно крита к следующему бою.",
       "effect_text": "Пассив: двойной удар и сила крит. урона за уровень. /focus — +шанс и сила крита на N раундов следующего боя.",
-      "cover": "../assets/covers/combat_crit_matrix.png",
+      "cover": "../assets/covers/combat_crit_matrix.png?v=2",
       "passive": {
         "double_tap_per_level": 0.03,
         "crit_bonus_per_level": 0.025
@@ -145,7 +145,7 @@
       "slots": 1,
       "description": "Усилитель передаёт энергию от силового контура брони к оружию. Каждый выстрел и удар несут больший импульс.",
       "effect_text": "Наращивает урон с каждым уровнем и усиливает добивание раненых врагов.",
-      "cover": "../assets/covers/combat_kinetic_driver.png",
+      "cover": "../assets/covers/combat_kinetic_driver.png?v=2",
       "passive": {
         "damage_pct_per_level": 0.025,
         "execute_bonus": 0.03
@@ -190,7 +190,7 @@
       "slots": 1,
       "description": "Переносимый сканер артефактов и материи. Повышает шанс редкого лута и находок материи при поиске.",
       "effect_text": "Повышает шанс редкого лута, лома и материи. /prospect — +1 tier следующего предмета (углубление 5+).",
-      "cover": "../assets/covers/economy_relic_hunter.png",
+      "cover": "../assets/covers/economy_relic_hunter.png?v=2",
       "passive": {
         "rare_find_bonus_per_level": 0.012,
         "scrap_bonus_per_level": 0.005,
@@ -237,7 +237,7 @@
       "slots": 1,
       "description": "Магнитный сенсор сканирует грунт и обломки, вытягивая скрытый металлолом. Базовый модуль для выживальщиков.",
       "effect_text": "Увеличивает шанс находок при поиске и количество добываемого лома.",
-      "cover": "../assets/covers/economy_salvage_link.png",
+      "cover": "../assets/covers/economy_salvage_link.png?v=2",
       "passive": {
         "base_chance_bonus_per_level": 0.004,
         "scrap_range_bonus_per_level": 1
@@ -274,7 +274,7 @@
       "slots": 1,
       "description": "Микрореакторы на манжетах брони снижают расход тонуса и открывают аварийный телепорт.",
       "effect_text": "Снижает тонус за шаг, даёт телепорт (/teleport) с несколькими использованиями за сессию.",
-      "cover": "../assets/covers/mobility_vector_thruster.png",
+      "cover": "../assets/covers/mobility_vector_thruster.png?v=2",
       "passive": {
         "vigor_step_reduction_per_level": 0.035,
         "initiative_bonus_per_level": 0.015
@@ -319,7 +319,7 @@
       "slots": 1,
       "description": "Гравитационный распределитель переносит вес груза на каркас брони. Носитель тащит больше, не теряя подвижности.",
       "effect_text": "Добавляет слоты инвентаря и увеличивает переносимый вес за каждый уровень.",
-      "cover": "../assets/covers/mobility_load_anchor.png",
+      "cover": "../assets/covers/mobility_load_anchor.png?v=2",
       "passive": {
         "inventory_slots_per_level": 3,
         "max_weight_per_level": 12
@@ -360,7 +360,7 @@
       "slots": 1,
       "description": "Укреплённый контур выдерживает шквал атак и глушит попытки сбить носителя с ритма боя.",
       "effect_text": "Повышает запас здоровья и устойчивость к оглушению (не ко всем видам контроля).",
-      "cover": "../assets/covers/defense_guard_bastion.png",
+      "cover": "../assets/covers/defense_guard_bastion.png?v=2",
       "passive": {
         "max_health_per_level": 8,
         "control_resist": 0.05
@@ -405,7 +405,7 @@
       "slots": 1,
       "description": "Энергетическая сетка перехватывает удары до контакта с бронёй, усиливает энергощит и мифический слой.",
       "effect_text": "Усиливает броню, энергощит и мифический щит. Команда /aegis — буф регенерации щита (25–45%) и миф. щита (75–115%) в следующем бою по уровню модуля.",
-      "cover": "../assets/covers/defense_aegis_mesh.png",
+      "cover": "../assets/covers/defense_aegis_mesh.png?v=2",
       "passive": {
         "armor_bonus_per_level": 2.0,
         "shield_bonus_flat": 2,
@@ -454,7 +454,7 @@
       "slots": 1,
       "description": "Оптика тактического сканирования цели на карточке встречи. Без боевых пассивок — только разведка.",
       "effect_text": "На встрече: /analyze — тактический разбор (детализация по уровню модуля).",
-      "cover": "../assets/covers/tactical_recon_lens.png",
+      "cover": "../assets/covers/tactical_recon_lens.png?v=2",
       "passive": {},
       "command": {
         "slash": "analyze",
@@ -495,7 +495,7 @@
       "slots": 1,
       "description": "Якорь стазиса давит уклонение цели при ваших атаках. Для автобоя и длинных схваток; не обнуляет dodge полностью.",
       "effect_text": "Пассив: −1% уклонения врага за уровень при ваших атаках. /pin — доп. снижение уклонения на 3×уровень раундов (кап 27).",
-      "cover": "../assets/covers/tactical_stasis_anchor.png",
+      "cover": "../assets/covers/tactical_stasis_anchor.png?v=2",
       "passive": {
         "enemy_evasion_penalty_per_level": 0.01
       },
@@ -540,7 +540,7 @@
       "slots": 1,
       "description": "Генерирует локальные аномалии, сбивающие врага с такта. Синергирует с модулями двойного удара.",
       "effect_text": "Шанс заставить врага пропустить ход; усиливает двойные атаки. Команда /jam.",
-      "cover": "../assets/covers/tactical_entangle_node.png",
+      "cover": "../assets/covers/tactical_entangle_node.png?v=2",
       "passive": {
         "entangler_per_level": 0.015,
         "double_tap_per_level": 0.015
@@ -587,7 +587,7 @@
       "slots": 1,
       "description": "Калибрует дистанцию контакта на карточке встречи. Не даёт боевых пассивок — только переброс дистанции.",
       "effect_text": "На встрече: /rerange — переброс дистанции (использования растут с уровнем).",
-      "cover": "../assets/covers/tactical_stasis_tuner.png",
+      "cover": "../assets/covers/tactical_stasis_tuner.png?v=2",
       "passive": {},
       "command": {
         "slash": "rerange",

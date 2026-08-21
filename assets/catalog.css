@@ -52,6 +52,15 @@ a.vc-mod-card {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: transform 200ms ease;
+  transform-origin: center;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  a.vc-mod-card:hover .vc-mod-cover img,
+  a.vc-mod-card.vc-press .vc-mod-cover img {
+    transform: scale(1.04);
+  }
 }
 
 .vc-mod-cover::after {
