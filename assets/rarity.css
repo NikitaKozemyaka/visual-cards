@@ -1,0 +1,98 @@
+/* Rarity accents for STW Visual Cards */
+
+:root {
+  --rarity-legendary: #d4a440;
+  --rarity-legendary-soft: rgba(212, 164, 64, 0.14);
+  --rarity-legendary-mid: rgba(212, 164, 64, 0.28);
+  --rarity-legendary-glow: rgba(212, 164, 64, 0.45);
+}
+
+/* Catalog tile */
+a.vc-rarity-legendary.group.relative.block {
+  border-color: rgba(212, 164, 64, 0.34);
+  background:
+    linear-gradient(135deg, rgba(212, 164, 64, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+  box-shadow: 0 0 0 1px rgba(212, 164, 64, 0.08);
+}
+
+a.vc-rarity-legendary.group.relative.block::before {
+  width: 3px;
+  background: var(--rarity-legendary) !important;
+  box-shadow: 0 0 18px 1px var(--rarity-legendary-glow);
+}
+
+a.vc-rarity-legendary.group.relative.block:hover {
+  border-color: rgba(212, 164, 64, 0.62) !important;
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(212, 164, 64, 0.28),
+    0 0 36px rgba(212, 164, 64, 0.22);
+  filter: brightness(1.05);
+}
+
+a.vc-rarity-legendary.group.relative.block:hover::before {
+  box-shadow: 0 0 24px 2px var(--rarity-legendary-glow);
+}
+
+/* Module page header */
+.vc-rarity-legendary.vc-card,
+header.vc-rarity-legendary {
+  border-color: rgba(212, 164, 64, 0.38);
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(212, 164, 64, 0.22), transparent 55%),
+    linear-gradient(180deg, rgba(28, 22, 12, 0.55), rgba(18, 28, 43, 0.92));
+  box-shadow:
+    0 0 0 1px rgba(212, 164, 64, 0.12),
+    0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+/* Simulator shell tint */
+section.vc-rarity-legendary[aria-labelledby="sim-title"],
+.vc-rarity-legendary-sim {
+  border-color: rgba(212, 164, 64, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(212, 164, 64, 0.08),
+    0 0 0 1px rgba(212, 164, 64, 0.08);
+  background:
+    linear-gradient(180deg, rgba(212, 164, 64, 0.06), transparent 28%),
+    linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
+}
+
+/* Live indicator on legendary cards uses orange pulse */
+.vc-rarity-legendary .live-dot,
+.vc-rarity-legendary-sim .live-dot {
+  background: var(--rarity-legendary) !important;
+  color: var(--rarity-legendary);
+}
+
+@keyframes vc-live-pulse-legendary {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 0 rgba(212, 164, 64, 0.8),
+      0 0 10px 2px rgba(212, 164, 64, 0.55);
+  }
+  50% {
+    transform: scale(1.35);
+    box-shadow:
+      0 0 0 10px rgba(212, 164, 64, 0),
+      0 0 16px 4px rgba(212, 164, 64, 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vc-rarity-legendary .live-dot,
+  .vc-rarity-legendary-sim .live-dot {
+    animation: vc-live-pulse-legendary 1.35s ease-in-out infinite;
+  }
+}
+
+/* Soft top wash on legendary module page */
+.vc-page-legendary .tactical-grid {
+  background-image:
+    radial-gradient(ellipse 70% 45% at 20% 0%, rgba(212, 164, 64, 0.16), transparent 60%),
+    linear-gradient(rgba(212, 164, 64, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 164, 64, 0.04) 1px, transparent 1px);
+}
