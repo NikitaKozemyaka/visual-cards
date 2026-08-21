@@ -91,10 +91,4 @@ section.vc-rarity-legendary[aria-labelledby="sim-title"],
   }
 }
 
-/* Soft top wash on legendary module page */
-.vc-page-legendary .tactical-grid {
-  background-image:
-    radial-gradient(ellipse 70% 45% at 20% 0%, rgba(212, 164, 64, 0.16), transparent 60%),
-    linear-gradient(rgba(212, 164, 64, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(212, 164, 64, 0.04) 1px, transparent 1px);
-}
+/* Soft top wash on legendary module page — removed: grid tint looked noisy. */
