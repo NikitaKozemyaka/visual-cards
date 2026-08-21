@@ -1,0 +1,80 @@
+/* Kill sticky hover/focus quirks on phones and coarse pointers. */
+
+@media (hover: none), (pointer: coarse) {
+  /* Tailwind utility hovers used across the site */
+  .hover\:border-primary\/40:hover {
+    border-color: var(--border, rgba(255, 255, 255, 0.1)) !important;
+  }
+
+  .hover\:border-primary\/60:hover {
+    border-color: rgba(94, 184, 255, 0.4) !important;
+  }
+
+  .hover\:bg-card\/80:hover {
+    background-color: var(--card, rgba(18, 28, 43, 0.96)) !important;
+  }
+
+  .hover\:text-foreground:hover {
+    color: var(--muted-foreground, rgba(146, 164, 184, 1)) !important;
+  }
+
+  .group:hover .group-hover\:translate-x-0\.5,
+  .group:hover .group-hover\:-translate-y-0\.5 {
+    transform: none !important;
+  }
+
+  /* Do not keep mouse-only lift styles after a sticky hover */
+  a.group.relative.block:hover,
+  .vc-card:hover {
+    transform: none !important;
+    filter: none !important;
+    box-shadow: none !important;
+  }
+
+  a.vc-rarity-legendary.group.relative.block:hover {
+    transform: none !important;
+    filter: none !important;
+    /* keep base legendary frame from rarity.css, not the hover glow */
+    box-shadow: 0 0 0 1px rgba(212, 164, 64, 0.08) !important;
+    border-color: rgba(212, 164, 64, 0.34) !important;
+  }
+
+  a.vc-rarity-legendary.group.relative.block:hover::before {
+    box-shadow: 0 0 18px 1px rgba(212, 164, 64, 0.45) !important;
+  }
+
+  /* Simulator level/dodge buttons: ignore sticky hover class from Tailwind */
+  section[aria-labelledby="sim-title"] button.hover\:border-primary\/40:hover {
+    border-color: var(--border, rgba(255, 255, 255, 0.1)) !important;
+  }
+
+  section[aria-labelledby="sim-title"] button[aria-pressed="true"].hover\:border-primary\/40:hover {
+    border-color: var(--primary, #5eb8ff) !important;
+  }
+}
+
+/* Consistent press feedback for plain nav chips/links on touch */
+a.inline-flex:active {
+  filter: brightness(1.08);
+}
+
+a.inline-flex.rounded-lg:active {
+  transform: translateY(-1px);
+  border-color: rgba(94, 184, 255, 0.45) !important;
+}
+
+/* Focus rings only for keyboard, not after every tap */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(94, 184, 255, 0.7);
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}

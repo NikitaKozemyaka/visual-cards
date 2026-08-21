@@ -126,6 +126,10 @@ a.group.relative.block:active .size-4 {
   section[aria-labelledby="sim-title"] button:active {
     transform: scale(0.96);
   }
+
+  section[aria-labelledby="sim-title"] button[aria-pressed="false"]:active {
+    border-color: rgba(94, 184, 255, 0.4);
+  }
 }
 
 /* Real mouse hover only — phones must not rely on sticky :hover */

@@ -35,7 +35,7 @@
       " font-mono text-sm font-semibold tabular-nums transition-colors " +
       (on
         ? "border-primary bg-primary/15 text-primary"
-        : "border-border bg-secondary text-foreground hover:border-primary/40");
+        : "border-border bg-secondary text-foreground");
   }
 
   function findStatValue(root, labelText) {
