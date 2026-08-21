@@ -362,7 +362,7 @@ def page_html(mod: dict) -> str:
     extra = dodge_block_html() if mod["sim_kind"] == "stasis_anchor" else ""
     cmd_title = (
         f'Команда <code class="rounded bg-background/60 px-1 py-0.5 font-mono text-[13px] text-primary">'
-        f"/{slash}</code> выкл"
+        f"/{slash}</code> активна"
     )
 
     canonical = f"https://nikitakozemyaka.github.io/visual-cards/modules/{mod['filename']}"
@@ -443,7 +443,7 @@ def page_html(mod: dict) -> str:
                 <div role="group" aria-label="Уровень модуля" class="grid grid-cols-5 gap-2 sm:grid-cols-3">{level_buttons_html()}</div>
               </div>
               {switch_html("sim-equip", "Экипировать", "Модуль установлен на броню", True)}
-              {switch_html("sim-cmd", cmd_title, "Заряд / активация команды", False)}
+              {switch_html("sim-cmd", cmd_title, "Заряд / активация команды", True)}
               {extra}
             </div>
             <div class="flex flex-col gap-4">
@@ -471,7 +471,7 @@ def page_html(mod: dict) -> str:
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=5" defer></script>
+  <script src="./module_sim.js?v=6" defer></script>
   <script src="../assets/nav-refresh.js?v=7" defer></script>
 </body>
 </html>

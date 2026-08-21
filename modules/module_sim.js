@@ -1,6 +1,10 @@
 (function () {
   "use strict";
 
+  // Simulator model matches cardify stasis-anchor reference:
+  // ring = outcome formula; stats = Пассив / команда / доп / сумма / итог;
+  // command off → "—"; default command ON.
+
   var CIRC = 2 * Math.PI * 52;
 
   function pct(n, digits) {
@@ -27,8 +31,8 @@
   }
 
   function cooldownSec(cmd, level) {
-    var base = Number(cmd.cooldown_base_sec || 0);
-    var per = Number(cmd.cooldown_per_level_sec || 0);
+    var base = Number((cmd && cmd.cooldown_base_sec) || 0);
+    var per = Number((cmd && cmd.cooldown_per_level_sec) || 0);
     var lvl = Math.max(1, level | 0);
     return Math.max(0, base + per * (lvl - 1));
   }
@@ -95,325 +99,523 @@
     }
   }
 
-  function calcStasis(mod, level, dodge, equipped, cmdOn) {
-    var pEff = mod.passive || {};
-    var cEff = (mod.command && mod.command.effect) || {};
-    var passivePer = Number(pEff.enemy_evasion_penalty_per_level || 0.01);
-    var pinPer = Number(cEff.enemy_evasion_penalty_per_level || 0.05);
-    var roundsPer = Number(cEff.duration_rounds_per_level || 3);
-    var roundsCap = Number(cEff.duration_rounds_cap || 27);
-    if (!equipped) {
-      return {
-        passive: 0,
-        pin: 0,
-        total: 0,
-        eff: dodge,
-        hit: Math.max(0, 100 - dodge),
-        rounds: 0,
-        cd: 0,
-        ringPct: Math.max(0, 100 - dodge)
-      };
-    }
-    var passive = passivePer * level * 100;
-    var pin = cmdOn ? Math.min(95, pinPer * level * 100) : 0;
-    var total = passive + pin;
-    var eff = Math.max(0, dodge - total);
-    var hit = 100 - eff;
-    var rounds = cmdOn ? Math.min(roundsCap, roundsPer * level) : 0;
+  function dash(on, text) {
+    return on ? text : "—";
+  }
+
+  /** Anchor-style layout used by cardify stasis reference. */
+  function pack(opts) {
+    var cmdOn = !!opts.cmdOn;
+    var passN = Number(opts.passN || 0);
+    var cmdN = cmdOn ? Number(opts.cmdN || 0) : 0;
+    var totalN = passN + cmdN;
+    var ring = opts.ringPct != null ? Number(opts.ringPct) : totalN;
+    var scale = Math.max(50, passN + Math.max(Number(opts.cmdN || 0), 1), 1);
+
     return {
-      passive: passive,
-      pin: pin,
-      total: total,
-      eff: eff,
-      hit: hit,
-      rounds: rounds,
-      cd: cooldownSec(mod.command, level),
-      ringPct: hit
+      hero: {
+        value: opts.heroValue,
+        label: opts.heroLabel,
+        sub: "",
+        ringPct: clampPct(ring)
+      },
+      rows: [
+        { label: "Пассив", value: opts.passText, tone: "fg" },
+        {
+          label: opts.cmdLabel,
+          value: dash(cmdOn, opts.cmdText),
+          tone: cmdOn ? "primary" : "muted"
+        },
+        {
+          label: opts.extraLabel,
+          value: dash(cmdOn, opts.extraText),
+          tone: cmdOn ? "fg" : "muted"
+        },
+        {
+          label: opts.totalLabel,
+          value: opts.totalText,
+          tone: "primary"
+        },
+        {
+          label: opts.resultLabel,
+          value: opts.resultText,
+          tone: "ok",
+          wide: true
+        }
+      ],
+      bars: [
+        {
+          label: "Пасс",
+          pct: passN,
+          max: scale,
+          display: opts.passBar || opts.passText,
+          tone: "passive"
+        },
+        {
+          label: opts.cmdBarLabel || opts.cmdLabel,
+          pct: cmdN,
+          max: scale,
+          display: dash(cmdOn, opts.cmdBar || opts.cmdText),
+          tone: "pin"
+        }
+      ],
+      cd: opts.cd || 0
     };
   }
 
-  function primaryPassivePct(p, L) {
-    // Main % passive for the ring (0 if none). Prefer combat/economy gauges.
-    if (p.damage_pct_per_level != null) return p.damage_pct_per_level * L * 100;
-    if (p.entangler_per_level != null) return p.entangler_per_level * L * 100;
-    if (p.double_tap_per_level != null) return p.double_tap_per_level * L * 100;
-    if (p.crit_bonus_per_level != null) return p.crit_bonus_per_level * L * 100;
-    if (p.base_chance_bonus_per_level != null) return p.base_chance_bonus_per_level * L * 100;
-    if (p.rare_find_bonus_per_level != null) return p.rare_find_bonus_per_level * L * 100;
-    if (p.scrap_bonus_per_level != null) return p.scrap_bonus_per_level * L * 100;
-    if (p.matter_find_bonus_per_level != null) return p.matter_find_bonus_per_level * L * 100;
-    if (p.bonus_rarity_tier_per_level != null) return p.bonus_rarity_tier_per_level * L * 100;
-    if (p.vigor_step_reduction_per_level != null) return p.vigor_step_reduction_per_level * L * 100;
-    if (p.initiative_bonus_per_level != null) return p.initiative_bonus_per_level * L * 100;
-    if (p.status_resist != null) return p.status_resist * 100;
-    if (p.control_resist != null) return p.control_resist * 100;
-    if (p.execute_bonus != null) return p.execute_bonus * 100;
-    return 0;
+  function calcStasis(mod, level, dodge, equipped, cmdOn) {
+    var pEff = mod.passive || {};
+    var cEff = (mod.command && mod.command.effect) || {};
+    var slash = (mod.command && mod.command.slash) || "pin";
+    var cd = cooldownSec(mod.command, level);
+    if (!equipped) {
+      return {
+        hero: {
+          value: pct(Math.max(0, 100 - dodge), 0),
+          label: "Ваш шанс попадания (оценка)",
+          sub: "",
+          ringPct: Math.max(0, 100 - dodge)
+        },
+        rows: [
+          { label: "Пассив", value: "—", tone: "muted" },
+          { label: "/" + slash, value: "—", tone: "muted" },
+          { label: "Раундов /" + slash, value: "—", tone: "muted" },
+          { label: "Суммарный штраф", value: "—", tone: "muted" },
+          {
+            label: "Dodge врага после якоря",
+            value: pct(dodge, 0),
+            tone: "ok",
+            wide: true
+          }
+        ],
+        bars: [],
+        cd: 0
+      };
+    }
+
+    var passive = Number(pEff.enemy_evasion_penalty_per_level || 0.01) * level * 100;
+    var pin = cmdOn
+      ? Math.min(95, Number(cEff.enemy_evasion_penalty_per_level || 0.05) * level * 100)
+      : 0;
+    var total = passive + pin;
+    var eff = Math.max(0, dodge - total);
+    var hit = 100 - eff;
+    var rounds = cmdOn
+      ? Math.min(
+          Number(cEff.duration_rounds_cap || 27),
+          Number(cEff.duration_rounds_per_level || 3) * level
+        )
+      : 0;
+
+    return pack({
+      cmdOn: cmdOn,
+      passN: passive,
+      cmdN: Math.min(95, Number(cEff.enemy_evasion_penalty_per_level || 0.05) * level * 100),
+      ringPct: hit,
+      heroValue: pct(hit, 0),
+      heroLabel: "Ваш шанс попадания (оценка)",
+      passText: "−" + pct(passive, 0),
+      cmdLabel: "/" + slash,
+      cmdText: "−" + pct(pin, 0),
+      extraLabel: "Раундов /" + slash,
+      extraText: String(rounds),
+      totalLabel: "Суммарный штраф",
+      totalText: "−" + pct(total, 0),
+      resultLabel: "Dodge врага после якоря",
+      resultText: pct(eff, 0),
+      passBar: "−" + pct(passive, 0),
+      cmdBar: "−" + pct(pin, 0),
+      cd: cd
+    });
   }
 
   function calcGeneric(mod, level, equipped, cmdOn) {
     var p = mod.passive || {};
     var c = (mod.command && mod.command.effect) || {};
     var L = Math.max(1, level | 0);
-    var out = {
-      rows: [],
-      hero: { value: "—", label: "Главный эффект", sub: "", ringPct: 0 },
-      bars: [],
-      cd: 0
-    };
+    var slash = (mod.command && mod.command.slash) || "";
+    var cd = cooldownSec(mod.command, L);
 
-    function add(label, value, tone, wide) {
-      out.rows.push({ label: label, value: value, tone: tone || "fg", wide: !!wide });
-    }
-
-    function setHero(value, label, sub, ringPct) {
-      out.hero = {
-        value: value,
-        label: label,
-        sub: sub || "",
-        ringPct: clampPct(ringPct || 0)
+    if (!equipped) {
+      return {
+        hero: { value: "—", label: "Без модуля", sub: "", ringPct: 0 },
+        rows: [
+          { label: "Пассив", value: "—", tone: "muted" },
+          { label: slash ? "/" + slash : "Команда", value: "—", tone: "muted" },
+          { label: "Доп.", value: "—", tone: "muted" },
+          { label: "Сумма", value: "—", tone: "muted" },
+          { label: "Итог", value: "—", tone: "muted", wide: true }
+        ],
+        bars: [],
+        cd: 0
       };
     }
 
-    // Ring = passive% + command% (command only while toggled on).
-    function finishHero(opts) {
-      var passPct = Number(opts.passivePct || 0);
-      var cmdPct = Number(opts.commandPct || 0);
-      var liveCmd = cmdOn ? cmdPct : 0;
-      var ring = passPct + liveCmd;
-      var subBits = [];
-      if (passPct > 0) subBits.push("пассив " + pct(passPct, 1));
-      if (cmdPct > 0) {
-        subBits.push(
-          cmdOn ? "/" + slash + " " + pct(cmdPct, 1) : "/" + slash + " выкл (" + pct(cmdPct, 1) + ")"
-        );
-      }
-      if (opts.subExtra) subBits.push(opts.subExtra);
-      setHero(opts.value, opts.label, subBits.join(" · "), ring);
-    }
-
-    if (!equipped) {
-      setHero("—", "Без модуля", "Экипируй, чтобы увидеть цифры", 0);
-      add("Пассивы", "—", "muted");
-      add("Команда", "—", "muted");
-      return out;
-    }
-
-    var passivePct = primaryPassivePct(p, L);
-    var cmdTone = cmdOn ? "ok" : "muted";
-
-    if (p.max_health_per_level != null) add("Макс. HP", "+" + fmtNum(p.max_health_per_level * L, 0));
-    if (p.health_regen_flat != null) add("Реген HP/ход", "+" + fmtNum(p.health_regen_flat, 0));
-    if (p.max_nitrogen_per_level != null) add("Лимит азота", "+" + fmtNum(p.max_nitrogen_per_level * L, 0));
-    if (p.max_infection_per_level != null) add("Лимит заражения", "+" + fmtNum(p.max_infection_per_level * L, 0));
-    if (p.status_resist != null) add("Сопр. статусам", pct(p.status_resist * 100, 0));
-    if (p.damage_pct_per_level != null) {
-      var dmg = p.damage_pct_per_level * L * 100;
-      add("Урон (пассив)", "+" + pct(dmg, 1));
-      out.bars.push({ label: "Пасс", pct: dmg, max: 100 });
-    }
-    if (p.execute_bonus != null) add("Добивание", "+" + pct(p.execute_bonus * 100, 0));
-    if (p.double_tap_per_level != null) add("Двойной удар", "+" + pct(p.double_tap_per_level * L * 100, 1));
-    if (p.crit_bonus_per_level != null) add("Сила крита (пассив)", "+" + pct(p.crit_bonus_per_level * L * 100, 1));
-    if (p.base_chance_bonus_per_level != null)
-      add("Шанс находок", "+" + pct(p.base_chance_bonus_per_level * L * 100, 1));
-    if (p.scrap_range_bonus_per_level != null)
-      add("Лом (диапазон)", "+" + fmtNum(p.scrap_range_bonus_per_level * L, 0));
-    if (p.rare_find_bonus_per_level != null)
-      add("Редкий лут", "+" + pct(p.rare_find_bonus_per_level * L * 100, 1));
-    if (p.scrap_bonus_per_level != null)
-      add("Бонус лома", "+" + pct(p.scrap_bonus_per_level * L * 100, 1));
-    if (p.matter_find_bonus_per_level != null)
-      add("Материя", "+" + pct(p.matter_find_bonus_per_level * L * 100, 1));
-    if (p.bonus_rarity_tier_per_level != null)
-      add("Шанс +tier", "+" + pct(p.bonus_rarity_tier_per_level * L * 100, 1));
-    if (p.vigor_step_reduction_per_level != null)
-      add("Тонус за шаг", "−" + pct(p.vigor_step_reduction_per_level * L * 100, 1));
-    if (p.initiative_bonus_per_level != null)
-      add("Инициатива", "+" + pct(p.initiative_bonus_per_level * L * 100, 1));
-    if (p.inventory_slots_per_level != null)
-      add("Слоты инвентаря", "+" + fmtNum(p.inventory_slots_per_level * L, 0));
-    if (p.max_weight_per_level != null)
-      add("Макс. вес", "+" + fmtNum(p.max_weight_per_level * L, 0));
-    if (p.armor_bonus_per_level != null)
-      add("Броня", "+" + fmtNum(p.armor_bonus_per_level * L, 1));
-    if (p.shield_bonus_flat != null) add("Энергощит", "+" + fmtNum(p.shield_bonus_flat, 0));
-    if (p.mythic_shield_per_level != null)
-      add("Миф. щит", "+" + fmtNum(p.mythic_shield_per_level * L, 0));
-    if (p.mythic_shield_regen_per_level != null)
-      add("Реген миф. щита", "+" + fmtNum(p.mythic_shield_regen_per_level * L, 0));
-    if (p.control_resist != null) add("Сопр. контролю", pct(p.control_resist * 100, 0));
-    if (p.entangler_per_level != null)
-      add("Запутывание (пассив)", "+" + pct(p.entangler_per_level * L * 100, 1));
-
-    if (!Object.keys(p).length) {
-      add("Пассив", "нет", "muted");
-    }
-
-    var cd = cooldownSec(mod.command, L);
-    out.cd = cd;
-    var slash = (mod.command && mod.command.slash) || "";
+    // --- Module families (same UX skeleton as stasis) ---
 
     if (c.heal_pct_base != null) {
       var heal = (c.heal_pct_base + c.heal_pct_per_level * (L - 1)) * 100;
-      add("/" + slash + " хил", pct(heal, 1), cmdTone);
-      finishHero({
-        value: pct(heal, 1),
-        label: "/" + slash + (cmdOn ? " хил" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: heal,
-        subExtra: "от макс. HP"
-      });
-    } else if (c.purge_pct_base != null) {
-      var purge = (c.purge_pct_base + c.purge_pct_per_level * (L - 1)) * 100;
-      add("/" + slash, pct(purge, 0), cmdTone);
-      finishHero({
-        value: pct(purge, 0),
-        label: "/" + slash + (cmdOn ? " очистка" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: purge,
-        subExtra: "азот / заражение"
-      });
-    } else if (c.damage_mult_base != null) {
-      var dm = (c.damage_mult_base + c.damage_mult_per_level * (L - 1)) * 100;
-      add("/" + slash + " урон", "+" + pct(dm, 0), cmdTone);
-      out.bars.push({ label: "/" + slash, pct: cmdOn ? dm : 0, max: 100, display: cmdOn ? "+" + pct(dm, 0) : "—" });
-      finishHero({
-        value: "+" + pct(passivePct + (cmdOn ? dm : 0), 1),
-        label: cmdOn ? "Урон пассив + /" + slash : "Урон (пассив)",
-        passivePct: passivePct,
-        commandPct: dm
-      });
-    } else if (c.crit_chance_base != null) {
-      var cc = (c.crit_chance_base + c.crit_chance_per_level * (L - 1)) * 100;
-      var cdmg = (c.crit_damage_base + c.crit_damage_per_level * (L - 1)) * 100;
-      add("/" + slash + " шанс", "+" + pct(cc, 0), cmdTone);
-      add("/" + slash + " сила", "+" + pct(cdmg, 0), cmdTone);
-      finishHero({
-        value: "+" + pct(cc, 0),
-        label: "/" + slash + (cmdOn ? " шанс крита" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: cc,
-        subExtra: "сила +" + pct(cdmg, 0)
-      });
-    } else if (c.damage_reduction_base != null) {
-      var dr = (c.damage_reduction_base + c.damage_reduction_per_level * (L - 1)) * 100;
-      add("/" + slash + " DR", pct(dr, 1), cmdTone);
-      finishHero({
-        value: pct(dr, 1),
-        label: "/" + slash + (cmdOn ? " DR" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: dr,
-        subExtra: "снижение входящего"
-      });
-    } else if (c.shield_regen_mult_base != null) {
-      var sr = (c.shield_regen_mult_base + c.shield_regen_mult_per_level * (L - 1)) * 100;
-      var mr = (c.mythic_regen_mult_base + c.mythic_regen_mult_per_level * (L - 1)) * 100;
-      add("/" + slash + " щит", "+" + pct(sr, 0), cmdTone);
-      add("/" + slash + " миф", "+" + pct(mr, 0), cmdTone);
-      finishHero({
-        value: "+" + pct(sr, 0),
-        label: "/" + slash + (cmdOn ? " реген щита" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: sr,
-        subExtra: "миф +" + pct(mr, 0)
-      });
-    } else if (c.weight_reduction_base != null) {
-      var wr = (c.weight_reduction_base + c.weight_reduction_per_level * (L - 1)) * 100;
-      var dur = Number(c.duration_sec || 0);
-      add("/" + slash, "−" + pct(wr, 0), cmdTone);
-      add("Длительность", fmtCd(dur), cmdTone);
-      finishHero({
-        value: "−" + pct(wr, 0),
-        label: "/" + slash + (cmdOn ? " вес" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: wr,
-        subExtra: "длительность " + fmtCd(dur)
-      });
-    } else if (c.entangle_bonus_base != null) {
-      var eb = (c.entangle_bonus_base + c.entangle_bonus_per_level * (L - 1)) * 100;
-      var rounds = c.duration_rounds_base + c.duration_rounds_per_level * (L - 1);
-      add("/" + slash, "+" + pct(eb, 0), cmdTone);
-      add("Раундов /" + slash, String(rounds), cmdTone);
-      out.bars.push({
-        label: "/" + slash,
-        pct: cmdOn ? eb : 0,
-        max: 100,
-        display: cmdOn ? "+" + pct(eb, 0) : "—"
-      });
-      finishHero({
-        value: "+" + pct(passivePct + (cmdOn ? eb : 0), 1),
-        label: cmdOn ? "Запутывание пассив + /" + slash : "Запутывание (пассив)",
-        passivePct: passivePct,
-        commandPct: eb,
-        subExtra: rounds + " раунд(ов)"
-      });
-    } else if (c.uses_equals_level) {
-      var cap = Number(c.uses_cap || 9);
-      var uses = Math.min(cap, L);
-      var usesPct = (uses / cap) * 100;
-      add("/" + slash + " uses", String(uses), cmdTone);
-      finishHero({
-        value: String(uses),
-        label: "/" + slash + (cmdOn ? " hops" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: usesPct,
-        subExtra: "использований за сессию"
-      });
-    } else if (c.uses_per_two_levels != null) {
-      var rUses = Number(c.uses_base || 1) + Math.floor(L / 2) * Number(c.uses_per_two_levels || 0);
-      var maxUses = Number(c.uses_base || 1) + Math.floor(9 / 2) * Number(c.uses_per_two_levels || 0);
-      var rPct = (rUses / Math.max(1, maxUses)) * 100;
-      add("/" + slash + " uses", String(rUses), cmdTone);
-      finishHero({
-        value: String(rUses),
-        label: "/" + slash + (cmdOn ? " uses" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: rPct,
-        subExtra: "на карточке встречи"
-      });
-    } else if (c.analysis_cap != null) {
-      var alvl = Math.min(Number(c.analysis_cap || 9), L);
-      var acap = Number(c.analysis_cap || 9);
-      add("/" + slash, String(alvl), cmdTone);
-      finishHero({
-        value: String(alvl),
-        label: "/" + slash + (cmdOn ? " уровень" : " (выкл)"),
-        passivePct: passivePct,
-        commandPct: (alvl / acap) * 100,
-        subExtra: "детализация разбора"
-      });
-    } else if (c.rarity_tier_boost != null) {
-      add("/" + slash, "+" + fmtNum(c.rarity_tier_boost, 0) + " tier", cmdTone);
-      add("TTL заряда", fmtCd(Number(c.ttl_sec || 0)), cmdTone);
-      finishHero({
-        value: "+" + fmtNum(c.rarity_tier_boost, 0) + " tier",
-        label: "/" + slash + (cmdOn ? "" : " + пассив"),
-        passivePct: passivePct,
-        commandPct: 100,
-        subExtra: "TTL " + fmtCd(Number(c.ttl_sec || 0))
-      });
-    } else if (slash) {
-      // Instant / empty effect — ring still carries passive%; command = charged gauge.
-      finishHero({
-        value: passivePct > 0 ? "+" + pct(passivePct, 1) : fmtCd(cd),
-        label: passivePct > 0 ? "Пассив" : "/" + slash + " КД",
-        passivePct: passivePct,
-        commandPct: 100,
-        subExtra: "КД " + fmtCd(cd)
-      });
-    } else {
-      // Passive-only module
-      finishHero({
-        value: passivePct > 0 ? "+" + pct(passivePct, 1) : "—",
-        label: "Пассив",
-        passivePct: passivePct,
-        commandPct: 0,
-        subExtra: "без команды"
+      var hp = p.max_health_per_level != null ? p.max_health_per_level * L : 0;
+      var liveHeal = cmdOn ? heal : 0;
+      return pack({
+        cmdOn: cmdOn,
+        passN: 0,
+        cmdN: heal,
+        ringPct: liveHeal,
+        heroValue: pct(liveHeal || heal, 1),
+        heroLabel: cmdOn ? "Хил от /" + slash : "Хил (команда выкл)",
+        passText: hp ? "+" + fmtNum(hp, 0) + " HP" : p.health_regen_flat != null ? "+" + fmtNum(p.health_regen_flat, 0) + " реген" : "есть",
+        cmdLabel: "/" + slash,
+        cmdText: pct(heal, 1),
+        extraLabel: "Реген HP/ход",
+        extraText: p.health_regen_flat != null ? "+" + fmtNum(p.health_regen_flat, 0) : "—",
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? pct(heal, 1) + " хил" : "только пассив",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? pct(heal, 1) + " + пассив HP" : "пассив HP",
+        cd: cd
       });
     }
 
-    return out;
+    if (c.purge_pct_base != null) {
+      var purge = (c.purge_pct_base + c.purge_pct_per_level * (L - 1)) * 100;
+      var resist = p.status_resist != null ? p.status_resist * 100 : 0;
+      var livePurge = cmdOn ? purge : 0;
+      return pack({
+        cmdOn: cmdOn,
+        passN: resist,
+        cmdN: purge,
+        ringPct: resist + livePurge > 100 ? 100 : resist + livePurge,
+        heroValue: pct(cmdOn ? purge : resist, 0),
+        heroLabel: cmdOn ? "Очистка /" + slash : "Сопр. статусам",
+        passText: resist ? pct(resist, 0) : "—",
+        cmdLabel: "/" + slash,
+        cmdText: pct(purge, 0),
+        extraLabel: "Лимит азота",
+        extraText:
+          p.max_nitrogen_per_level != null ? "+" + fmtNum(p.max_nitrogen_per_level * L, 0) : "—",
+        totalLabel: "Суммарный %",
+        totalText: pct(resist + livePurge, 0),
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "пассив + очистка " + pct(purge, 0) : "только пассив",
+        cd: cd
+      });
+    }
+
+    if (c.damage_mult_base != null) {
+      var passDmg = p.damage_pct_per_level != null ? p.damage_pct_per_level * L * 100 : 0;
+      var cmdDmg = (c.damage_mult_base + c.damage_mult_per_level * (L - 1)) * 100;
+      var liveDmg = cmdOn ? cmdDmg : 0;
+      var totalDmg = passDmg + liveDmg;
+      return pack({
+        cmdOn: cmdOn,
+        passN: passDmg,
+        cmdN: cmdDmg,
+        ringPct: totalDmg,
+        heroValue: "+" + pct(totalDmg, 1),
+        heroLabel: "Суммарный бонус урона",
+        passText: "+" + pct(passDmg, 1),
+        cmdLabel: "/" + slash,
+        cmdText: "+" + pct(cmdDmg, 0),
+        extraLabel: "Добивание",
+        extraText: p.execute_bonus != null ? "+" + pct(p.execute_bonus * 100, 0) : "—",
+        totalLabel: "Суммарный бонус",
+        totalText: "+" + pct(totalDmg, 1),
+        resultLabel: "Урон с модулем (оценка)",
+        resultText: "+" + pct(totalDmg, 1),
+        cd: cd
+      });
+    }
+
+    if (c.crit_chance_base != null) {
+      var passCrit =
+        p.crit_bonus_per_level != null
+          ? p.crit_bonus_per_level * L * 100
+          : p.double_tap_per_level != null
+            ? p.double_tap_per_level * L * 100
+            : 0;
+      var cc = (c.crit_chance_base + c.crit_chance_per_level * (L - 1)) * 100;
+      var cdmg = (c.crit_damage_base + c.crit_damage_per_level * (L - 1)) * 100;
+      var liveCc = cmdOn ? cc : 0;
+      var totalCrit = passCrit + liveCc;
+      return pack({
+        cmdOn: cmdOn,
+        passN: passCrit,
+        cmdN: cc,
+        ringPct: totalCrit,
+        heroValue: "+" + pct(totalCrit, 1),
+        heroLabel: "Крит / усиление",
+        passText: "+" + pct(passCrit, 1),
+        cmdLabel: "/" + slash,
+        cmdText: "+" + pct(cc, 0),
+        extraLabel: "Сила крита /" + slash,
+        extraText: "+" + pct(cdmg, 0),
+        totalLabel: "Суммарный %",
+        totalText: "+" + pct(totalCrit, 1),
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "пассив + шанс +" + pct(cc, 0) : "только пассив",
+        cd: cd
+      });
+    }
+
+    if (c.damage_reduction_base != null) {
+      var passDr = p.control_resist != null ? p.control_resist * 100 : 0;
+      var dr = (c.damage_reduction_base + c.damage_reduction_per_level * (L - 1)) * 100;
+      var liveDr = cmdOn ? dr : 0;
+      return pack({
+        cmdOn: cmdOn,
+        passN: passDr,
+        cmdN: dr,
+        ringPct: passDr + liveDr,
+        heroValue: pct(cmdOn ? dr : passDr, 1),
+        heroLabel: cmdOn ? "DR /" + slash : "Пассивная защита",
+        passText: passDr ? pct(passDr, 0) : p.max_health_per_level != null ? "+" + fmtNum(p.max_health_per_level * L, 0) + " HP" : "—",
+        cmdLabel: "/" + slash,
+        cmdText: pct(dr, 1),
+        extraLabel: "Макс. HP",
+        extraText:
+          p.max_health_per_level != null ? "+" + fmtNum(p.max_health_per_level * L, 0) : "—",
+        totalLabel: "Суммарный %",
+        totalText: pct(passDr + liveDr, 1),
+        resultLabel: "Защита с модулем",
+        resultText: cmdOn ? "пассив + DR " + pct(dr, 1) : "только пассив",
+        cd: cd
+      });
+    }
+
+    if (c.shield_regen_mult_base != null) {
+      var passSh = p.armor_bonus_per_level != null ? p.armor_bonus_per_level * L : 0;
+      var sr = (c.shield_regen_mult_base + c.shield_regen_mult_per_level * (L - 1)) * 100;
+      var mr = (c.mythic_regen_mult_base + c.mythic_regen_mult_per_level * (L - 1)) * 100;
+      var liveSr = cmdOn ? sr : 0;
+      return pack({
+        cmdOn: cmdOn,
+        passN: Math.min(100, passSh * 10),
+        cmdN: sr,
+        ringPct: liveSr || Math.min(100, passSh * 10),
+        heroValue: cmdOn ? "+" + pct(sr, 0) : "+" + fmtNum(passSh, 1),
+        heroLabel: cmdOn ? "Реген щита /" + slash : "Броня (пассив)",
+        passText: "+" + fmtNum(passSh, 1) + " брони",
+        cmdLabel: "/" + slash,
+        cmdText: "+" + pct(sr, 0),
+        extraLabel: "Миф. реген /" + slash,
+        extraText: "+" + pct(mr, 0),
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? "+" + pct(sr, 0) + " реген" : "только пассив",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "пассив + реген щита" : "только пассив",
+        cd: cd
+      });
+    }
+
+    if (c.weight_reduction_base != null) {
+      var slots = p.inventory_slots_per_level != null ? p.inventory_slots_per_level * L : 0;
+      var wr = (c.weight_reduction_base + c.weight_reduction_per_level * (L - 1)) * 100;
+      var dur = Number(c.duration_sec || 0);
+      var liveWr = cmdOn ? wr : 0;
+      return pack({
+        cmdOn: cmdOn,
+        passN: 0,
+        cmdN: wr,
+        ringPct: liveWr,
+        heroValue: cmdOn ? "−" + pct(wr, 0) : "+" + fmtNum(slots, 0),
+        heroLabel: cmdOn ? "Вес /" + slash : "Слоты (пассив)",
+        passText: slots ? "+" + fmtNum(slots, 0) + " слот." : p.max_weight_per_level != null ? "+" + fmtNum(p.max_weight_per_level * L, 0) + " вес" : "—",
+        cmdLabel: "/" + slash,
+        cmdText: "−" + pct(wr, 0),
+        extraLabel: "Длительность",
+        extraText: fmtCd(dur),
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? "−" + pct(wr, 0) + " вес" : "только пассив",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "пассив + облегчение" : "только пассив",
+        cd: cd
+      });
+    }
+
+    if (c.entangle_bonus_base != null) {
+      var passEn = p.entangler_per_level != null ? p.entangler_per_level * L * 100 : 0;
+      var eb = (c.entangle_bonus_base + c.entangle_bonus_per_level * (L - 1)) * 100;
+      var rounds =
+        Number(c.duration_rounds_base || 0) + Number(c.duration_rounds_per_level || 0) * (L - 1);
+      var liveEb = cmdOn ? eb : 0;
+      var totalEn = passEn + liveEb;
+      return pack({
+        cmdOn: cmdOn,
+        passN: passEn,
+        cmdN: eb,
+        ringPct: totalEn,
+        heroValue: "+" + pct(totalEn, 1),
+        heroLabel: "Суммарное запутывание",
+        passText: "+" + pct(passEn, 1),
+        cmdLabel: "/" + slash,
+        cmdText: "+" + pct(eb, 0),
+        extraLabel: "Раундов /" + slash,
+        extraText: String(rounds),
+        totalLabel: "Суммарный бонус",
+        totalText: "+" + pct(totalEn, 1),
+        resultLabel: "Итог с модулем",
+        resultText: "+" + pct(totalEn, 1),
+        cd: cd
+      });
+    }
+
+    if (c.uses_equals_level) {
+      var cap = Number(c.uses_cap || 9);
+      var uses = Math.min(cap, L);
+      var passV =
+        p.vigor_step_reduction_per_level != null
+          ? p.vigor_step_reduction_per_level * L * 100
+          : p.initiative_bonus_per_level != null
+            ? p.initiative_bonus_per_level * L * 100
+            : 0;
+      var liveUses = cmdOn ? (uses / cap) * 100 : 0;
+      return pack({
+        cmdOn: cmdOn,
+        passN: passV,
+        cmdN: (uses / cap) * 100,
+        ringPct: passV + liveUses > 100 ? 100 : passV + liveUses,
+        heroValue: cmdOn ? String(uses) : passV ? "−" + pct(passV, 1) : "—",
+        heroLabel: cmdOn ? "Uses /" + slash : "Пассив",
+        passText: passV ? "−" + pct(passV, 1) : "—",
+        cmdLabel: "/" + slash,
+        cmdText: String(uses),
+        extraLabel: "Кап uses",
+        extraText: String(cap),
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? uses + " hops" : "только пассив",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "пассив + " + uses + " uses" : "только пассив",
+        cd: cd
+      });
+    }
+
+    if (c.uses_per_two_levels != null) {
+      var rUses =
+        Number(c.uses_base || 1) + Math.floor(L / 2) * Number(c.uses_per_two_levels || 0);
+      var maxUses =
+        Number(c.uses_base || 1) + Math.floor(9 / 2) * Number(c.uses_per_two_levels || 0);
+      return pack({
+        cmdOn: cmdOn,
+        passN: 0,
+        cmdN: (rUses / Math.max(1, maxUses)) * 100,
+        ringPct: cmdOn ? (rUses / Math.max(1, maxUses)) * 100 : 0,
+        heroValue: cmdOn ? String(rUses) : "—",
+        heroLabel: "Uses /" + slash,
+        passText: "нет",
+        cmdLabel: "/" + slash,
+        cmdText: String(rUses),
+        extraLabel: "Макс. на L9",
+        extraText: String(maxUses),
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? rUses + " uses" : "—",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? String(rUses) + " uses" : "команда выкл",
+        cd: cd
+      });
+    }
+
+    if (c.analysis_cap != null) {
+      var alvl = Math.min(Number(c.analysis_cap || 9), L);
+      var acap = Number(c.analysis_cap || 9);
+      return pack({
+        cmdOn: cmdOn,
+        passN: 0,
+        cmdN: (alvl / acap) * 100,
+        ringPct: cmdOn ? (alvl / acap) * 100 : 0,
+        heroValue: cmdOn ? String(alvl) : "—",
+        heroLabel: "Уровень /" + slash,
+        passText: "нет",
+        cmdLabel: "/" + slash,
+        cmdText: String(alvl),
+        extraLabel: "Кап анализа",
+        extraText: String(acap),
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? "ур. " + alvl : "—",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "разбор ур. " + alvl : "команда выкл",
+        cd: cd
+      });
+    }
+
+    if (c.rarity_tier_boost != null) {
+      var passFind =
+        p.rare_find_bonus_per_level != null
+          ? p.rare_find_bonus_per_level * L * 100
+          : p.bonus_rarity_tier_per_level != null
+            ? p.bonus_rarity_tier_per_level * L * 100
+            : 0;
+      return pack({
+        cmdOn: cmdOn,
+        passN: passFind,
+        cmdN: 100,
+        ringPct: passFind + (cmdOn ? 40 : 0),
+        heroValue: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " tier" : "+" + pct(passFind, 1),
+        heroLabel: cmdOn ? "/" + slash : "Пассивный лут",
+        passText: passFind ? "+" + pct(passFind, 1) : "—",
+        cmdLabel: "/" + slash,
+        cmdText: "+" + fmtNum(c.rarity_tier_boost, 0) + " tier",
+        extraLabel: "TTL заряда",
+        extraText: fmtCd(Number(c.ttl_sec || 0)),
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " tier" : "только пассив",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "пассив + заряд tier" : "только пассив",
+        cd: cd
+      });
+    }
+
+    // Passive-only or CD-only command (instant search etc.)
+    var passOnly =
+      p.base_chance_bonus_per_level != null
+        ? p.base_chance_bonus_per_level * L * 100
+        : p.scrap_bonus_per_level != null
+          ? p.scrap_bonus_per_level * L * 100
+          : p.damage_pct_per_level != null
+            ? p.damage_pct_per_level * L * 100
+            : p.vigor_step_reduction_per_level != null
+              ? p.vigor_step_reduction_per_level * L * 100
+              : 0;
+
+    if (slash) {
+      return pack({
+        cmdOn: cmdOn,
+        passN: passOnly,
+        cmdN: 100,
+        ringPct: passOnly + (cmdOn ? 25 : 0),
+        heroValue: passOnly ? "+" + pct(passOnly, 1) : fmtCd(cd),
+        heroLabel: passOnly ? "Пассив" : "КД /" + slash,
+        passText: passOnly ? "+" + pct(passOnly, 1) : "—",
+        cmdLabel: "/" + slash,
+        cmdText: "готово",
+        extraLabel: "КД команды",
+        extraText: fmtCd(cd),
+        totalLabel: "Эффект сейчас",
+        totalText: cmdOn ? "пассив + команда" : passOnly ? "только пассив" : "—",
+        resultLabel: "Итог с модулем",
+        resultText: cmdOn ? "команда активна" : "команда выкл",
+        cd: cd
+      });
+    }
+
+    return pack({
+      cmdOn: false,
+      passN: passOnly,
+      cmdN: 0,
+      ringPct: passOnly,
+      heroValue: passOnly ? "+" + pct(passOnly, 1) : "—",
+      heroLabel: "Пассив",
+      passText: passOnly ? "+" + pct(passOnly, 1) : "—",
+      cmdLabel: "Команда",
+      cmdText: "—",
+      extraLabel: "Доп.",
+      extraText: "—",
+      totalLabel: "Сумма",
+      totalText: passOnly ? "+" + pct(passOnly, 1) : "—",
+      resultLabel: "Итог с модулем",
+      resultText: passOnly ? "+" + pct(passOnly, 1) : "—",
+      cd: 0
+    });
   }
 
   function renderStats(grid, rows) {
@@ -454,12 +656,16 @@
     host.innerHTML = bars
       .map(function (b) {
         var w = Math.min(100, (b.pct / (b.max || 100)) * 100);
+        var fill =
+          b.tone === "pin" ? "bg-primary" : "bg-muted-foreground/50";
         return (
           '<div class="flex items-center gap-3 py-1 font-mono text-xs">' +
           '<span class="w-14 shrink-0 text-muted-foreground">' +
           b.label +
           "</span>" +
-          '<div class="h-2 flex-1 overflow-hidden rounded-full bg-input"><div class="h-full rounded-full bg-ok/80 transition-[width] duration-500 ease-out" style="width:' +
+          '<div class="h-2 flex-1 overflow-hidden rounded-full bg-input"><div class="h-full rounded-full ' +
+          fill +
+          ' transition-[width] duration-500 ease-out" style="width:' +
           w +
           '%"></div></div>' +
           '<span class="w-12 shrink-0 text-right tabular-nums text-muted-foreground">' +
@@ -493,7 +699,8 @@
     var barsHost = root.querySelector("[data-bars]");
     var cdLine = root.querySelector("[data-cd-line]");
 
-    var state = { level: 3, dodge: 20, equipped: true, cmdOn: false };
+    // Reference default: command ON (cardify pin active).
+    var state = { level: 3, dodge: 20, equipped: true, cmdOn: true };
     var slash = (mod.command && mod.command.slash) || "";
 
     function setDisabledLook(disabled) {
@@ -501,6 +708,23 @@
       levelGroup.style.pointerEvents = disabled ? "none" : "";
       cmdBtn.style.opacity = disabled ? "0.45" : "";
       cmdBtn.style.pointerEvents = disabled ? "none" : "";
+    }
+
+    function applyView(view) {
+      applyRing(
+        heroRing,
+        heroValue,
+        view.hero.ringPct,
+        state.equipped && view.hero.ringPct > 0,
+        view.hero.value
+      );
+      if (heroLabel) heroLabel.textContent = view.hero.label;
+      if (heroSub) heroSub.textContent = "";
+      renderStats(statsGrid, view.rows);
+      renderBars(barsHost, view.bars);
+      if (cdLine) {
+        cdLine.textContent = state.equipped && view.cd ? "КД команды: " + fmtCd(view.cd) : "";
+      }
     }
 
     function render() {
@@ -529,97 +753,12 @@
       if (dodgeValueEl) dodgeValueEl.textContent = pct(state.dodge, 0);
 
       if (mod.sim_kind === "stasis_anchor") {
-        var p = calcStasis(mod, state.level, state.dodge, state.equipped, state.cmdOn);
-        applyRing(heroRing, heroValue, p.ringPct, state.equipped, pct(p.hit, 0));
-        if (heroLabel) heroLabel.textContent = "Ваш шанс попадания (оценка)";
-        if (heroSub) {
-          if (!state.equipped) heroSub.textContent = "";
-          else if (state.cmdOn) heroSub.textContent = "пассив + /" + slash;
-          else heroSub.textContent = "пассив (/" + slash + " выкл)";
-        }
-
-        var pinPreview = state.equipped
-          ? Math.min(95, Number(((mod.command && mod.command.effect) || {}).enemy_evasion_penalty_per_level || 0.05) * state.level * 100)
-          : 0;
-        var roundsPreview = state.equipped
-          ? Math.min(
-              Number(((mod.command && mod.command.effect) || {}).duration_rounds_cap || 27),
-              Number(((mod.command && mod.command.effect) || {}).duration_rounds_per_level || 3) * state.level
-            )
-          : 0;
-
-        var rows = [
-          {
-            label: "Пассив",
-            value: state.equipped ? "−" + pct(p.passive, 0) : "—",
-            tone: state.equipped ? "fg" : "muted"
-          },
-          {
-            label: "/" + slash,
-            value: state.equipped ? "−" + pct(state.cmdOn ? p.pin : pinPreview, 0) : "—",
-            tone: state.equipped && state.cmdOn ? "ok" : "muted"
-          },
-          {
-            label: "Раундов /" + slash,
-            value: state.equipped ? String(state.cmdOn ? p.rounds : roundsPreview) : "—",
-            tone: state.equipped && state.cmdOn ? "fg" : "muted"
-          },
-          {
-            label: "Суммарный штраф",
-            value: state.equipped ? "−" + pct(p.total, 0) : "—",
-            tone: state.equipped ? "ok" : "muted"
-          },
-          {
-            label: "Dodge врага после якоря",
-            value: pct(p.eff, 0),
-            tone: "ok",
-            wide: true
-          }
-        ];
-        renderStats(statsGrid, rows);
-        if (cdLine) {
-          cdLine.textContent = state.equipped
-            ? "КД команды: " + fmtCd(p.cd)
-            : "";
-        }
-        var scale = Math.max(50, p.passive + Math.max(pinPreview, 1), 1);
-        renderBars(
-          barsHost,
-          state.equipped
-            ? [
-                {
-                  label: "Пасс",
-                  pct: p.passive,
-                  max: scale,
-                  display: "−" + pct(p.passive, 0)
-                },
-                {
-                  label: "/" + slash,
-                  pct: state.cmdOn ? p.pin : 0,
-                  max: scale,
-                  display: state.cmdOn ? "−" + pct(p.pin, 0) : "—"
-                }
-              ]
-            : []
+        applyView(
+          calcStasis(mod, state.level, state.dodge, state.equipped, state.cmdOn)
         );
-        return;
+      } else {
+        applyView(calcGeneric(mod, state.level, state.equipped, state.cmdOn));
       }
-
-      var g = calcGeneric(mod, state.level, state.equipped, state.cmdOn);
-      applyRing(
-        heroRing,
-        heroValue,
-        g.hero.ringPct,
-        state.equipped && g.hero.ringPct > 0,
-        g.hero.value
-      );
-      if (heroLabel) heroLabel.textContent = g.hero.label;
-      if (heroSub) heroSub.textContent = g.hero.sub || "";
-      renderStats(statsGrid, g.rows);
-      if (cdLine) {
-        cdLine.textContent = state.equipped ? "КД команды: " + fmtCd(g.cd) : "";
-      }
-      renderBars(barsHost, g.bars);
     }
 
     levelBtns.forEach(function (btn) {
@@ -644,6 +783,7 @@
     equipBtn.addEventListener("click", function () {
       state.equipped = !state.equipped;
       if (!state.equipped) state.cmdOn = false;
+      else state.cmdOn = true;
       render();
     });
     cmdBtn.addEventListener("click", function () {
@@ -676,7 +816,6 @@
       bootModule(mod, root);
     }
 
-    // Prefer in-page embed (no network) — works in Telegram WebView / offline cache.
     var embedded = document.getElementById("stw-module-data");
     if (embedded && embedded.textContent) {
       try {
