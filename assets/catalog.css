@@ -1,0 +1,157 @@
+/* Catalog layout: section gaps, cover cards, emoji badge */
+
+.vc-arch-section {
+  isolation: isolate;
+  margin-top: 3.75rem;
+  position: relative;
+}
+
+.vc-arch-section:first-of-type {
+  margin-top: 2.75rem;
+}
+
+.vc-arch-heading {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1.15rem;
+  padding-bottom: 0.75rem;
+  background: var(--background, #060911);
+}
+
+.vc-arch-cards {
+  position: relative;
+  z-index: 1;
+}
+
+/* Catalog card: cover + body */
+a.vc-mod-card {
+  z-index: 1;
+  padding: 0 !important;
+}
+
+.vc-mod-card-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.vc-mod-cover {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(8, 14, 24, 0.15), rgba(6, 9, 17, 0.55)),
+    #0b1220;
+}
+
+.vc-mod-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.vc-mod-cover::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(6, 9, 17, 0.72));
+}
+
+.vc-mod-emoji {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  line-height: 1;
+  background: rgba(6, 9, 17, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+.vc-mod-body {
+  padding: 1.1rem 1.15rem 1.2rem;
+}
+
+@media (min-width: 640px) {
+  .vc-mod-card-inner {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .vc-mod-cover {
+    width: 168px;
+    min-height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .vc-mod-body {
+    flex: 1;
+    padding: 1.15rem 1.25rem 1.25rem 1.1rem;
+  }
+}
+
+/* Module page header with mini cover */
+.vc-mod-page-top {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.vc-mod-page-cover {
+  position: relative;
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+  border-radius: 0.85rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0b1220;
+}
+
+.vc-mod-page-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vc-mod-page-cover .vc-mod-emoji {
+  top: 0.35rem;
+  left: 0.35rem;
+  width: 1.65rem;
+  height: 1.65rem;
+  font-size: 0.85rem;
+}
+
+.vc-mod-page-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+@media (max-width: 639px) {
+  .vc-arch-section {
+    margin-top: 2.25rem;
+  }
+
+  .vc-arch-heading {
+    margin-bottom: 0.85rem;
+  }
+
+  .vc-mod-page-cover {
+    width: 72px;
+    height: 72px;
+  }
+}

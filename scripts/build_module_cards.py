@@ -10,8 +10,8 @@ STW = Path(r"D:\STW_GAME")
 ROOT = Path(r"D:\visual-cards")
 OUT_DATA = ROOT / "data" / "modules.json"
 OUT_MODULES = ROOT / "modules"
+COVERS = ROOT / "assets" / "covers"
 
-# Keep legacy URL for the flagship card
 FILENAME_OVERRIDE = {"tactical_stasis_anchor": "stasis_anchor.html"}
 
 ARCHETYPE_ORDER = [
@@ -56,6 +56,17 @@ EMOJI_RE = re.compile(
     "]+",
     flags=re.UNICODE,
 )
+
+CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=6"/>
+  <link rel="stylesheet" href="../assets/compact.css?v=1"/>
+  <link rel="stylesheet" href="../assets/touch-safe.css?v=4"/>
+  <link rel="stylesheet" href="../assets/rarity.css?v=8"/>
+  <link rel="stylesheet" href="../assets/catalog.css?v=1"/>"""
+
+
+def extract_emoji(text: str) -> str:
+    m = EMOJI_RE.search(text or "")
+    return m.group(0) if m else ""
 
 
 def strip_emoji(text: str) -> str:
@@ -136,7 +147,6 @@ def build_sources(item: dict, arena: dict | None) -> list[str]:
 
 def catalog_blurb(mod: dict) -> str:
     slash = mod["command"]["slash"]
-    name = mod["name"]
     if mod["id"] == "tactical_stasis_anchor":
         return (
             "Интерактивная карточка анти-уклонения: уровни L1–L9, /pin, "
@@ -145,6 +155,13 @@ def catalog_blurb(mod: dict) -> str:
     if not mod["passive"]:
         return f"Интерактивная карточка: L1–L9 и команда /{slash}."
     return f"Интерактивная карточка: пассивы по уровню, /{slash}, экип вкл/выкл."
+
+
+def cover_rel(mid: str, *, from_modules: bool = True) -> str:
+    name = f"{mid}.png"
+    if from_modules:
+        return f"../assets/covers/{name}"
+    return f"./assets/covers/{name}"
 
 
 def build_modules() -> list[dict]:
@@ -161,17 +178,20 @@ def build_modules() -> list[dict]:
         item = items.get(mid)
         if not item or item.get("type") != "module":
             raise SystemExit(f"Missing module item: {mid}")
+        raw_name = item.get("name") or mid
         cmd_cfg = commands.get(mid) or {}
         filename = FILENAME_OVERRIDE.get(mid, f"{mid}.html")
         mod = {
             "id": mid,
             "filename": filename,
-            "name": strip_emoji(item.get("name") or mid),
+            "emoji": extract_emoji(raw_name),
+            "name": strip_emoji(raw_name),
             "rarity": item.get("rarity") or "common",
             "archetype": item.get("module_archetype") or "tactical",
             "slots": int(item.get("slots_required") or 1),
             "description": (item.get("description") or "").strip(),
             "effect_text": (item.get("effect") or "").strip(),
+            "cover": cover_rel(mid, from_modules=True),
             "passive": dict(effects.get(mid) or {}),
             "command": {
                 "slash": cmd_cfg.get("command") or "",
@@ -250,7 +270,16 @@ def switch_html(sid: str, title: str, sub: str, on: bool) -> str:
     border = "border-primary/50 bg-primary/10" if on else "border-border bg-secondary"
     track = "bg-primary" if on else "bg-input"
     knob = "translate-x-[22px]" if on else "translate-x-0.5"
-    return f"""<button type="button" role="switch" aria-checked="{checked}" id="{sid}" class="flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors {border}"><span><span class="block text-sm font-semibold text-foreground">{title}</span><span class="mt-0.5 block text-xs text-muted-foreground">{sub}</span></span><span class="relative h-6 w-11 shrink-0 rounded-full transition-colors {track}" aria-hidden="true"><span class="absolute top-0.5 size-5 rounded-full bg-background transition-transform {knob}"></span></span></button>"""
+    return (
+        f'<button type="button" role="switch" aria-checked="{checked}" id="{sid}" '
+        f'class="flex items-center justify-between gap-3 rounded-xl border px-4 py-3 '
+        f'text-left transition-colors {border}"><span>'
+        f'<span class="block text-sm font-semibold text-foreground">{title}</span>'
+        f'<span class="mt-0.5 block text-xs text-muted-foreground">{sub}</span></span>'
+        f'<span class="relative h-6 w-11 shrink-0 rounded-full transition-colors {track}" '
+        f'aria-hidden="true"><span class="absolute top-0.5 size-5 rounded-full bg-background '
+        f'transition-transform {knob}"></span></span></button>'
+    )
 
 
 def dodge_block_html() -> str:
@@ -300,16 +329,24 @@ def bars_placeholder() -> str:
     return '<div class="rounded-xl border border-border bg-secondary/60 p-4" data-bars aria-hidden="true"></div>'
 
 
+def emoji_badge(emoji: str) -> str:
+    if not emoji:
+        return ""
+    return f'<span class="vc-mod-emoji" aria-hidden="true">{emoji}</span>'
+
+
 def page_html(mod: dict) -> str:
     rarity = mod["rarity"]
     arch = ARCHETYPE_RU.get(mod["archetype"], mod["archetype"])
     slash = mod["command"]["slash"]
     title = mod["name"]
+    emoji = mod.get("emoji") or ""
     desc = mod["description"] or mod["effect_text"]
     page_class = f"vc-page-{rarity}" if rarity == "legendary" else ""
     header_rarity = f"vc-rarity-{rarity}"
     sim_rarity = f"vc-rarity-{rarity}-sim"
     border_accent = f"border-{rarity}/40" if rarity != "common" else "border-border"
+    cover = mod.get("cover") or cover_rel(mod["id"])
 
     howto = "".join(
         f'<li class="flex gap-3 text-sm leading-relaxed">'
@@ -325,11 +362,13 @@ def page_html(mod: dict) -> str:
 
     extra = dodge_block_html() if mod["sim_kind"] == "stasis_anchor" else ""
     cmd_title = (
-        f'Команда <code class="rounded bg-background/60 px-1 py-0.5 font-mono text-[13px] text-primary">/{slash}</code> выкл'
+        f'Команда <code class="rounded bg-background/60 px-1 py-0.5 font-mono text-[13px] text-primary">'
+        f"/{slash}</code> выкл"
     )
 
     canonical = f"https://nikitakozemyaka.github.io/visual-cards/modules/{mod['filename']}"
     og_desc = esc(mod["catalog_blurb"])
+    emoji_html = emoji_badge(emoji)
 
     return f"""<!DOCTYPE html>
 <html lang="ru" class="dark bg-background space_grotesk_e6988195-module__RNs2Mq__variable jetbrains_mono_83faaeae-module__xxnQGG__variable">
@@ -340,10 +379,7 @@ def page_html(mod: dict) -> str:
   <link rel="preload" href="../_next/static/immutable/media/70bc3e132a0a741e-s.p.269kn9uafm0ti.woff2" as="font" crossorigin="" type="font/woff2"/>
   <link rel="preload" href="../_next/static/immutable/media/cc545e633e20c56d-s.p.2sb9jzhmrh7ny.woff2" as="font" crossorigin="" type="font/woff2"/>
   <link rel="stylesheet" href="../_next/static/immutable/chunks/265wr7d9-g86g.css" data-precedence="next"/>
-  <link rel="stylesheet" href="../assets/site-motion.css?v=6"/>
-  <link rel="stylesheet" href="../assets/compact.css?v=1"/>
-  <link rel="stylesheet" href="../assets/touch-safe.css?v=4"/>
-  <link rel="stylesheet" href="../assets/rarity.css?v=7"/>
+{CSS_LINKS}
   <meta name="theme-color" content="#060911"/>
   <meta name="color-scheme" content="dark"/>
   <title>{esc(title)} · {RARITY_LABEL.get(rarity, rarity)} — STW Visual Cards</title>
@@ -368,14 +404,23 @@ def page_html(mod: dict) -> str:
         Все модули
       </a>
 
-      <header class="vc-rise vc-rise-d1 mt-6 rounded-2xl border border-border bg-card p-6 vc-card {header_rarity}">
-        <div class="flex flex-wrap items-center gap-2">
-          {rarity_badge(rarity)}
-          {chip(arch)}
-          {chip(str(mod["slots"]) + " слот")}
+      <header class="vc-rise vc-rise-d1 mt-6 rounded-2xl border border-border bg-card p-6 vc-card {header_rarity} vc-mod-page-header">
+        <div class="vc-mod-page-top">
+          <div class="vc-mod-page-cover">
+            <img src="{esc(cover)}" alt="" width="96" height="96" loading="lazy" decoding="async"/>
+            {emoji_html}
+          </div>
+          <div class="vc-mod-page-meta">
+            <div class="flex flex-wrap items-center gap-2">
+              {rarity_badge(rarity)}
+              {chip(arch)}
+              {chip(str(mod["slots"]) + " слот")}
+              {chip("/" + slash)}
+            </div>
+            <h1 class="mt-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl">{esc(title)}</h1>
+          </div>
         </div>
-        <h1 class="mt-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl">{esc(title)}</h1>
-        <p class="mt-3 text-pretty leading-relaxed text-muted-foreground">{esc(desc)}</p>
+        <p class="mt-4 text-pretty leading-relaxed text-muted-foreground">{esc(desc)}</p>
       </header>
 
       <div class="vc-rise vc-rise-d2 mt-4">
@@ -432,19 +477,30 @@ def page_html(mod: dict) -> str:
 def catalog_card(mod: dict, delay: str) -> str:
     rarity = mod["rarity"]
     arch = ARCHETYPE_RU.get(mod["archetype"], mod["archetype"])
+    slash = mod["command"]["slash"]
+    cover = mod.get("cover") or cover_rel(mod["id"])
+    emoji = emoji_badge(mod.get("emoji") or "")
     return f"""
-          <a class="vc-rise {delay} vc-rarity-{rarity} group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-{rarity}/70" href="./{esc(mod["filename"])}">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              {rarity_badge(rarity)}
-              {chip(arch)}
-              {chip("Модуль")}
+          <a class="vc-rise {delay} vc-mod-card vc-rarity-{rarity} group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-{rarity}/70" href="./{esc(mod["filename"])}">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="{esc(cover)}" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                {emoji}
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  {rarity_badge(rarity)}
+                  {chip(arch)}
+                  {chip("/" + slash)}
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">{esc(mod["name"])}</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">{esc(mod["catalog_blurb"])}</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">{esc(mod["name"])}</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">{esc(mod["catalog_blurb"])}</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>"""
 
 
@@ -460,12 +516,12 @@ def write_catalog(modules: list[dict]) -> None:
             cards.append(catalog_card(m, delay))
         sections.append(
             f"""
-      <section class="mt-12">
-        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
+      <section class="vc-arch-section">
+        <div class="vc-arch-heading vc-rise vc-rise-d2 flex items-center justify-between border-b border-border">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">{esc(ARCHETYPE_RU[arch])}</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">{len(group):02d} шт.</span>
         </div>
-        <div class="flex flex-col gap-4">{"".join(cards)}
+        <div class="vc-arch-cards flex flex-col gap-4">{"".join(cards)}
         </div>
       </section>"""
         )
@@ -480,10 +536,7 @@ def write_catalog(modules: list[dict]) -> None:
   <link rel="preload" href="../_next/static/immutable/media/70bc3e132a0a741e-s.p.269kn9uafm0ti.woff2" as="font" crossorigin="" type="font/woff2"/>
   <link rel="preload" href="../_next/static/immutable/media/cc545e633e20c56d-s.p.2sb9jzhmrh7ny.woff2" as="font" crossorigin="" type="font/woff2"/>
   <link rel="stylesheet" href="../_next/static/immutable/chunks/265wr7d9-g86g.css" data-precedence="next"/>
-  <link rel="stylesheet" href="../assets/site-motion.css?v=6"/>
-  <link rel="stylesheet" href="../assets/compact.css?v=1"/>
-  <link rel="stylesheet" href="../assets/touch-safe.css?v=4"/>
-  <link rel="stylesheet" href="../assets/rarity.css?v=7"/>
+{CSS_LINKS}
   <meta name="theme-color" content="#060911"/>
   <meta name="color-scheme" content="dark"/>
   <title>Модули — STW Visual Cards</title>
@@ -538,20 +591,23 @@ def patch_hub(n: int) -> None:
     path = ROOT / "index.html"
     text = path.read_text(encoding="utf-8")
     text2 = re.sub(
-        r"\d{2} карточка|\d{2} карточек|\d+ карточка|\d+ карточек",
+        r"\d{2} карточек|\d{2} карточка|\d+ карточек|\d+ карточка",
         f"{n:02d} карточек",
         text,
         count=1,
     )
-    if "01 карточка" in text:
-        text2 = text.replace("01 карточка", f"{n:02d} карточек")
     path.write_text(text2, encoding="utf-8")
 
 
 def main() -> None:
+    COVERS.mkdir(parents=True, exist_ok=True)
     modules = build_modules()
     OUT_DATA.parent.mkdir(parents=True, exist_ok=True)
-    payload = {"version": 1, "source": "STW_GAME module_balance + global_items", "modules": modules}
+    payload = {
+        "version": 2,
+        "source": "STW_GAME module_balance + global_items",
+        "modules": modules,
+    }
     OUT_DATA.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )

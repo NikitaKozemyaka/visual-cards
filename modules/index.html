@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="../assets/site-motion.css?v=6"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
   <link rel="stylesheet" href="../assets/touch-safe.css?v=4"/>
-  <link rel="stylesheet" href="../assets/rarity.css?v=7"/>
+  <link rel="stylesheet" href="../assets/rarity.css?v=8"/>
+  <link rel="stylesheet" href="../assets/catalog.css?v=1"/>
   <meta name="theme-color" content="#060911"/>
   <meta name="color-scheme" content="dark"/>
   <title>Модули — STW Visual Cards</title>
@@ -49,233 +50,345 @@
         </p>
       </section>
 
-      <section class="mt-12">
-        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
+      <section class="vc-arch-section">
+        <div class="vc-arch-heading vc-rise vc-rise-d2 flex items-center justify-between border-b border-border">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Выживание</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">02 шт.</span>
         </div>
-        <div class="flex flex-col gap-4">
-          <a class="vc-rise vc-rise-d2 vc-rarity-uncommon group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-uncommon/70" href="./survival_vital_weave.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-uncommon border-uncommon/40 bg-uncommon/10 shadow-[0_0_20px_-8px] shadow-uncommon/60">Uncommon</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Выживание</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+        <div class="vc-arch-cards flex flex-col gap-4">
+          <a class="vc-rise vc-rise-d2 vc-mod-card vc-rarity-uncommon group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-uncommon/70" href="./survival_vital_weave.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/survival_vital_weave.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🧬</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-uncommon border-uncommon/40 bg-uncommon/10 shadow-[0_0_20px_-8px] shadow-uncommon/60">Uncommon</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Выживание</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/stabilize</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Нейроимплант «Жизненная нить»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /stabilize, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Нейроимплант «Жизненная нить»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /stabilize, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d3 vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./survival_detox_lattice.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Выживание</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d3 vc-mod-card vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./survival_detox_lattice.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/survival_detox_lattice.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🌬</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Выживание</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/detox</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">️ Решётка «Детокс-канал»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /detox, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">️ Решётка «Детокс-канал»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /detox, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
         </div>
       </section>
-      <section class="mt-12">
-        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
+      <section class="vc-arch-section">
+        <div class="vc-arch-heading vc-rise vc-rise-d2 flex items-center justify-between border-b border-border">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Бой</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">02 шт.</span>
         </div>
-        <div class="flex flex-col gap-4">
-          <a class="vc-rise vc-rise-d2 vc-rarity-epic group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-epic/70" href="./combat_crit_matrix.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-epic border-epic/40 bg-epic/10 shadow-[0_0_20px_-8px] shadow-epic/60">Epic</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Бой</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+        <div class="vc-arch-cards flex flex-col gap-4">
+          <a class="vc-rise vc-rise-d2 vc-mod-card vc-rarity-epic group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-epic/70" href="./combat_crit_matrix.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/combat_crit_matrix.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🎯</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-epic border-epic/40 bg-epic/10 shadow-[0_0_20px_-8px] shadow-epic/60">Epic</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Бой</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/focus</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Матрица критических попаданий</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /focus, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Матрица критических попаданий</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /focus, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d3 vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./combat_kinetic_driver.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Бой</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d3 vc-mod-card vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./combat_kinetic_driver.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/combat_kinetic_driver.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">⚔</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Бой</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/overcharge</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">️ Кинетический привод «Удар»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /overcharge, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">️ Кинетический привод «Удар»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /overcharge, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
         </div>
       </section>
-      <section class="mt-12">
-        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
+      <section class="vc-arch-section">
+        <div class="vc-arch-heading vc-rise vc-rise-d2 flex items-center justify-between border-b border-border">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Экономика</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">02 шт.</span>
         </div>
-        <div class="flex flex-col gap-4">
-          <a class="vc-rise vc-rise-d2 vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./economy_relic_hunter.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Экономика</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+        <div class="vc-arch-cards flex flex-col gap-4">
+          <a class="vc-rise vc-rise-d2 vc-mod-card vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./economy_relic_hunter.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/economy_relic_hunter.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">⚡</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Экономика</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/prospect</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">ПГМ «Охотник за реликвиями»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /prospect, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">ПГМ «Охотник за реликвиями»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /prospect, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d3 vc-rarity-uncommon group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-uncommon/70" href="./economy_salvage_link.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-uncommon border-uncommon/40 bg-uncommon/10 shadow-[0_0_20px_-8px] shadow-uncommon/60">Uncommon</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Экономика</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d3 vc-mod-card vc-rarity-uncommon group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-uncommon/70" href="./economy_salvage_link.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/economy_salvage_link.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🧲</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-uncommon border-uncommon/40 bg-uncommon/10 shadow-[0_0_20px_-8px] shadow-uncommon/60">Uncommon</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Экономика</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/instant_search</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Ферросенсор «Связка утилизации»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /instant_search, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Ферросенсор «Связка утилизации»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /instant_search, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
         </div>
       </section>
-      <section class="mt-12">
-        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
+      <section class="vc-arch-section">
+        <div class="vc-arch-heading vc-rise vc-rise-d2 flex items-center justify-between border-b border-border">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Мобильность</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">02 шт.</span>
         </div>
-        <div class="flex flex-col gap-4">
-          <a class="vc-rise vc-rise-d2 vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./mobility_vector_thruster.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Мобильность</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+        <div class="vc-arch-cards flex flex-col gap-4">
+          <a class="vc-rise vc-rise-d2 vc-mod-card vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./mobility_vector_thruster.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/mobility_vector_thruster.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🚀</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Мобильность</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/teleport</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Векторный ускоритель «Рывок»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /teleport, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Векторный ускоритель «Рывок»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /teleport, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d3 vc-rarity-uncommon group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-uncommon/70" href="./mobility_load_anchor.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-uncommon border-uncommon/40 bg-uncommon/10 shadow-[0_0_20px_-8px] shadow-uncommon/60">Uncommon</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Мобильность</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d3 vc-mod-card vc-rarity-uncommon group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-uncommon/70" href="./mobility_load_anchor.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/mobility_load_anchor.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🎒</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-uncommon border-uncommon/40 bg-uncommon/10 shadow-[0_0_20px_-8px] shadow-uncommon/60">Uncommon</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Мобильность</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/compress</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Якорь нагрузки «Тяжеловоз»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /compress, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Якорь нагрузки «Тяжеловоз»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /compress, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
         </div>
       </section>
-      <section class="mt-12">
-        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
+      <section class="vc-arch-section">
+        <div class="vc-arch-heading vc-rise vc-rise-d2 flex items-center justify-between border-b border-border">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Защита</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">02 шт.</span>
         </div>
-        <div class="flex flex-col gap-4">
-          <a class="vc-rise vc-rise-d2 vc-rarity-epic group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-epic/70" href="./defense_guard_bastion.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-epic border-epic/40 bg-epic/10 shadow-[0_0_20px_-8px] shadow-epic/60">Epic</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Защита</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+        <div class="vc-arch-cards flex flex-col gap-4">
+          <a class="vc-rise vc-rise-d2 vc-mod-card vc-rarity-epic group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-epic/70" href="./defense_guard_bastion.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/defense_guard_bastion.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🏰</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-epic border-epic/40 bg-epic/10 shadow-[0_0_20px_-8px] shadow-epic/60">Epic</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Защита</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/brace</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Бастион «Страж»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /brace, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Бастион «Страж»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /brace, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d3 vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./defense_aegis_mesh.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Защита</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d3 vc-mod-card vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./defense_aegis_mesh.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/defense_aegis_mesh.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🔰</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Защита</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/aegis</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Эгида «Защитная сетка»</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /aegis, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Эгида «Защитная сетка»</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /aegis, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
         </div>
       </section>
-      <section class="mt-12">
-        <div class="vc-rise vc-rise-d2 mb-5 flex items-center justify-between border-b border-border pb-3">
+      <section class="vc-arch-section">
+        <div class="vc-arch-heading vc-rise vc-rise-d2 flex items-center justify-between border-b border-border">
           <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Тактика</h2>
           <span class="font-mono text-xs tabular-nums text-muted-foreground/60">04 шт.</span>
         </div>
-        <div class="flex flex-col gap-4">
-          <a class="vc-rise vc-rise-d2 vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./tactical_recon_lens.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+        <div class="vc-arch-cards flex flex-col gap-4">
+          <a class="vc-rise vc-rise-d2 vc-mod-card vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./tactical_recon_lens.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/tactical_recon_lens.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🔬</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/analyze</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Линза тактического разбора</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: L1–L9 и команда /analyze.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Линза тактического разбора</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: L1–L9 и команда /analyze.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d3 vc-rarity-legendary group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-legendary/70" href="./stasis_anchor.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-legendary border-legendary/40 bg-legendary/10 shadow-[0_0_20px_-8px] shadow-legendary/60">Legendary</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d3 vc-mod-card vc-rarity-legendary group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-legendary/70" href="./stasis_anchor.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/tactical_stasis_anchor.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">⚓</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-legendary border-legendary/40 bg-legendary/10 shadow-[0_0_20px_-8px] shadow-legendary/60">Legendary</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/pin</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Стазис-якорь</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка анти-уклонения: уровни L1–L9, /pin, dodge врага и примерный шанс попадания.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Стазис-якорь</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка анти-уклонения: уровни L1–L9, /pin, dodge врага и примерный шанс попадания.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d4 vc-rarity-epic group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-epic/70" href="./tactical_entangle_node.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-epic border-epic/40 bg-epic/10 shadow-[0_0_20px_-8px] shadow-epic/60">Epic</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d4 vc-mod-card vc-rarity-epic group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-epic/70" href="./tactical_entangle_node.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/tactical_entangle_node.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <span class="vc-mod-emoji" aria-hidden="true">🌀</span>
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-epic border-epic/40 bg-epic/10 shadow-[0_0_20px_-8px] shadow-epic/60">Epic</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/jam</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">Узел квантового запутывания</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /jam, экип вкл/выкл.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">Узел квантового запутывания</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: пассивы по уровню, /jam, экип вкл/выкл.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
-          <a class="vc-rise vc-rise-d2 vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card p-5 transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./tactical_stasis_tuner.html">
-            <div class="mb-4 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
-              <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Модуль</span>
+          <a class="vc-rise vc-rise-d2 vc-mod-card vc-rarity-rare group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-rare/70" href="./tactical_stasis_tuner.html">
+            <div class="vc-mod-card-inner">
+              <div class="vc-mod-cover">
+                <img src="../assets/covers/tactical_stasis_tuner.png" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                
+              </div>
+              <div class="vc-mod-body">
+                <div class="mb-3 flex flex-wrap items-center gap-2">
+                  <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10 shadow-[0_0_20px_-8px] shadow-rare/60">Rare</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Тактика</span>
+                  <span class="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">/rerange</span>
+                </div>
+                <h3 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">⏱️ Настройщик боевого стазиса</h3>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: L1–L9 и команда /rerange.</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  Открыть карточку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                </span>
+              </div>
             </div>
-            <h3 class="text-balance text-2xl font-bold tracking-tight text-foreground">⏱️ Настройщик боевого стазиса</h3>
-            <p class="mt-2 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">Интерактивная карточка: L1–L9 и команда /rerange.</p>
-            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть карточку
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
           </a>
         </div>
       </section>
