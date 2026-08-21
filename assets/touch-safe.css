@@ -29,31 +29,27 @@ html.vc-kill-hover * {
     transform: none !important;
   }
 
-  a.group.relative.block:hover,
-  a.group.relative.block:active,
-  .vc-card:hover,
-  .vc-card:active,
-  a.inline-flex:hover,
-  a.inline-flex:active {
+  /* Only neutralize sticky :hover — never :active (that killed press flash on legendary) */
+  a.group.relative.block:hover:not(.vc-press),
+  .vc-card:hover:not(.vc-press),
+  a.inline-flex:hover:not(.vc-press) {
     transform: none !important;
     filter: none !important;
   }
 
-  a.group.relative.block:hover,
-  .vc-card:hover {
+  a.group.relative.block:hover:not(.vc-press),
+  .vc-card:hover:not(.vc-press) {
     box-shadow: none !important;
   }
 
-  a.vc-rarity-legendary.group.relative.block:hover,
-  a.vc-rarity-legendary.group.relative.block:active {
+  a.vc-rarity-legendary.group.relative.block:hover:not(.vc-press) {
     transform: none !important;
     filter: none !important;
     box-shadow: 0 0 0 1px rgba(212, 164, 64, 0.08) !important;
     border-color: rgba(212, 164, 64, 0.34) !important;
   }
 
-  a.vc-rarity-legendary.group.relative.block:hover::before,
-  a.vc-rarity-legendary.group.relative.block:active::before {
+  a.vc-rarity-legendary.group.relative.block:hover:not(.vc-press)::before {
     box-shadow: 0 0 18px 1px rgba(212, 164, 64, 0.45) !important;
     width: 3px !important;
   }
@@ -92,16 +88,23 @@ a.group.relative.block.vc-press .size-4 {
 }
 
 a.vc-rarity-legendary.group.relative.block.vc-press {
-  border-color: rgba(212, 164, 64, 0.62) !important;
+  transform: translateY(-4px) scale(0.995) !important;
+  border-color: rgba(212, 164, 64, 0.78) !important;
   box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(212, 164, 64, 0.28),
-    0 0 28px rgba(212, 164, 64, 0.2);
-  filter: brightness(1.05);
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(212, 164, 64, 0.35),
+    0 0 36px rgba(212, 164, 64, 0.32) !important;
+  filter: brightness(1.08) !important;
 }
 
 a.vc-rarity-legendary.group.relative.block.vc-press::before {
-  box-shadow: 0 0 22px 2px rgba(212, 164, 64, 0.45);
+  width: 3px !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 26px 3px rgba(212, 164, 64, 0.7) !important;
+}
+
+a.vc-rarity-legendary.group.relative.block.vc-press .size-4 {
+  transform: translate(2px, -2px);
 }
 
 a.inline-flex.vc-press {
