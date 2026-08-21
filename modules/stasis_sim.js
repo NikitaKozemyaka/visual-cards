@@ -6,13 +6,23 @@
     return (v % 1 === 0 ? v.toFixed(0) : v.toFixed(1)) + "%";
   }
 
-  function calc(level, dodge, pinOn) {
+  function calc(level, dodge, equipped, pinOn) {
+    if (!equipped) {
+      return {
+        passive: 0,
+        pin: 0,
+        total: 0,
+        eff: dodge,
+        hit: Math.max(0, 100 - dodge),
+        rounds: 0
+      };
+    }
     var passive = 0.01 * level * 100;
     var pin = pinOn ? Math.min(95, 0.05 * level * 100) : 0;
     var total = passive + pin;
     var eff = Math.max(0, dodge - total);
     var hit = 100 - eff;
-    var rounds = Math.min(27, 3 * level);
+    var rounds = pinOn ? Math.min(27, 3 * level) : 0;
     return { passive: passive, pin: pin, total: total, eff: eff, hit: hit, rounds: rounds };
   }
 
@@ -41,6 +51,29 @@
     return null;
   }
 
+  function styleSwitch(btn, on, titleHtml) {
+    btn.setAttribute("aria-checked", on ? "true" : "false");
+    btn.className =
+      "flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors " +
+      (on ? "border-primary/50 bg-primary/10" : "border-border bg-secondary");
+    var track = btn.querySelector("span.relative");
+    var knob = btn.querySelector("span.absolute");
+    if (track) {
+      track.className =
+        "relative h-6 w-11 shrink-0 rounded-full transition-colors " +
+        (on ? "bg-primary" : "bg-input");
+    }
+    if (knob) {
+      knob.className =
+        "absolute top-0.5 size-5 rounded-full bg-background transition-transform " +
+        (on ? "translate-x-[22px]" : "translate-x-0.5");
+    }
+    if (titleHtml) {
+      var title = btn.querySelector(".block.text-sm.font-semibold");
+      if (title) title.innerHTML = titleHtml;
+    }
+  }
+
   function boot() {
     var title = document.getElementById("sim-title");
     if (!title) return;
@@ -49,14 +82,16 @@
 
     var levelGroup = root.querySelector('[aria-label="Уровень модуля"]');
     var dodgeGroup = root.querySelector('[aria-label="Уклонение врага"]');
-    var pinBtn = root.querySelector('button[role="switch"]');
+    var equipBtn = document.getElementById("sim-equip") || root.querySelectorAll('button[role="switch"]')[0];
+    var pinBtn = document.getElementById("sim-pin") || root.querySelectorAll('button[role="switch"]')[1];
     var range = root.querySelector('input[type="range"]');
-    if (!levelGroup || !dodgeGroup || !pinBtn || !range) return;
+    if (!levelGroup || !dodgeGroup || !equipBtn || !pinBtn || !range) return;
 
     var levelBtns = Array.prototype.slice.call(levelGroup.querySelectorAll("button"));
     var dodgeBtns = Array.prototype.slice.call(dodgeGroup.querySelectorAll("button"));
 
-    var state = { level: 3, dodge: 20, pinOn: true };
+    // Defaults: equipped ON, /pin OFF
+    var state = { level: 3, dodge: 20, equipped: true, pinOn: false };
 
     var dodgeValueEl = null;
     var spans = root.querySelectorAll("span.tabular-nums");
@@ -82,8 +117,15 @@
     var bars = root.querySelectorAll(".h-full.rounded-full");
     var barLabels = root.querySelectorAll(".w-12.shrink-0");
 
+    function setDisabledLook(disabled) {
+      levelGroup.style.opacity = disabled ? "0.45" : "";
+      levelGroup.style.pointerEvents = disabled ? "none" : "";
+      pinBtn.style.opacity = disabled ? "0.45" : "";
+      pinBtn.style.pointerEvents = disabled ? "none" : "";
+    }
+
     function render() {
-      var p = calc(state.level, state.dodge, state.pinOn);
+      var p = calc(state.level, state.dodge, state.equipped, state.pinOn);
 
       levelBtns.forEach(function (btn) {
         var lvl = Number((btn.textContent || "").replace(/\D/g, ""));
@@ -94,28 +136,26 @@
         styleChoice(btn, d === state.dodge, true);
       });
 
-      pinBtn.setAttribute("aria-checked", state.pinOn ? "true" : "false");
-      pinBtn.className =
-        "flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors " +
-        (state.pinOn ? "border-primary/50 bg-primary/10" : "border-border bg-secondary");
-      var track = pinBtn.querySelector("span.relative");
-      var knob = pinBtn.querySelector("span.absolute");
-      if (track) {
-        track.className =
-          "relative h-6 w-11 shrink-0 rounded-full transition-colors " +
-          (state.pinOn ? "bg-primary" : "bg-input");
+      styleSwitch(
+        equipBtn,
+        state.equipped,
+        state.equipped ? "Экипировать" : "Экипировать"
+      );
+      var equipSub = equipBtn.querySelector(".block.text-xs");
+      if (equipSub) {
+        equipSub.textContent = state.equipped
+          ? "Модуль установлен на броню"
+          : "Без модуля — базовые параметры";
       }
-      if (knob) {
-        knob.className =
-          "absolute top-0.5 size-5 rounded-full bg-background transition-transform " +
-          (state.pinOn ? "translate-x-[22px]" : "translate-x-0.5");
-      }
-      var pinTitle = pinBtn.querySelector(".block.text-sm.font-semibold");
-      if (pinTitle) {
-        pinTitle.innerHTML =
-          'Команда <code class="rounded bg-background/60 px-1 py-0.5 font-mono text-[13px] text-primary">/pin</code> ' +
-          (state.pinOn ? "активна" : "выкл");
-      }
+
+      styleSwitch(
+        pinBtn,
+        state.pinOn && state.equipped,
+        'Команда <code class="rounded bg-background/60 px-1 py-0.5 font-mono text-[13px] text-primary">/pin</code> ' +
+          (state.equipped && state.pinOn ? "активна" : "выкл")
+      );
+
+      setDisabledLook(!state.equipped);
 
       range.value = String(state.dodge);
       if (dodgeValueEl) dodgeValueEl.textContent = pct(state.dodge);
@@ -126,15 +166,30 @@
         ring.setAttribute("stroke-dashoffset", String(circ * (1 - p.hit / 100)));
       }
 
-      if (elPassive) elPassive.textContent = "\u2212" + pct(p.passive);
+      if (elPassive) {
+        elPassive.textContent = state.equipped ? "\u2212" + pct(p.passive) : "\u2014";
+        elPassive.className =
+          "mt-1 font-mono text-2xl font-bold tabular-nums " +
+          (state.equipped ? "text-foreground" : "text-muted-foreground");
+      }
       if (elPin) {
-        elPin.textContent = state.pinOn ? "\u2212" + pct(p.pin) : "\u2014";
+        elPin.textContent = state.equipped && state.pinOn ? "\u2212" + pct(p.pin) : "\u2014";
         elPin.className =
           "mt-1 font-mono text-2xl font-bold tabular-nums " +
-          (state.pinOn ? "text-primary" : "text-muted-foreground");
+          (state.equipped && state.pinOn ? "text-primary" : "text-muted-foreground");
       }
-      if (elRounds) elRounds.textContent = String(p.rounds);
-      if (elTotal) elTotal.textContent = "\u2212" + pct(p.total);
+      if (elRounds) {
+        elRounds.textContent = state.equipped && state.pinOn ? String(p.rounds) : "\u2014";
+        elRounds.className =
+          "mt-1 font-mono text-2xl font-bold tabular-nums " +
+          (state.equipped && state.pinOn ? "text-foreground" : "text-muted-foreground");
+      }
+      if (elTotal) {
+        elTotal.textContent = state.equipped ? "\u2212" + pct(p.total) : "\u2014";
+        elTotal.className =
+          "mt-1 font-mono text-2xl font-bold tabular-nums " +
+          (state.equipped ? "text-primary" : "text-muted-foreground");
+      }
       if (elEff) elEff.textContent = pct(p.eff);
 
       var scale = Math.max(50, p.passive + p.pin, 1);
@@ -143,16 +198,18 @@
         bars[1].style.width = (p.pin / scale) * 100 + "%";
         bars[1].className =
           "h-full rounded-full transition-[width] duration-500 ease-out " +
-          (state.pinOn ? "bg-primary" : "bg-muted-foreground/30");
+          (state.equipped && state.pinOn ? "bg-primary" : "bg-muted-foreground/30");
       }
       if (barLabels.length >= 2) {
-        barLabels[0].textContent = "\u2212" + pct(p.passive);
-        barLabels[1].textContent = state.pinOn ? "\u2212" + pct(p.pin) : "\u2014";
+        barLabels[0].textContent = state.equipped ? "\u2212" + pct(p.passive) : "\u2014";
+        barLabels[1].textContent =
+          state.equipped && state.pinOn ? "\u2212" + pct(p.pin) : "\u2014";
       }
     }
 
     levelBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
+        if (!state.equipped) return;
         state.level = Number((btn.textContent || "").replace(/\D/g, "")) || 1;
         render();
       });
@@ -163,7 +220,13 @@
         render();
       });
     });
+    equipBtn.addEventListener("click", function () {
+      state.equipped = !state.equipped;
+      if (!state.equipped) state.pinOn = false;
+      render();
+    });
     pinBtn.addEventListener("click", function () {
+      if (!state.equipped) return;
       state.pinOn = !state.pinOn;
       render();
     });
