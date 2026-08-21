@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  var CIRC = 2 * Math.PI * 52;
+
   function pct(n, digits) {
     var d = digits == null ? 1 : digits;
     var v = Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
@@ -29,6 +31,10 @@
     var per = Number(cmd.cooldown_per_level_sec || 0);
     var lvl = Math.max(1, level | 0);
     return Math.max(0, base + per * (lvl - 1));
+  }
+
+  function clampPct(n) {
+    return Math.max(0, Math.min(100, n));
   }
 
   function styleChoice(btn, on, compact) {
@@ -72,6 +78,23 @@
       (active ? "активна" : "выкл");
   }
 
+  function applyRing(heroRing, heroValue, ringPct, live, valueText) {
+    var fill = live ? clampPct(ringPct) : 0;
+    if (heroRing) {
+      heroRing.setAttribute("stroke-dasharray", String(CIRC));
+      heroRing.setAttribute("stroke-dashoffset", String(CIRC * (1 - fill / 100)));
+      heroRing.className =
+        "transition-[stroke-dashoffset] duration-500 ease-out " +
+        (live && fill > 0 ? "text-ok" : "text-muted-foreground");
+    }
+    if (heroValue) {
+      heroValue.textContent = valueText;
+      heroValue.className =
+        "font-mono text-4xl font-bold tabular-nums " +
+        (live ? "text-ok" : "text-muted-foreground");
+    }
+  }
+
   function calcStasis(mod, level, dodge, equipped, cmdOn) {
     var pEff = mod.passive || {};
     var cEff = (mod.command && mod.command.effect) || {};
@@ -87,7 +110,8 @@
         eff: dodge,
         hit: Math.max(0, 100 - dodge),
         rounds: 0,
-        cd: 0
+        cd: 0,
+        ringPct: Math.max(0, 100 - dodge)
       };
     }
     var passive = passivePer * level * 100;
@@ -103,7 +127,8 @@
       eff: eff,
       hit: hit,
       rounds: rounds,
-      cd: cooldownSec(mod.command, level)
+      cd: cooldownSec(mod.command, level),
+      ringPct: hit
     };
   }
 
@@ -111,21 +136,33 @@
     var p = mod.passive || {};
     var c = (mod.command && mod.command.effect) || {};
     var L = Math.max(1, level | 0);
-    var out = { rows: [], hero: { value: "—", label: "Главный эффект", sub: "" }, bars: [], cd: 0 };
+    var out = {
+      rows: [],
+      hero: { value: "—", label: "Главный эффект", sub: "", ringPct: 0 },
+      bars: [],
+      cd: 0
+    };
 
-    function add(label, value, tone) {
-      out.rows.push({ label: label, value: value, tone: tone || "fg" });
+    function add(label, value, tone, wide) {
+      out.rows.push({ label: label, value: value, tone: tone || "fg", wide: !!wide });
+    }
+
+    function setHero(value, label, sub, ringPct) {
+      out.hero = {
+        value: value,
+        label: label,
+        sub: sub || "",
+        ringPct: clampPct(ringPct || 0)
+      };
     }
 
     if (!equipped) {
-      out.hero = { value: "—", label: "Без модуля", sub: "Экипируй, чтобы увидеть цифры" };
+      setHero("—", "Без модуля", "Экипируй, чтобы увидеть цифры", 0);
       add("Пассивы", "—", "muted");
       add("Команда", "—", "muted");
-      add("КД команды", "—", "muted");
       return out;
     }
 
-    // Passives
     if (p.max_health_per_level != null) add("Макс. HP", "+" + fmtNum(p.max_health_per_level * L, 0));
     if (p.health_regen_flat != null) add("Реген HP/ход", "+" + fmtNum(p.health_regen_flat, 0));
     if (p.max_nitrogen_per_level != null) add("Лимит азота", "+" + fmtNum(p.max_nitrogen_per_level * L, 0));
@@ -177,130 +214,126 @@
     var cd = cooldownSec(mod.command, L);
     out.cd = cd;
     var slash = (mod.command && mod.command.slash) || "";
+    var ringOff = 0;
 
-    // Command hero + rows
     if (c.heal_pct_base != null) {
       var heal = (c.heal_pct_base + c.heal_pct_per_level * (L - 1)) * 100;
-      if (cmdOn) {
-        out.hero = { value: pct(heal, 1), label: "/" + slash + " хил", sub: "от макс. HP" };
-        add("/" + slash + " хил", pct(heal, 1), "ok");
-      } else {
-        out.hero = { value: pct(heal, 1), label: "/" + slash + " (выкл)", sub: "включи команду" };
-      }
+      setHero(pct(heal, 1), "/" + slash + (cmdOn ? " хил" : " (выкл)"), cmdOn ? "от макс. HP" : "включи команду", cmdOn ? heal : ringOff);
+      if (cmdOn) add("/" + slash + " хил", pct(heal, 1), "ok");
     } else if (c.purge_pct_base != null) {
       var purge = (c.purge_pct_base + c.purge_pct_per_level * (L - 1)) * 100;
-      if (cmdOn) {
-        out.hero = { value: pct(purge, 0), label: "/" + slash + " очистка", sub: "азот / заражение" };
-        add("/" + slash, pct(purge, 0), "ok");
-      } else {
-        out.hero = { value: pct(purge, 0), label: "/" + slash + " (выкл)", sub: "включи команду" };
-      }
+      setHero(pct(purge, 0), "/" + slash + (cmdOn ? " очистка" : " (выкл)"), cmdOn ? "азот / заражение" : "включи команду", cmdOn ? purge : ringOff);
+      if (cmdOn) add("/" + slash, pct(purge, 0), "ok");
     } else if (c.damage_mult_base != null) {
       var dm = (c.damage_mult_base + c.damage_mult_per_level * (L - 1)) * 100;
-      if (cmdOn) {
-        out.hero = { value: "+" + pct(dm, 0), label: "/" + slash + " урон", sub: "бафф к следующему бою" };
-        add("/" + slash, "+" + pct(dm, 0), "ok");
-      } else {
-        out.hero = { value: "+" + pct(dm, 0), label: "/" + slash + " (выкл)", sub: "включи команду" };
-      }
+      setHero("+" + pct(dm, 0), "/" + slash + (cmdOn ? " урон" : " (выкл)"), cmdOn ? "бафф к следующему бою" : "включи команду", cmdOn ? dm : ringOff);
+      if (cmdOn) add("/" + slash, "+" + pct(dm, 0), "ok");
     } else if (c.crit_chance_base != null) {
       var cc = (c.crit_chance_base + c.crit_chance_per_level * (L - 1)) * 100;
       var cdmg = (c.crit_damage_base + c.crit_damage_per_level * (L - 1)) * 100;
+      setHero(
+        "+" + pct(cc, 0),
+        "/" + slash + (cmdOn ? " шанс крита" : " (выкл)"),
+        "сила крита +" + pct(cdmg, 0),
+        cmdOn ? cc : ringOff
+      );
       if (cmdOn) {
-        out.hero = { value: "+" + pct(cc, 0), label: "/" + slash + " шанс крита", sub: "сила крита +" + pct(cdmg, 0) };
         add("/" + slash + " шанс", "+" + pct(cc, 0), "ok");
         add("/" + slash + " сила", "+" + pct(cdmg, 0), "ok");
-      } else {
-        out.hero = { value: "+" + pct(cc, 0), label: "/" + slash + " (выкл)", sub: "сила +" + pct(cdmg, 0) };
       }
     } else if (c.damage_reduction_base != null) {
       var dr = (c.damage_reduction_base + c.damage_reduction_per_level * (L - 1)) * 100;
-      if (cmdOn) {
-        out.hero = { value: pct(dr, 1), label: "/" + slash + " DR", sub: "снижение входящего урона" };
-        add("/" + slash, pct(dr, 1), "ok");
-      } else {
-        out.hero = { value: pct(dr, 1), label: "/" + slash + " (выкл)", sub: "включи команду" };
-      }
+      setHero(pct(dr, 1), "/" + slash + (cmdOn ? " DR" : " (выкл)"), cmdOn ? "снижение входящего урона" : "включи команду", cmdOn ? dr : ringOff);
+      if (cmdOn) add("/" + slash, pct(dr, 1), "ok");
     } else if (c.shield_regen_mult_base != null) {
       var sr = (c.shield_regen_mult_base + c.shield_regen_mult_per_level * (L - 1)) * 100;
       var mr = (c.mythic_regen_mult_base + c.mythic_regen_mult_per_level * (L - 1)) * 100;
+      setHero(
+        "+" + pct(sr, 0),
+        "/" + slash + (cmdOn ? " реген щита" : " (выкл)"),
+        "миф. реген +" + pct(mr, 0),
+        cmdOn ? sr : ringOff
+      );
       if (cmdOn) {
-        out.hero = { value: "+" + pct(sr, 0), label: "/" + slash + " реген щита", sub: "миф. реген +" + pct(mr, 0) };
         add("/" + slash + " щит", "+" + pct(sr, 0), "ok");
         add("/" + slash + " миф", "+" + pct(mr, 0), "ok");
-      } else {
-        out.hero = { value: "+" + pct(sr, 0), label: "/" + slash + " (выкл)", sub: "миф +" + pct(mr, 0) };
       }
     } else if (c.weight_reduction_base != null) {
       var wr = (c.weight_reduction_base + c.weight_reduction_per_level * (L - 1)) * 100;
       var dur = Number(c.duration_sec || 0);
+      setHero(
+        "−" + pct(wr, 0),
+        "/" + slash + (cmdOn ? " вес" : " (выкл)"),
+        "длительность " + fmtCd(dur),
+        cmdOn ? wr : ringOff
+      );
       if (cmdOn) {
-        out.hero = { value: "−" + pct(wr, 0), label: "/" + slash + " вес", sub: "длительность " + fmtCd(dur) };
         add("/" + slash, "−" + pct(wr, 0), "ok");
         add("Длительность", fmtCd(dur));
-      } else {
-        out.hero = { value: "−" + pct(wr, 0), label: "/" + slash + " (выкл)", sub: fmtCd(dur) };
       }
     } else if (c.entangle_bonus_base != null) {
       var eb = (c.entangle_bonus_base + c.entangle_bonus_per_level * (L - 1)) * 100;
       var rounds = c.duration_rounds_base + c.duration_rounds_per_level * (L - 1);
+      setHero(
+        "+" + pct(eb, 0),
+        "/" + slash + (cmdOn ? " запутывание" : " (выкл)"),
+        rounds + " раунд(ов)",
+        cmdOn ? eb : ringOff
+      );
       if (cmdOn) {
-        out.hero = { value: "+" + pct(eb, 0), label: "/" + slash + " запутывание", sub: rounds + " раунд(ов)" };
         add("/" + slash, "+" + pct(eb, 0), "ok");
         add("Раундов", String(rounds));
-      } else {
-        out.hero = { value: "+" + pct(eb, 0), label: "/" + slash + " (выкл)", sub: rounds + " раунд(ов)" };
       }
     } else if (c.uses_equals_level) {
-      var uses = Math.min(Number(c.uses_cap || 9), L);
-      if (cmdOn) {
-        out.hero = { value: String(uses), label: "/" + slash + " hops", sub: "использований за сессию" };
-        add("/" + slash + " uses", String(uses), "ok");
-      } else {
-        out.hero = { value: String(uses), label: "/" + slash + " (выкл)", sub: "вкл. чтобы подсветить" };
-      }
+      var cap = Number(c.uses_cap || 9);
+      var uses = Math.min(cap, L);
+      setHero(
+        String(uses),
+        "/" + slash + (cmdOn ? " hops" : " (выкл)"),
+        "использований за сессию",
+        cmdOn ? (uses / cap) * 100 : ringOff
+      );
+      if (cmdOn) add("/" + slash + " uses", String(uses), "ok");
     } else if (c.uses_per_two_levels != null) {
       var rUses = Number(c.uses_base || 1) + Math.floor(L / 2) * Number(c.uses_per_two_levels || 0);
-      if (cmdOn) {
-        out.hero = { value: String(rUses), label: "/" + slash + " uses", sub: "на карточке встречи" };
-        add("/" + slash, String(rUses), "ok");
-      } else {
-        out.hero = { value: String(rUses), label: "/" + slash + " (выкл)", sub: "на встрече" };
-      }
+      var maxUses = Number(c.uses_base || 1) + Math.floor(9 / 2) * Number(c.uses_per_two_levels || 0);
+      setHero(
+        String(rUses),
+        "/" + slash + (cmdOn ? " uses" : " (выкл)"),
+        "на карточке встречи",
+        cmdOn ? (rUses / Math.max(1, maxUses)) * 100 : ringOff
+      );
+      if (cmdOn) add("/" + slash, String(rUses), "ok");
     } else if (c.analysis_cap != null) {
       var alvl = Math.min(Number(c.analysis_cap || 9), L);
-      if (cmdOn) {
-        out.hero = { value: String(alvl), label: "/" + slash + " уровень", sub: "детализация разбора" };
-        add("/" + slash, String(alvl), "ok");
-      } else {
-        out.hero = { value: String(alvl), label: "/" + slash + " (выкл)", sub: "на встрече" };
-      }
+      var acap = Number(c.analysis_cap || 9);
+      setHero(
+        String(alvl),
+        "/" + slash + (cmdOn ? " уровень" : " (выкл)"),
+        "детализация разбора",
+        cmdOn ? (alvl / acap) * 100 : ringOff
+      );
+      if (cmdOn) add("/" + slash, String(alvl), "ok");
     } else if (c.rarity_tier_boost != null) {
+      setHero(
+        "+" + fmtNum(c.rarity_tier_boost, 0) + " tier",
+        "/" + slash + (cmdOn ? "" : " (выкл)"),
+        "TTL " + fmtCd(Number(c.ttl_sec || 0)),
+        cmdOn ? 100 : ringOff
+      );
       if (cmdOn) {
-        out.hero = {
-          value: "+" + fmtNum(c.rarity_tier_boost, 0) + " tier",
-          label: "/" + slash,
-          sub: "TTL " + fmtCd(Number(c.ttl_sec || 0))
-        };
         add("/" + slash, "+" + fmtNum(c.rarity_tier_boost, 0) + " tier", "ok");
         add("TTL заряда", fmtCd(Number(c.ttl_sec || 0)));
-      } else {
-        out.hero = {
-          value: "+" + fmtNum(c.rarity_tier_boost, 0) + " tier",
-          label: "/" + slash + " (выкл)",
-          sub: "TTL " + fmtCd(Number(c.ttl_sec || 0))
-        };
       }
     } else {
-      // instant_search and empty effect — hero is cooldown
-      if (cmdOn) {
-        out.hero = { value: fmtCd(cd), label: "/" + slash + " КД", sub: "после успешного применения" };
-      } else {
-        out.hero = { value: fmtCd(cd), label: "/" + slash + " КД (выкл)", sub: "включи команду" };
-      }
+      setHero(
+        fmtCd(cd),
+        "/" + slash + (cmdOn ? " КД" : " КД (выкл)"),
+        cmdOn ? "после успешного применения" : "включи команду",
+        cmdOn ? 100 : ringOff
+      );
     }
 
-    add("КД команды", fmtCd(cd), cd ? "fg" : "muted");
     return out;
   }
 
@@ -316,11 +349,8 @@
             : row.tone === "ok"
               ? "text-ok"
               : "text-foreground";
-      var span = row.tone === "ok" || row.label.indexOf("Dodge") === 0 || row.label.indexOf("после") >= 0;
       var wrap = document.createElement("div");
-      wrap.className =
-        "rounded-xl border border-border bg-secondary/60 px-4 py-3" +
-        (span && rows.length % 2 === 1 && row === rows[rows.length - 1] ? " col-span-2 border-ok/25 bg-ok/5" : "");
+      wrap.className = "rounded-xl border border-border bg-secondary/60 px-4 py-3";
       if (row.wide) wrap.className += " col-span-2 border-ok/25 bg-ok/5";
       wrap.innerHTML =
         '<div class="font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">' +
@@ -350,7 +380,7 @@
           '<span class="w-14 shrink-0 text-muted-foreground">' +
           b.label +
           "</span>" +
-          '<div class="h-2 flex-1 overflow-hidden rounded-full bg-input"><div class="h-full rounded-full bg-primary transition-[width] duration-500 ease-out" style="width:' +
+          '<div class="h-2 flex-1 overflow-hidden rounded-full bg-input"><div class="h-full rounded-full bg-ok/80 transition-[width] duration-500 ease-out" style="width:' +
           w +
           '%"></div></div>' +
           '<span class="w-12 shrink-0 text-right tabular-nums text-muted-foreground">' +
@@ -382,7 +412,7 @@
     var heroRing = root.querySelector("[data-hero-ring]");
     var statsGrid = root.querySelector("[data-stats-grid]");
     var barsHost = root.querySelector("[data-bars]");
-    var circ = 2 * Math.PI * 52;
+    var cdLine = root.querySelector("[data-cd-line]");
 
     var state = { level: 3, dodge: 20, equipped: true, cmdOn: false };
     var slash = (mod.command && mod.command.slash) || "";
@@ -421,20 +451,12 @@
 
       if (mod.sim_kind === "stasis_anchor") {
         var p = calcStasis(mod, state.level, state.dodge, state.equipped, state.cmdOn);
-        if (heroValue) {
-          heroValue.textContent = pct(p.hit, 0);
-          heroValue.className =
-            "font-mono text-4xl font-bold tabular-nums " +
-            (state.equipped ? "text-ok" : "text-muted-foreground");
-        }
+        applyRing(heroRing, heroValue, p.ringPct, state.equipped, pct(p.hit, 0));
         if (heroLabel) heroLabel.textContent = "Ваш шанс попадания (оценка)";
-        if (heroRing) {
-          heroRing.setAttribute("stroke-dasharray", String(circ));
-          heroRing.setAttribute("stroke-dashoffset", String(circ * (1 - p.hit / 100)));
-          heroRing.className =
-            "transition-[stroke-dashoffset] duration-500 ease-out " +
-            (state.equipped ? "text-ok" : "text-muted-foreground");
+        if (heroSub) {
+          heroSub.textContent = state.cmdOn && state.equipped ? "/" + slash + " учтён" : "";
         }
+
         var rows = [
           {
             label: "Пассив",
@@ -461,39 +483,51 @@
             value: pct(p.eff, 0),
             tone: "ok",
             wide: true
-          },
-          {
-            label: "КД команды",
-            value: state.equipped ? fmtCd(p.cd) : "—",
-            tone: "muted"
           }
         ];
         renderStats(statsGrid, rows);
-        var scale = Math.max(50, p.passive + p.pin, 1);
-        renderBars(barsHost, state.equipped
-          ? [
-              { label: "Пасс", pct: p.passive, max: scale, display: "−" + pct(p.passive, 0) },
-              {
-                label: "/" + slash,
-                pct: state.cmdOn ? p.pin : 0,
-                max: scale,
-                display: state.cmdOn ? "−" + pct(p.pin, 0) : "—"
-              }
-            ]
-          : []);
+        if (cdLine) {
+          cdLine.textContent = state.equipped
+            ? "КД команды: " + fmtCd(p.cd)
+            : "";
+        }
+        var scale = Math.max(50, p.passive + Math.max(p.pin, 1), 1);
+        renderBars(
+          barsHost,
+          state.equipped
+            ? [
+                {
+                  label: "Пасс",
+                  pct: p.passive,
+                  max: scale,
+                  display: "−" + pct(p.passive, 0)
+                },
+                {
+                  label: "/" + slash,
+                  pct: state.cmdOn ? p.pin : 0,
+                  max: scale,
+                  display: state.cmdOn ? "−" + pct(p.pin, 0) : "—"
+                }
+              ]
+            : []
+        );
         return;
       }
 
       var g = calcGeneric(mod, state.level, state.equipped, state.cmdOn);
-      if (heroValue) {
-        heroValue.textContent = g.hero.value;
-        heroValue.className =
-          "mt-3 font-mono text-5xl font-bold tabular-nums " +
-          (state.equipped ? "text-ok" : "text-muted-foreground");
-      }
+      applyRing(
+        heroRing,
+        heroValue,
+        g.hero.ringPct,
+        state.equipped && g.hero.ringPct > 0,
+        g.hero.value
+      );
       if (heroLabel) heroLabel.textContent = g.hero.label;
       if (heroSub) heroSub.textContent = g.hero.sub || "";
       renderStats(statsGrid, g.rows);
+      if (cdLine) {
+        cdLine.textContent = state.equipped ? "КД команды: " + fmtCd(g.cd) : "";
+      }
       renderBars(barsHost, g.bars);
     }
 
@@ -538,7 +572,7 @@
     var mid = root.getAttribute("data-module-id");
     if (!mid) return;
 
-    fetch("../data/modules.json?v=1")
+    fetch("../data/modules.json?v=2")
       .then(function (r) {
         if (!r.ok) throw new Error("modules.json " + r.status);
         return r.json();

@@ -59,9 +59,9 @@ EMOJI_RE = re.compile(
 
 CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=7"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
-  <link rel="stylesheet" href="../assets/touch-safe.css?v=5"/>
+  <link rel="stylesheet" href="../assets/touch-safe.css?v=6"/>
   <link rel="stylesheet" href="../assets/rarity.css?v=9"/>
-  <link rel="stylesheet" href="../assets/catalog.css?v=2"/>"""
+  <link rel="stylesheet" href="../assets/catalog.css?v=3"/>"""
 
 
 def extract_emoji(text: str) -> str:
@@ -301,28 +301,27 @@ def dodge_block_html() -> str:
 
 
 def hero_shell(kind: str) -> str:
-    if kind == "stasis_anchor":
-        return """
+    # Unified SVG ring for all modules (stasis = hit chance; others = command gauge)
+    _ = kind
+    return """
 <div class="relative flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/60 p-5">
   <svg viewBox="0 0 120 120" class="size-40 -rotate-90" aria-hidden="true">
     <circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="8" class="text-border"></circle>
-    <circle data-hero-ring cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-dasharray="326.7256359733385" stroke-dashoffset="55.54335811546755" class="text-ok transition-[stroke-dashoffset] duration-500 ease-out"></circle>
+    <circle data-hero-ring cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-dasharray="326.7256359733385" stroke-dashoffset="326.7256359733385" class="text-ok transition-[stroke-dashoffset] duration-500 ease-out"></circle>
   </svg>
-  <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-    <span class="font-mono text-4xl font-bold tabular-nums text-ok" data-hero-value>83%</span>
-    <span class="mt-1 max-w-[7rem] text-center text-[11px] leading-tight text-muted-foreground" data-hero-label>Ваш шанс попадания (оценка)</span>
+  <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-3">
+    <span class="font-mono text-4xl font-bold tabular-nums text-ok" data-hero-value>—</span>
+    <span class="mt-1 max-w-[8.5rem] text-center text-[11px] leading-tight text-muted-foreground" data-hero-label>Главный эффект</span>
+    <span class="mt-0.5 max-w-[8.5rem] text-center text-[10px] leading-tight text-muted-foreground/80" data-hero-sub></span>
   </div>
-</div>"""
-    return """
-<div class="relative flex flex-col items-center justify-center rounded-xl border border-border bg-secondary/60 p-6 min-h-[11rem]">
-  <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground" data-hero-label>Главный эффект</span>
-  <span class="mt-3 font-mono text-5xl font-bold tabular-nums text-ok" data-hero-value>—</span>
-  <span class="mt-2 max-w-[14rem] text-center text-[11px] leading-tight text-muted-foreground" data-hero-sub></span>
 </div>"""
 
 
 def stats_grid_placeholder() -> str:
-    return '<div class="grid grid-cols-2 gap-3" data-stats-grid></div>'
+    return (
+        '<div class="grid grid-cols-2 gap-3" data-stats-grid></div>'
+        '<p class="font-mono text-[11px] text-muted-foreground/80" data-cd-line></p>'
+    )
 
 
 def bars_placeholder() -> str:
@@ -467,8 +466,8 @@ def page_html(mod: dict) -> str:
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=2" defer></script>
-  <script src="../assets/nav-refresh.js?v=6" defer></script>
+  <script src="./module_sim.js?v=3" defer></script>
+  <script src="../assets/nav-refresh.js?v=7" defer></script>
 </body>
 </html>
 """
@@ -581,7 +580,7 @@ def write_catalog(modules: list[dict]) -> None:
       </footer>
     </div>
   </div>
-<script src="../assets/nav-refresh.js?v=6" defer></script></body>
+<script src="../assets/nav-refresh.js?v=7" defer></script></body>
 </html>
 """
     (OUT_MODULES / "index.html").write_text(html, encoding="utf-8")

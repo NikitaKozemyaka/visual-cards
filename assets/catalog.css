@@ -59,8 +59,13 @@ a.vc-mod-card {
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   a.vc-mod-card:hover .vc-mod-cover img,
   a.vc-mod-card.vc-press .vc-mod-cover img {
-    transform: scale(1.04);
+    transform: scale(1.06);
   }
+}
+
+/* Touch devices: press zoom without hover media */
+a.vc-mod-card.vc-press .vc-mod-cover img {
+  transform: scale(1.06);
 }
 
 .vc-mod-cover::after {

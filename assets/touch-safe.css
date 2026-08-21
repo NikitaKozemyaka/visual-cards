@@ -69,20 +69,20 @@ a.group.relative.block.vc-press,
 a.vc-mod-card.vc-press,
 .vc-card.vc-press {
   transition-duration: 70ms;
-  transform: translateY(-3px) scale(0.995);
-  border-color: rgba(94, 184, 255, 0.5) !important;
+  transform: translateY(-4px) scale(0.99) !important;
+  border-color: rgba(94, 184, 255, 0.65) !important;
   box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(94, 184, 255, 0.2),
-    0 0 26px rgba(94, 184, 255, 0.16);
-  filter: brightness(1.05);
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(94, 184, 255, 0.28),
+    0 0 32px rgba(94, 184, 255, 0.22) !important;
+  filter: brightness(1.08) !important;
 }
 
 a.group.relative.block.vc-press::before,
 a.vc-mod-card.vc-press::before {
-  width: 3px;
-  opacity: 1;
-  box-shadow: 0 0 18px 2px rgba(94, 184, 255, 0.55);
+  width: 3px !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 22px 2px rgba(94, 184, 255, 0.7) !important;
 }
 
 a.group.relative.block.vc-press .size-4,
@@ -90,8 +90,43 @@ a.vc-mod-card.vc-press .size-4 {
   transform: translate(2px, -2px);
 }
 
-a.vc-rarity-legendary.group.relative.block.vc-press {
-  transform: translateY(-4px) scale(0.995) !important;
+a.vc-mod-card.vc-press .vc-mod-cover img {
+  transform: scale(1.06);
+}
+
+a.vc-rarity-uncommon.vc-mod-card.vc-press {
+  border-color: rgba(94, 207, 138, 0.72) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(94, 207, 138, 0.3),
+    0 0 34px rgba(94, 207, 138, 0.28) !important;
+}
+a.vc-rarity-uncommon.vc-mod-card.vc-press::before {
+  box-shadow: 0 0 22px 2px rgba(94, 207, 138, 0.7) !important;
+}
+
+a.vc-rarity-rare.vc-mod-card.vc-press {
+  border-color: rgba(94, 184, 255, 0.72) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(94, 184, 255, 0.3),
+    0 0 34px rgba(94, 184, 255, 0.28) !important;
+}
+
+a.vc-rarity-epic.vc-mod-card.vc-press {
+  border-color: rgba(176, 124, 255, 0.75) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(176, 124, 255, 0.32),
+    0 0 36px rgba(176, 124, 255, 0.3) !important;
+}
+a.vc-rarity-epic.vc-mod-card.vc-press::before {
+  box-shadow: 0 0 22px 2px rgba(176, 124, 255, 0.7) !important;
+}
+
+a.vc-rarity-legendary.group.relative.block.vc-press,
+a.vc-rarity-legendary.vc-mod-card.vc-press {
+  transform: translateY(-4px) scale(0.99) !important;
   border-color: rgba(212, 164, 64, 0.78) !important;
   box-shadow:
     0 16px 32px rgba(0, 0, 0, 0.36),
@@ -100,13 +135,15 @@ a.vc-rarity-legendary.group.relative.block.vc-press {
   filter: brightness(1.08) !important;
 }
 
-a.vc-rarity-legendary.group.relative.block.vc-press::before {
+a.vc-rarity-legendary.group.relative.block.vc-press::before,
+a.vc-rarity-legendary.vc-mod-card.vc-press::before {
   width: 3px !important;
   opacity: 1 !important;
   box-shadow: 0 0 26px 3px rgba(212, 164, 64, 0.7) !important;
 }
 
-a.vc-rarity-legendary.group.relative.block.vc-press .size-4 {
+a.vc-rarity-legendary.group.relative.block.vc-press .size-4,
+a.vc-rarity-legendary.vc-mod-card.vc-press .size-4 {
   transform: translate(2px, -2px);
 }
 

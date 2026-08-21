@@ -3,7 +3,7 @@
 
   var PRESS_SEL =
     "a.group.relative.block, a.vc-mod-card, a.inline-flex, .vc-card, section[aria-labelledby='sim-title'] button";
-  var MIN_PRESS_MS = 170;
+  var MIN_PRESS_MS = 200;
   var killTimer = null;
   var pressClearTimer = null;
   var pressStartedAt = 0;
