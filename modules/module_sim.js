@@ -78,7 +78,7 @@
       'Команда <code class="rounded bg-background/60 px-1 py-0.5 font-mono text-[13px] text-primary">/' +
       slash +
       "</code> " +
-      (active ? "активна" : "выкл");
+      (active ? "вкл." : "выкл.");
   }
 
   function applyRing(heroRing, heroValue, ringPct, live, valueText) {
@@ -121,7 +121,7 @@
         ringPct: clampPct(ring)
       },
       rows: [
-        { label: "Пассив", value: opts.passText, tone: "fg" },
+        { label: "Постоянный бонус", value: opts.passText, tone: "fg" },
         {
           label: opts.cmdLabel,
           value: dash(cmdOn, opts.cmdText),
@@ -146,7 +146,7 @@
       ],
       bars: [
         {
-          label: "Пасс",
+          label: "Постоянно",
           pct: passN,
           max: scale,
           display: opts.passBar || opts.passText,
@@ -178,12 +178,12 @@
           ringPct: Math.max(0, 100 - dodge)
         },
         rows: [
-          { label: "Пассив", value: "—", tone: "muted" },
+          { label: "Постоянный бонус", value: "—", tone: "muted" },
           { label: "/" + slash, value: "—", tone: "muted" },
           { label: "Раундов /" + slash, value: "—", tone: "muted" },
-          { label: "Суммарный штраф", value: "—", tone: "muted" },
+          { label: "Общий штраф", value: "—", tone: "muted" },
           {
-            label: "Dodge врага после якоря",
+            label: "Уклонение врага после якоря",
             value: pct(dodge, 0),
             tone: "ok",
             wide: true
@@ -220,9 +220,9 @@
       cmdText: "−" + pct(pin, 0),
       extraLabel: "Раундов /" + slash,
       extraText: String(rounds),
-      totalLabel: "Суммарный штраф",
+      totalLabel: "Общий штраф",
       totalText: "−" + pct(total, 0),
-      resultLabel: "Dodge врага после якоря",
+      resultLabel: "Уклонение врага после якоря",
       resultText: pct(eff, 0),
       passBar: "−" + pct(passive, 0),
       cmdBar: "−" + pct(pin, 0),
@@ -241,9 +241,9 @@
       return {
         hero: { value: "—", label: "Без модуля", sub: "", ringPct: 0 },
         rows: [
-          { label: "Пассив", value: "—", tone: "muted" },
+          { label: "Постоянный бонус", value: "—", tone: "muted" },
           { label: slash ? "/" + slash : "Команда", value: "—", tone: "muted" },
-          { label: "Доп.", value: "—", tone: "muted" },
+          { label: "Ещё", value: "—", tone: "muted" },
           { label: "Сумма", value: "—", tone: "muted" },
           { label: "Итог", value: "—", tone: "muted", wide: true }
         ],
@@ -264,16 +264,16 @@
         cmdN: heal,
         ringPct: liveHeal,
         heroValue: pct(liveHeal || heal, 1),
-        heroLabel: cmdOn ? "Хил от /" + slash : "Хил (команда выкл)",
-        passText: hp ? "+" + fmtNum(hp, 0) + " HP" : p.health_regen_flat != null ? "+" + fmtNum(p.health_regen_flat, 0) + " реген" : "есть",
+        heroLabel: cmdOn ? "Лечение /" + slash : "Лечение (команда выкл.)",
+        passText: hp ? "+" + fmtNum(hp, 0) + " к здоровью" : p.health_regen_flat != null ? "+" + fmtNum(p.health_regen_flat, 0) + " за ход" : "есть",
         cmdLabel: "/" + slash,
         cmdText: pct(heal, 1),
-        extraLabel: "Реген HP/ход",
+        extraLabel: "Восстановление за ход",
         extraText: p.health_regen_flat != null ? "+" + fmtNum(p.health_regen_flat, 0) : "—",
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? pct(heal, 1) + " хил" : "только пассив",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? pct(heal, 1) + " + пассив HP" : "пассив HP",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? pct(heal, 1) + " лечение" : "только бонус к здоровью",
+        resultLabel: "Итог",
+        resultText: cmdOn ? pct(heal, 1) + " и бонус к здоровью" : "бонус к здоровью",
         cd: cd
       });
     }
@@ -288,17 +288,17 @@
         cmdN: purge,
         ringPct: resist + livePurge > 100 ? 100 : resist + livePurge,
         heroValue: pct(cmdOn ? purge : resist, 0),
-        heroLabel: cmdOn ? "Очистка /" + slash : "Сопр. статусам",
+        heroLabel: cmdOn ? "Очистка /" + slash : "Защита от эффектов",
         passText: resist ? pct(resist, 0) : "—",
         cmdLabel: "/" + slash,
         cmdText: pct(purge, 0),
-        extraLabel: "Лимит азота",
+        extraLabel: "Запас азота",
         extraText:
           p.max_nitrogen_per_level != null ? "+" + fmtNum(p.max_nitrogen_per_level * L, 0) : "—",
-        totalLabel: "Суммарный %",
+        totalLabel: "Сумма",
         totalText: pct(resist + livePurge, 0),
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "пассив + очистка " + pct(purge, 0) : "только пассив",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "постоянный бонус и очистка " + pct(purge, 0) : "только постоянный бонус",
         cd: cd
       });
     }
@@ -314,15 +314,15 @@
         cmdN: cmdDmg,
         ringPct: totalDmg,
         heroValue: "+" + pct(totalDmg, 1),
-        heroLabel: "Суммарный бонус урона",
+        heroLabel: "Бонус к урону",
         passText: "+" + pct(passDmg, 1),
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(cmdDmg, 0),
         extraLabel: "Добивание",
         extraText: p.execute_bonus != null ? "+" + pct(p.execute_bonus * 100, 0) : "—",
-        totalLabel: "Суммарный бонус",
+        totalLabel: "Сумма",
         totalText: "+" + pct(totalDmg, 1),
-        resultLabel: "Урон с модулем (оценка)",
+        resultLabel: "Урон с модулем",
         resultText: "+" + pct(totalDmg, 1),
         cd: cd
       });
@@ -345,16 +345,16 @@
         cmdN: cc,
         ringPct: totalCrit,
         heroValue: "+" + pct(totalCrit, 1),
-        heroLabel: "Крит / усиление",
+        heroLabel: "Критический удар",
         passText: "+" + pct(passCrit, 1),
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(cc, 0),
-        extraLabel: "Сила крита /" + slash,
+        extraLabel: "Урон крита /" + slash,
         extraText: "+" + pct(cdmg, 0),
-        totalLabel: "Суммарный %",
+        totalLabel: "Сумма",
         totalText: "+" + pct(totalCrit, 1),
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "пассив + шанс +" + pct(cc, 0) : "только пассив",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "постоянный бонус и шанс +" + pct(cc, 0) : "только постоянный бонус",
         cd: cd
       });
     }
@@ -369,17 +369,17 @@
         cmdN: dr,
         ringPct: passDr + liveDr,
         heroValue: pct(cmdOn ? dr : passDr, 1),
-        heroLabel: cmdOn ? "DR /" + slash : "Пассивная защита",
-        passText: passDr ? pct(passDr, 0) : p.max_health_per_level != null ? "+" + fmtNum(p.max_health_per_level * L, 0) + " HP" : "—",
+        heroLabel: cmdOn ? "Меньше урона /" + slash : "Постоянная защита",
+        passText: passDr ? pct(passDr, 0) : p.max_health_per_level != null ? "+" + fmtNum(p.max_health_per_level * L, 0) + " к здоровью" : "—",
         cmdLabel: "/" + slash,
         cmdText: pct(dr, 1),
-        extraLabel: "Макс. HP",
+        extraLabel: "Запас здоровья",
         extraText:
           p.max_health_per_level != null ? "+" + fmtNum(p.max_health_per_level * L, 0) : "—",
-        totalLabel: "Суммарный %",
+        totalLabel: "Сумма",
         totalText: pct(passDr + liveDr, 1),
-        resultLabel: "Защита с модулем",
-        resultText: cmdOn ? "пассив + DR " + pct(dr, 1) : "только пассив",
+        resultLabel: "Защита",
+        resultText: cmdOn ? "постоянный бонус и −" + pct(dr, 1) + " урона" : "только постоянный бонус",
         cd: cd
       });
     }
@@ -395,16 +395,16 @@
         cmdN: sr,
         ringPct: liveSr || Math.min(100, passSh * 10),
         heroValue: cmdOn ? "+" + pct(sr, 0) : "+" + fmtNum(passSh, 1),
-        heroLabel: cmdOn ? "Реген щита /" + slash : "Броня (пассив)",
+        heroLabel: cmdOn ? "Восстановление щита /" + slash : "Броня без команды",
         passText: "+" + fmtNum(passSh, 1) + " брони",
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(sr, 0),
-        extraLabel: "Миф. реген /" + slash,
+        extraLabel: "Мифический щит /" + slash,
         extraText: "+" + pct(mr, 0),
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? "+" + pct(sr, 0) + " реген" : "только пассив",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "пассив + реген щита" : "только пассив",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? "+" + pct(sr, 0) + " к щиту" : "только броня",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "броня и восстановление щита" : "только броня",
         cd: cd
       });
     }
@@ -420,16 +420,16 @@
         cmdN: wr,
         ringPct: liveWr,
         heroValue: cmdOn ? "−" + pct(wr, 0) : "+" + fmtNum(slots, 0),
-        heroLabel: cmdOn ? "Вес /" + slash : "Слоты (пассив)",
-        passText: slots ? "+" + fmtNum(slots, 0) + " слот." : p.max_weight_per_level != null ? "+" + fmtNum(p.max_weight_per_level * L, 0) + " вес" : "—",
+        heroLabel: cmdOn ? "Облегчение /" + slash : "Ячейки без команды",
+        passText: slots ? "+" + fmtNum(slots, 0) + " яч." : p.max_weight_per_level != null ? "+" + fmtNum(p.max_weight_per_level * L, 0) + " к весу" : "—",
         cmdLabel: "/" + slash,
         cmdText: "−" + pct(wr, 0),
         extraLabel: "Длительность",
         extraText: fmtCd(dur),
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? "−" + pct(wr, 0) + " вес" : "только пассив",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "пассив + облегчение" : "только пассив",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? "−" + pct(wr, 0) + " веса" : "только ячейки",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "ячейки и облегчение" : "только ячейки",
         cd: cd
       });
     }
@@ -447,15 +447,15 @@
         cmdN: eb,
         ringPct: totalEn,
         heroValue: "+" + pct(totalEn, 1),
-        heroLabel: "Суммарное запутывание",
+        heroLabel: "Запутывание врага",
         passText: "+" + pct(passEn, 1),
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(eb, 0),
         extraLabel: "Раундов /" + slash,
         extraText: String(rounds),
-        totalLabel: "Суммарный бонус",
+        totalLabel: "Сумма",
         totalText: "+" + pct(totalEn, 1),
-        resultLabel: "Итог с модулем",
+        resultLabel: "Итог",
         resultText: "+" + pct(totalEn, 1),
         cd: cd
       });
@@ -477,16 +477,16 @@
         cmdN: (uses / cap) * 100,
         ringPct: passV + liveUses > 100 ? 100 : passV + liveUses,
         heroValue: cmdOn ? String(uses) : passV ? "−" + pct(passV, 1) : "—",
-        heroLabel: cmdOn ? "Uses /" + slash : "Пассив",
+        heroLabel: cmdOn ? "Зарядов /" + slash : "Постоянный бонус",
         passText: passV ? "−" + pct(passV, 1) : "—",
         cmdLabel: "/" + slash,
         cmdText: String(uses),
-        extraLabel: "Кап uses",
+        extraLabel: "Максимум",
         extraText: String(cap),
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? uses + " hops" : "только пассив",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "пассив + " + uses + " uses" : "только пассив",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? uses + " прыжков" : "только постоянный бонус",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "постоянный бонус и " + uses + " прыжков" : "только постоянный бонус",
         cd: cd
       });
     }
@@ -502,16 +502,16 @@
         cmdN: (rUses / Math.max(1, maxUses)) * 100,
         ringPct: cmdOn ? (rUses / Math.max(1, maxUses)) * 100 : 0,
         heroValue: cmdOn ? String(rUses) : "—",
-        heroLabel: "Uses /" + slash,
-        passText: "нет",
+        heroLabel: "Зарядов /" + slash,
+        passText: "—",
         cmdLabel: "/" + slash,
         cmdText: String(rUses),
-        extraLabel: "Макс. на L9",
+        extraLabel: "Максимум на 9 ур.",
         extraText: String(maxUses),
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? rUses + " uses" : "—",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? String(rUses) + " uses" : "команда выкл",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? rUses + " зарядов" : "—",
+        resultLabel: "Итог",
+        resultText: cmdOn ? String(rUses) + " зарядов" : "команда выкл.",
         cd: cd
       });
     }
@@ -526,15 +526,15 @@
         ringPct: cmdOn ? (alvl / acap) * 100 : 0,
         heroValue: cmdOn ? String(alvl) : "—",
         heroLabel: "Уровень /" + slash,
-        passText: "нет",
+        passText: "—",
         cmdLabel: "/" + slash,
         cmdText: String(alvl),
-        extraLabel: "Кап анализа",
+        extraLabel: "Максимальный разбор",
         extraText: String(acap),
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? "ур. " + alvl : "—",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "разбор ур. " + alvl : "команда выкл",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? "уровень " + alvl : "—",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "разбор уровня " + alvl : "команда выкл.",
         cd: cd
       });
     }
@@ -551,17 +551,17 @@
         passN: passFind,
         cmdN: 100,
         ringPct: passFind + (cmdOn ? 40 : 0),
-        heroValue: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " tier" : "+" + pct(passFind, 1),
-        heroLabel: cmdOn ? "/" + slash : "Пассивный лут",
+        heroValue: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " к редкости" : "+" + pct(passFind, 1),
+        heroLabel: cmdOn ? "/" + slash : "Поиск без команды",
         passText: passFind ? "+" + pct(passFind, 1) : "—",
         cmdLabel: "/" + slash,
-        cmdText: "+" + fmtNum(c.rarity_tier_boost, 0) + " tier",
-        extraLabel: "TTL заряда",
+        cmdText: "+" + fmtNum(c.rarity_tier_boost, 0) + " к редкости",
+        extraLabel: "Время заряда",
         extraText: fmtCd(Number(c.ttl_sec || 0)),
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " tier" : "только пассив",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "пассив + заряд tier" : "только пассив",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " к редкости" : "только поиск",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "поиск и заряд редкости" : "только поиск",
         cd: cd
       });
     }
@@ -585,16 +585,16 @@
         cmdN: 100,
         ringPct: passOnly + (cmdOn ? 25 : 0),
         heroValue: passOnly ? "+" + pct(passOnly, 1) : fmtCd(cd),
-        heroLabel: passOnly ? "Пассив" : "КД /" + slash,
+        heroLabel: passOnly ? "Постоянный бонус" : "Перезарядка /" + slash,
         passText: passOnly ? "+" + pct(passOnly, 1) : "—",
         cmdLabel: "/" + slash,
         cmdText: "готово",
-        extraLabel: "КД команды",
+        extraLabel: "Перезарядка",
         extraText: fmtCd(cd),
-        totalLabel: "Эффект сейчас",
-        totalText: cmdOn ? "пассив + команда" : passOnly ? "только пассив" : "—",
-        resultLabel: "Итог с модулем",
-        resultText: cmdOn ? "команда активна" : "команда выкл",
+        totalLabel: "Сейчас",
+        totalText: cmdOn ? "бонус и команда" : passOnly ? "только постоянный бонус" : "—",
+        resultLabel: "Итог",
+        resultText: cmdOn ? "команда включена" : "команда выкл.",
         cd: cd
       });
     }
@@ -605,15 +605,15 @@
       cmdN: 0,
       ringPct: passOnly,
       heroValue: passOnly ? "+" + pct(passOnly, 1) : "—",
-      heroLabel: "Пассив",
+      heroLabel: "Постоянный бонус",
       passText: passOnly ? "+" + pct(passOnly, 1) : "—",
       cmdLabel: "Команда",
       cmdText: "—",
-      extraLabel: "Доп.",
+      extraLabel: "Ещё",
       extraText: "—",
       totalLabel: "Сумма",
       totalText: passOnly ? "+" + pct(passOnly, 1) : "—",
-      resultLabel: "Итог с модулем",
+      resultLabel: "Итог",
       resultText: passOnly ? "+" + pct(passOnly, 1) : "—",
       cd: 0
     });
@@ -733,7 +733,7 @@
       renderStats(statsGrid, view.rows);
       renderBars(barsHost, state.equipped ? view.bars : []);
       if (cdLine) {
-        cdLine.textContent = state.equipped && view.cd ? "КД команды: " + fmtCd(view.cd) : "";
+        cdLine.textContent = state.equipped && view.cd ? "Перезарядка: " + fmtCd(view.cd) : "";
       }
     }
 
@@ -752,8 +752,8 @@
         var equipSub = equipBtn.querySelector(".block.text-xs");
         if (equipSub) {
           equipSub.textContent = state.equipped
-            ? "Модуль установлен на броню"
-            : "Без модуля — базовые параметры";
+            ? "Модуль на броне"
+            : "Модуль снят — как без него";
         }
 
         styleSwitch(cmdBtn, state.cmdOn && state.equipped);

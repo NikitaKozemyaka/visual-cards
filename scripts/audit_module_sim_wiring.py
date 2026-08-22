@@ -58,7 +58,7 @@ REQUIRED_DOM = [
     "data-hero-ring",
     'id="sim-equip"',
     'id="sim-cmd"',
-    "module_sim.js?v=8",
+    "module_sim.js?v=9",
     'aria-label="Уровень модуля"',
 ]
 

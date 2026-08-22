@@ -39,12 +39,16 @@ CONTEXT_RU = {
     "encounter": "на карточке встречи",
 }
 RARITY_LABEL = {
-    "common": "Common",
-    "uncommon": "Uncommon",
-    "rare": "Rare",
-    "epic": "Epic",
-    "legendary": "Legendary",
-    "mythic": "Mythic",
+    "common": "Обычный",
+    "uncommon": "Необычный",
+    "rare": "Редкий",
+    "epic": "Эпический",
+    "legendary": "Легендарный",
+    "mythic": "Мифический",
+}
+ARENA_TIER_RU = {
+    "prestige": "раздел «Престиж»",
+    "standard": "обычный раздел",
 }
 
 EMOJI_RE = re.compile(
@@ -93,6 +97,41 @@ def arena_modules(catalog: dict) -> dict:
     return out
 
 
+def humanize_player_text(text: str) -> str:
+    """Player-facing copy: no EN jargon from game data."""
+    if not text:
+        return text
+    t = text
+    pairs = [
+        ("+1 HP регенерации за ход", "+1 к здоровью каждый ход"),
+        ("Пассив:", "Постоянно:"),
+        ("пассив:", "постоянный бонус:"),
+        ("+1 HP", "+1 к здоровью"),
+        ("регенерации", "восстановления"),
+        ("регенерация", "восстановление"),
+        (" HP ", " здоровья "),
+        (" HP,", " здоровья,"),
+        (" HP.", " здоровья."),
+        ("dodge", "уклонение"),
+        ("Dodge", "Уклонение"),
+        ("+1 tier", "+1 к редкости"),
+        (" tier ", " редкости "),
+        (" tier,", " редкости,"),
+        (" tier.", " редкости."),
+        ("кап ", "максимум "),
+        ("кап.", "максимум."),
+        ("фикс.", "фиксированно"),
+        ("КД ", "перезарядка "),
+        ("КД—", "перезарядка —"),
+        ("дроп", "выпадение"),
+        ("×уровень", "× уровень"),
+        ("доп.", "дополнительно"),
+    ]
+    for old, new in pairs:
+        t = t.replace(old, new)
+    return t
+
+
 def build_howto(mod: dict) -> list[str]:
     cmd = mod["command"]
     slash = cmd["slash"]
@@ -103,46 +142,48 @@ def build_howto(mod: dict) -> list[str]:
     ]
     if cmd["cooldown_base_sec"] or cmd["cooldown_per_level_sec"]:
         steps.append(
-            "Кулдаун зависит от уровня модуля: "
-            "base + per_level × (L−1), как в игре."
+            "Перезарядка команды зависит от уровня модуля — как в игре."
         )
     else:
-        steps.append("У этой команды нет таймерного кулдауна (лимит — заряды / встреча).")
+        steps.append("У команды нет таймера: лимит — заряды или одна встреча.")
 
     mid = mod["id"]
     if mid == "tactical_stasis_anchor":
         steps.append(
-            "Пассив −1% уклонения врага за уровень при ваших атаках; "
-            "/pin даёт доп. штраф на несколько раундов (кап 27)."
+            "Постоянно: −1% уклонения врага за каждый уровень модуля при ваших атаках. "
+            "Команда /pin дополнительно снижает уклонение на несколько раундов (не больше 27)."
         )
     elif mid == "tactical_stasis_tuner":
-        steps.append("Пассивок в бою нет — только /rerange (переброс дистанции на встрече).")
+        steps.append("Постоянного бонуса нет — только /rerange (смена дистанции на встрече).")
     elif mid == "tactical_recon_lens":
-        steps.append("Пассивок в бою нет — только /analyze (разбор цели на встрече).")
+        steps.append("Постоянного бонуса нет — только /analyze (разбор цели на встрече).")
     elif mid == "economy_relic_hunter":
-        steps.append("/prospect заряжает +1 tier следующего предмета (глубина 5+); КД при успехе.")
+        steps.append(
+            "/prospect повышает редкость следующей находки на 1 шаг (с глубины 5+); "
+            "после успеха команда уходит на перезарядку."
+        )
     elif mid == "economy_salvage_link":
-        steps.append("/instant_search ускоряет текущий поиск; длинный КД — особенность модуля.")
+        steps.append("/instant_search ускоряет текущий поиск; перезарядка длинная — так задумано.")
     else:
-        steps.append(mod["effect_text"])
+        steps.append(humanize_player_text(mod["effect_text"]))
     return steps
 
 
 def build_sources(item: dict, arena: dict | None) -> list[str]:
     src = []
     if item.get("craftable"):
-        src.append("Крафт v2 (рецепт модуля)")
+        src.append("Крафт (рецепт модуля)")
     if arena:
         cost = arena.get("cost")
         tier = arena.get("tier") or ""
         bit = f"Магазин арены — {cost} очков"
         if tier:
-            bit += f", tier {tier}"
+            bit += f", {ARENA_TIER_RU.get(tier, tier)}"
         src.append(bit)
     if not src:
-        src.append("Поиск / крафт")
+        src.append("Поиск и крафт")
     elif item.get("drop_chance"):
-        src.append("Редкий дроп при поиске")
+        src.append("Может выпасть при поиске")
     return src
 
 
@@ -150,12 +191,15 @@ def catalog_blurb(mod: dict) -> str:
     slash = mod["command"]["slash"]
     if mod["id"] == "tactical_stasis_anchor":
         return (
-            "Интерактивная карточка анти-уклонения: уровни L1–L9, /pin, "
-            "dodge врага и примерный шанс попадания."
+            "Потыкай уровни и команду /pin: покажем уклонение врага "
+            "и примерный шанс попадания."
         )
     if not mod["passive"]:
-        return f"Интерактивная карточка: L1–L9 и команда /{slash}."
-    return f"Интерактивная карточка: пассивы по уровню, /{slash}, экип вкл/выкл."
+        return f"Уровни 1–9 и команда /{slash} — цифры пересчитаются сразу."
+    return (
+        f"Уровни 1–9, команда /{slash} и постоянный бонус — "
+        "можно включить модуль на броне или снять."
+    )
 
 
 def cover_rel(mid: str, *, from_modules: bool = True) -> str:
@@ -341,7 +385,7 @@ def page_html(mod: dict) -> str:
     slash = mod["command"]["slash"]
     title = mod["name"]
     emoji = mod.get("emoji") or ""
-    desc = mod["description"] or mod["effect_text"]
+    desc = humanize_player_text(mod["description"] or mod["effect_text"])
     page_class = f"vc-page-{rarity}" if rarity == "legendary" else ""
     header_rarity = f"vc-rarity-{rarity}"
     sim_rarity = f"vc-rarity-{rarity}-sim"
@@ -387,16 +431,16 @@ def page_html(mod: dict) -> str:
 {CSS_LINKS}
   <meta name="theme-color" content="#060911"/>
   <meta name="color-scheme" content="dark"/>
-  <title>{esc(title)} · {RARITY_LABEL.get(rarity, rarity)} — STW Visual Cards</title>
+  <title>{esc(title)} · {RARITY_LABEL.get(rarity, rarity)} — Space Text World</title>
   <meta name="description" content="{og_desc}"/>
   <link rel="canonical" href="{canonical}"/>
-  <meta property="og:title" content="{esc(title)} — STW Visual Cards"/>
+  <meta property="og:title" content="{esc(title)} — Space Text World"/>
   <meta property="og:description" content="{og_desc}"/>
   <meta property="og:url" content="{canonical}"/>
   <meta property="og:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
   <meta property="og:type" content="article"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="{esc(title)} — STW Visual Cards"/>
+  <meta name="twitter:title" content="{esc(title)} — Space Text World"/>
   <meta name="twitter:description" content="{og_desc}"/>
   <meta name="twitter:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
 </head>
@@ -435,17 +479,17 @@ def page_html(mod: dict) -> str:
               <span class="size-1.5 rounded-full live-dot" aria-hidden="true"></span>
               Симулятор
             </h2>
-            <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground/60">live</span>
+            <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground/60">считает</span>
           </div>
           <div class="grid gap-6 p-5 sm:grid-cols-2 sm:p-6">
             <div class="flex flex-col gap-6">
-              <p class="text-sm leading-relaxed text-muted-foreground">Выбери уровень модуля — цифры пересчитаются из баланса игры.</p>
+              <p class="text-sm leading-relaxed text-muted-foreground">Выбери уровень — цифры пересчитаются по правилам игры.</p>
               <div>
                 <div class="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Уровень модуля</div>
                 <div role="group" aria-label="Уровень модуля" class="grid grid-cols-5 gap-2 sm:grid-cols-3">{level_buttons_html()}</div>
               </div>
-              {switch_html("sim-equip", "Экипировать", "Модуль установлен на броню", True)}
-              {switch_html("sim-cmd", cmd_title, "Заряд / активация команды", False)}
+              {switch_html("sim-equip", "Экипировать", "Модуль на броне", True)}
+              {switch_html("sim-cmd", cmd_title, "Включи, чтобы увидеть эффект команды", False)}
               {extra}
             </div>
             <div class="flex flex-col gap-4">
@@ -469,11 +513,11 @@ def page_html(mod: dict) -> str:
       </section>
 
       <footer class="mt-8 text-center">
-        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground/60">Space Text World · {esc(mod["id"])} · данные из module_balance.json</p>
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground/60">Space Text World · карточка модуля · данные из игры</p>
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=8" defer></script>
+  <script src="./module_sim.js?v=9" defer></script>
   <script src="../assets/nav-refresh.js?v=7" defer></script>
 </body>
 </html>
@@ -545,16 +589,16 @@ def write_catalog(modules: list[dict]) -> None:
 {CSS_LINKS}
   <meta name="theme-color" content="#060911"/>
   <meta name="color-scheme" content="dark"/>
-  <title>Модули — STW Visual Cards</title>
-  <meta name="description" content="Каталог интерактивных карточек модулей Space Text World."/>
+  <title>Модули — Space Text World</title>
+  <meta name="description" content="Каталог карточек модулей брони Space Text World — с наглядным симулятором."/>
   <link rel="canonical" href="https://nikitakozemyaka.github.io/visual-cards/modules/"/>
-  <meta property="og:title" content="Модули — STW Visual Cards"/>
-  <meta property="og:description" content="Каталог интерактивных карточек модулей Space Text World."/>
+  <meta property="og:title" content="Модули — Space Text World"/>
+  <meta property="og:description" content="Каталог карточек модулей брони Space Text World — с наглядным симулятором."/>
   <meta property="og:url" content="https://nikitakozemyaka.github.io/visual-cards/modules/"/>
   <meta property="og:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
   <meta property="og:type" content="website"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Модули — STW Visual Cards"/>
+  <meta name="twitter:title" content="Модули — Space Text World"/>
   <meta name="twitter:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
 </head>
 <body class="font-sans antialiased">
@@ -571,7 +615,7 @@ def write_catalog(modules: list[dict]) -> None:
           <span class="size-1.5 rounded-full bg-primary live-dot" aria-hidden="true"></span>
           Модули
         </div>
-        <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">visual-cards</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70">карточки</span>
       </header>
 
       <section class="vc-rise vc-rise-d2 mt-10">
@@ -583,7 +627,7 @@ def write_catalog(modules: list[dict]) -> None:
 {"".join(sections)}
 
       <footer class="mt-16 border-t border-border pt-5">
-        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/60">Space Text World · modules · {n:02d}</p>
+        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/60">Space Text World · каталог модулей · {n:02d}</p>
       </footer>
     </div>
   </div>
