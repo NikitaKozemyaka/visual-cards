@@ -86,7 +86,7 @@ CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=8"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
   <link rel="stylesheet" href="../assets/touch-safe.css?v=6"/>
   <link rel="stylesheet" href="../assets/rarity.css?v=9"/>
-  <link rel="stylesheet" href="../assets/catalog.css?v=4"/>"""
+  <link rel="stylesheet" href="../assets/catalog.css?v=5"/>"""
 
 
 def extract_emoji(text: str) -> str:
