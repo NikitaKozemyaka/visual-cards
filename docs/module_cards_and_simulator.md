@@ -362,7 +362,44 @@ python -m unittest scripts.test_module_sim_embed -q
 
 ---
 
-## 10. Что сознательно не делали
+## 10. Mechanics demos (отличие от module sim)
+
+Раздел **`mechanics/`** — не live-симулятор с тиками, а **сценарий**: параметры → кнопка «Погиб» → блок результата.
+
+| Файл | Роль |
+|------|------|
+| `mechanics/mechanics_sim.js?v=1` | Формулы стабилизатора + осколков (канон `STW_GAME/game_core/module_death_stabilizer.py`) |
+| `scripts/build_mechanics_cards.py` | Генерирует `data/mechanics.json`, `mechanics/index.html`, `mechanics/stabilizer.html` |
+| `scripts/test_mechanics_sim.py` | Mirror-тесты формул vs Python |
+| `scripts/test_mechanics_sim_embed.py` | b64 embed + cache-bust `mechanics_sim.js?v=` |
+
+**DOM-контракт stabilizer.html:**
+
+- `<section data-mechanics-id="death_stabilizer" data-stw-mechanics-b64="...">`
+- fallback: `<script type="application/json" id="stw-mechanics-data">`
+- без fetch (Telegram WebView)
+
+**Контрольная цифра:** armed + [rare L5, epic L9, leg L3] → save leg L3, shards = **17**.
+
+Запуск:
+
+```powershell
+cd D:\visual-cards
+python scripts/build_mechanics_cards.py
+python scripts/test_mechanics_sim.py
+python -m unittest scripts.test_mechanics_sim_embed -q
+```
+
+Ссылки:
+
+| Страница | URL |
+|----------|-----|
+| Каталог механик | https://nikitakozemyaka.github.io/visual-cards/mechanics/ |
+| Стабилизатор | https://nikitakozemyaka.github.io/visual-cards/mechanics/stabilizer.html?v=1 |
+
+---
+
+## 11. Что сознательно не делали
 
 - Не меняли игровой баланс в STW_GAME ради визуалки (только читаем).
 - Не возвращали оранжевый live-dot / привязку кольца к редкости (кольцо = итог формулы модуля).
@@ -370,7 +407,7 @@ python -m unittest scripts.test_module_sim_embed -q
 
 ---
 
-## 11. Типичные ошибки агента (anti-patterns)
+## 12. Типичные ошибки агента (anti-patterns)
 
 1. **Править 14 HTML руками** — при следующей сборке перезатрётся; только генератор.
 2. **StrReplace кириллицы в STW_GAME монолитах** — см. `AGENTS.md` STW; visual-cards обычные правки OK, но `build_module_cards.py` с русским текстом — через Write/UTF-8.

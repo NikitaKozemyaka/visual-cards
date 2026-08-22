@@ -114,6 +114,9 @@ a.vc-mod-card .size-4 {
   .vc-rise-d4 {
     animation-delay: 280ms;
   }
+  .vc-rise-d5 {
+    animation-delay: 350ms;
+  }
 
   .live-dot {
     animation: vc-live-pulse 2.8s ease-in-out infinite;
