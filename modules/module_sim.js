@@ -1,9 +1,8 @@
 (function () {
   "use strict";
 
-  // Simulator model matches cardify stasis-anchor reference:
-  // ring = outcome formula; stats = Пассив / команда / доп / сумма / итог;
-  // command off → "—"; default command ON.
+  // Simulator: cardify stasis layout (ring = outcome; 5 stats + 2 bars).
+  // Command off shows dash for cmd rows; default command OFF.
 
   var CIRC = 2 * Math.PI * 52;
 
@@ -680,7 +679,30 @@
     var levelGroup = root.querySelector('[aria-label="Уровень модуля"]');
     var equipBtn = document.getElementById("sim-equip");
     var cmdBtn = document.getElementById("sim-cmd");
-    if (!levelGroup || !equipBtn || !cmdBtn) return;
+    var heroValue = root.querySelector("[data-hero-value]");
+    var heroLabel = root.querySelector("[data-hero-label]");
+    var heroSub = root.querySelector("[data-hero-sub]");
+    var heroRing = root.querySelector("[data-hero-ring]");
+    var statsGrid = root.querySelector("[data-stats-grid]");
+    var barsHost = root.querySelector("[data-bars]");
+    var cdLine = root.querySelector("[data-cd-line]");
+
+    function showUiError(msg) {
+      if (statsGrid) {
+        renderStats(statsGrid, [
+          { label: "Симулятор", value: msg, tone: "muted", wide: true }
+        ]);
+      }
+      if (barsHost) {
+        barsHost.innerHTML = "";
+        barsHost.style.display = "none";
+      }
+    }
+
+    if (!levelGroup || !equipBtn || !cmdBtn) {
+      showUiError("Не найдены элементы управления");
+      return;
+    }
 
     var levelBtns = Array.prototype.slice.call(levelGroup.querySelectorAll("button"));
     var dodgeExtra = root.querySelector('[data-sim-extra="dodge"]');
@@ -691,16 +713,7 @@
     var range = dodgeExtra ? dodgeExtra.querySelector('input[type="range"]') : null;
     var dodgeValueEl = dodgeExtra ? dodgeExtra.querySelector("[data-dodge-value]") : null;
 
-    var heroValue = root.querySelector("[data-hero-value]");
-    var heroLabel = root.querySelector("[data-hero-label]");
-    var heroSub = root.querySelector("[data-hero-sub]");
-    var heroRing = root.querySelector("[data-hero-ring]");
-    var statsGrid = root.querySelector("[data-stats-grid]");
-    var barsHost = root.querySelector("[data-bars]");
-    var cdLine = root.querySelector("[data-cd-line]");
-
-    // Reference default: command ON (cardify pin active).
-    var state = { level: 3, dodge: 20, equipped: true, cmdOn: true };
+    var state = { level: 3, dodge: 20, equipped: true, cmdOn: false };
     var slash = (mod.command && mod.command.slash) || "";
 
     function setDisabledLook(disabled) {
@@ -711,53 +724,53 @@
     }
 
     function applyView(view) {
-      applyRing(
-        heroRing,
-        heroValue,
-        view.hero.ringPct,
-        state.equipped && view.hero.ringPct > 0,
-        view.hero.value
-      );
+      var live = state.equipped && view.hero.value !== "—";
+      applyRing(heroRing, heroValue, view.hero.ringPct, live, view.hero.value);
       if (heroLabel) heroLabel.textContent = view.hero.label;
-      if (heroSub) heroSub.textContent = "";
+      if (heroSub) heroSub.textContent = view.hero.sub || "";
       renderStats(statsGrid, view.rows);
-      renderBars(barsHost, view.bars);
+      renderBars(barsHost, state.equipped ? view.bars : []);
       if (cdLine) {
         cdLine.textContent = state.equipped && view.cd ? "КД команды: " + fmtCd(view.cd) : "";
       }
     }
 
     function render() {
-      levelBtns.forEach(function (btn) {
-        var lvl = Number((btn.textContent || "").replace(/\D/g, ""));
-        styleChoice(btn, lvl === state.level, false);
-      });
-      dodgeBtns.forEach(function (btn) {
-        var d = Number((btn.textContent || "").replace("%", ""));
-        styleChoice(btn, d === state.dodge, true);
-      });
+      try {
+        levelBtns.forEach(function (btn) {
+          var lvl = Number((btn.textContent || "").replace(/\D/g, ""));
+          styleChoice(btn, lvl === state.level, false);
+        });
+        dodgeBtns.forEach(function (btn) {
+          var d = Number((btn.textContent || "").replace("%", ""));
+          styleChoice(btn, d === state.dodge, true);
+        });
 
-      styleSwitch(equipBtn, state.equipped);
-      var equipSub = equipBtn.querySelector(".block.text-xs");
-      if (equipSub) {
-        equipSub.textContent = state.equipped
-          ? "Модуль установлен на броню"
-          : "Без модуля — базовые параметры";
-      }
+        styleSwitch(equipBtn, state.equipped);
+        var equipSub = equipBtn.querySelector(".block.text-xs");
+        if (equipSub) {
+          equipSub.textContent = state.equipped
+            ? "Модуль установлен на броню"
+            : "Без модуля — базовые параметры";
+        }
 
-      styleSwitch(cmdBtn, state.cmdOn && state.equipped);
-      setCmdTitle(cmdBtn, slash, state.equipped && state.cmdOn);
-      setDisabledLook(!state.equipped);
+        styleSwitch(cmdBtn, state.cmdOn && state.equipped);
+        setCmdTitle(cmdBtn, slash, state.equipped && state.cmdOn);
+        setDisabledLook(!state.equipped);
 
-      if (range) range.value = String(state.dodge);
-      if (dodgeValueEl) dodgeValueEl.textContent = pct(state.dodge, 0);
+        if (range) range.value = String(state.dodge);
+        if (dodgeValueEl) dodgeValueEl.textContent = pct(state.dodge, 0);
 
-      if (mod.sim_kind === "stasis_anchor") {
-        applyView(
-          calcStasis(mod, state.level, state.dodge, state.equipped, state.cmdOn)
-        );
-      } else {
-        applyView(calcGeneric(mod, state.level, state.equipped, state.cmdOn));
+        if (mod.sim_kind === "stasis_anchor") {
+          applyView(
+            calcStasis(mod, state.level, state.dodge, state.equipped, state.cmdOn)
+          );
+        } else {
+          applyView(calcGeneric(mod, state.level, state.equipped, state.cmdOn));
+        }
+      } catch (err) {
+        console.error(err);
+        showUiError("Ошибка расчёта");
       }
     }
 
@@ -783,7 +796,6 @@
     equipBtn.addEventListener("click", function () {
       state.equipped = !state.equipped;
       if (!state.equipped) state.cmdOn = false;
-      else state.cmdOn = true;
       render();
     });
     cmdBtn.addEventListener("click", function () {
@@ -795,6 +807,36 @@
     render();
   }
 
+  function decodeModuleB64(b64) {
+    var bin = atob(b64);
+    if (typeof TextDecoder !== "undefined") {
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder("utf-8").decode(bytes);
+    }
+    return bin;
+  }
+
+  function parseModuleData(root) {
+    var b64 = root.getAttribute("data-stw-module-b64");
+    if (b64) {
+      try {
+        return JSON.parse(decodeModuleB64(b64));
+      } catch (err) {
+        console.warn("data-stw-module-b64 parse failed", err);
+      }
+    }
+    var embedded = document.getElementById("stw-module-data");
+    if (embedded && embedded.textContent) {
+      try {
+        return JSON.parse(embedded.textContent.trim());
+      } catch (err) {
+        console.warn("stw-module-data parse failed", err);
+      }
+    }
+    return null;
+  }
+
   function boot() {
     var title = document.getElementById("sim-title");
     if (!title) return;
@@ -803,7 +845,7 @@
     var mid = root.getAttribute("data-module-id");
     if (!mid) return;
 
-    function fail(err) {
+    function failLoad(err) {
       console.error(err);
       var hero = root.querySelector("[data-hero-value]");
       if (hero) hero.textContent = "!";
@@ -811,22 +853,43 @@
       if (label) label.textContent = "Не загрузился баланс";
     }
 
+    function showRuntimeError(err) {
+      console.error(err);
+      var grid = root.querySelector("[data-stats-grid]");
+      if (grid) {
+        renderStats(grid, [
+          {
+            label: "Симулятор",
+            value: "Ошибка запуска",
+            tone: "muted",
+            wide: true
+          }
+        ]);
+      }
+      var hero = root.querySelector("[data-hero-value]");
+      if (hero) hero.textContent = "!";
+      var label = root.querySelector("[data-hero-label]");
+      if (label) label.textContent = "Ошибка симулятора";
+    }
+
     function start(mod) {
-      if (!mod || mod.id !== mid) throw new Error("module mismatch: " + mid);
+      if (!mod || mod.id !== mid) {
+        throw new Error("module mismatch: " + mid);
+      }
       bootModule(mod, root);
     }
 
-    var embedded = document.getElementById("stw-module-data");
-    if (embedded && embedded.textContent) {
+    var mod = parseModuleData(root);
+    if (mod) {
       try {
-        start(JSON.parse(embedded.textContent));
-        return;
+        start(mod);
       } catch (err) {
-        console.warn("embedded module JSON failed, falling back to fetch", err);
+        showRuntimeError(err);
       }
+      return;
     }
 
-    var jsonUrl = new URL("../data/modules.json?v=3", window.location.href).href;
+    var jsonUrl = new URL("../data/modules.json?v=4", window.location.href).href;
     fetch(jsonUrl)
       .then(function (r) {
         if (!r.ok) throw new Error("modules.json " + r.status);
@@ -834,17 +897,21 @@
       })
       .then(function (data) {
         var list = (data && data.modules) || [];
-        var mod = null;
+        var found = null;
         for (var i = 0; i < list.length; i++) {
           if (list[i].id === mid) {
-            mod = list[i];
+            found = list[i];
             break;
           }
         }
-        if (!mod) throw new Error("module not found: " + mid);
-        start(mod);
+        if (!found) throw new Error("module not found: " + mid);
+        try {
+          start(found);
+        } catch (err) {
+          showRuntimeError(err);
+        }
       })
-      .catch(fail);
+      .catch(failLoad);
   }
 
   if (document.readyState === "loading") {

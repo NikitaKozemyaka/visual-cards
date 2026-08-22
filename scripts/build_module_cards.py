@@ -2,6 +2,7 @@
 """Build visual-cards module pages from STW_GAME balance + items."""
 from __future__ import annotations
 
+import base64
 import json
 import re
 from pathlib import Path
@@ -362,7 +363,7 @@ def page_html(mod: dict) -> str:
     extra = dodge_block_html() if mod["sim_kind"] == "stasis_anchor" else ""
     cmd_title = (
         f'Команда <code class="rounded bg-background/60 px-1 py-0.5 font-mono text-[13px] text-primary">'
-        f"/{slash}</code> активна"
+        f"/{slash}</code> выкл"
     )
 
     canonical = f"https://nikitakozemyaka.github.io/visual-cards/modules/{mod['filename']}"
@@ -372,6 +373,7 @@ def page_html(mod: dict) -> str:
     mod_json = json.dumps(mod, ensure_ascii=False, separators=(",", ":")).replace(
         "<", "\\u003c"
     )
+    mod_b64 = base64.b64encode(mod_json.encode("utf-8")).decode("ascii")
 
     return f"""<!DOCTYPE html>
 <html lang="ru" class="dark bg-background space_grotesk_e6988195-module__RNs2Mq__variable jetbrains_mono_83faaeae-module__xxnQGG__variable">
@@ -427,7 +429,7 @@ def page_html(mod: dict) -> str:
       </header>
 
       <div class="vc-rise vc-rise-d2 mt-4">
-        <section aria-labelledby="sim-title" data-module-id="{esc(mod["id"])}" class="rounded-2xl border border-border bg-card {sim_rarity}">
+        <section aria-labelledby="sim-title" data-module-id="{esc(mod["id"])}" data-stw-module-b64="{mod_b64}" class="rounded-2xl border border-border bg-card {sim_rarity}">
           <div class="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6">
             <h2 id="sim-title" class="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               <span class="size-1.5 rounded-full live-dot" aria-hidden="true"></span>
@@ -443,7 +445,7 @@ def page_html(mod: dict) -> str:
                 <div role="group" aria-label="Уровень модуля" class="grid grid-cols-5 gap-2 sm:grid-cols-3">{level_buttons_html()}</div>
               </div>
               {switch_html("sim-equip", "Экипировать", "Модуль установлен на броню", True)}
-              {switch_html("sim-cmd", cmd_title, "Заряд / активация команды", True)}
+              {switch_html("sim-cmd", cmd_title, "Заряд / активация команды", False)}
               {extra}
             </div>
             <div class="flex flex-col gap-4">
@@ -471,7 +473,7 @@ def page_html(mod: dict) -> str:
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=6" defer></script>
+  <script src="./module_sim.js?v=7" defer></script>
   <script src="../assets/nav-refresh.js?v=7" defer></script>
 </body>
 </html>
