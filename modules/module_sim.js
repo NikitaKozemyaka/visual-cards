@@ -86,9 +86,11 @@
     if (heroRing) {
       heroRing.setAttribute("stroke-dasharray", String(CIRC));
       heroRing.setAttribute("stroke-dashoffset", String(CIRC * (1 - fill / 100)));
-      heroRing.className =
+      heroRing.setAttribute(
+        "class",
         "transition-[stroke-dashoffset] duration-500 ease-out " +
-        (live && fill > 0 ? "text-ok" : "text-muted-foreground");
+          (live && fill > 0 ? "text-ok" : "text-muted-foreground")
+      );
     }
     if (heroValue) {
       heroValue.textContent = valueText;

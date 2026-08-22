@@ -473,7 +473,7 @@ def page_html(mod: dict) -> str:
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=7" defer></script>
+  <script src="./module_sim.js?v=8" defer></script>
   <script src="../assets/nav-refresh.js?v=7" defer></script>
 </body>
 </html>
