@@ -1,8 +1,7 @@
 (function () {
   "use strict";
 
-  // Simulator: cardify stasis layout (ring = outcome; 5 stats + 2 bars).
-  // Command off shows dash for cmd rows; default command OFF.
+  // sim_display profiles: combined_pct | split_metrics | command_only | economy
 
   var CIRC = 2 * Math.PI * 52;
 
@@ -104,8 +103,23 @@
     return on ? text : "—";
   }
 
-  /** Anchor-style layout used by cardify stasis reference. */
-  function pack(opts) {
+  function unequippedView(slash) {
+    return {
+      hero: { value: "—", label: "Без модуля", sub: "", ringPct: 0 },
+      rows: [
+        { label: "Постоянный бонус", value: "—", tone: "muted" },
+        { label: slash ? "/" + slash : "Команда", value: "—", tone: "muted" },
+        { label: "Ещё", value: "—", tone: "muted" },
+        { label: "Сумма", value: "—", tone: "muted" },
+        { label: "Итог", value: "—", tone: "muted", wide: true }
+      ],
+      bars: [],
+      cd: 0
+    };
+  }
+
+  /** Same-axis % modules (stasis, entangle, kinetic, crit, detox, bastion). */
+  function packCombinedPct(opts) {
     var cmdOn = !!opts.cmdOn;
     var passN = Number(opts.passN || 0);
     var cmdN = cmdOn ? Number(opts.cmdN || 0) : 0;
@@ -117,7 +131,7 @@
       hero: {
         value: opts.heroValue,
         label: opts.heroLabel,
-        sub: "",
+        sub: opts.heroSub || "",
         ringPct: clampPct(ring)
       },
       rows: [
@@ -129,20 +143,11 @@
         },
         {
           label: opts.extraLabel,
-          value: dash(cmdOn, opts.extraText),
-          tone: cmdOn ? "fg" : "muted"
+          value: opts.extraAlways ? opts.extraText : dash(cmdOn, opts.extraText),
+          tone: cmdOn || opts.extraAlways ? "fg" : "muted"
         },
-        {
-          label: opts.totalLabel,
-          value: opts.totalText,
-          tone: "primary"
-        },
-        {
-          label: opts.resultLabel,
-          value: opts.resultText,
-          tone: "ok",
-          wide: true
-        }
+        { label: opts.totalLabel, value: opts.totalText, tone: "primary" },
+        { label: opts.resultLabel, value: opts.resultText, tone: "ok", wide: true }
       ],
       bars: [
         {
@@ -163,6 +168,143 @@
       cd: opts.cd || 0
     };
   }
+
+  var pack = packCombinedPct;
+
+  /** Different units: ring = primary metric only; bars use separate scales. */
+  function packSplit(opts) {
+    var cmdOn = !!opts.cmdOn;
+    var passPct = Number(opts.passBarPct || 0);
+    var passMax = Number(opts.passBarMax || 100);
+    var cmdPct = cmdOn ? Number(opts.cmdBarPct || 0) : 0;
+    var cmdMax = Number(opts.cmdBarMax || 100);
+    var bars = [];
+    if (passMax > 0 && passPct > 0) {
+      bars.push({
+        label: "Постоянно",
+        pct: passPct,
+        max: passMax,
+        display: opts.passBarDisplay || opts.passText,
+        tone: "passive"
+      });
+    }
+    if (cmdMax > 0) {
+      bars.push({
+        label: opts.cmdBarLabel || opts.cmdLabel,
+        pct: cmdPct,
+        max: cmdMax,
+        display: dash(cmdOn, opts.cmdBarDisplay || opts.cmdText),
+        tone: "pin"
+      });
+    }
+
+    return {
+      hero: {
+        value: opts.heroValue,
+        label: opts.heroLabel,
+        sub: opts.heroSub || "",
+        ringPct: clampPct(Number(opts.ringPct || 0))
+      },
+      rows: [
+        { label: "Постоянный бонус", value: opts.passText, tone: "fg" },
+        {
+          label: opts.cmdLabel,
+          value: dash(cmdOn, opts.cmdText),
+          tone: cmdOn ? "primary" : "muted"
+        },
+        {
+          label: opts.extraLabel,
+          value: dash(cmdOn, opts.extraText),
+          tone: cmdOn ? "fg" : "muted"
+        },
+        { label: opts.totalLabel, value: opts.totalText, tone: "primary" },
+        { label: opts.resultLabel, value: opts.resultText, tone: "ok", wide: true }
+      ],
+      bars: bars,
+      cd: opts.cd || 0
+    };
+  }
+
+  function packCommandOnly(opts) {
+    var cmdOn = !!opts.cmdOn;
+    var ring = cmdOn ? Number(opts.ringPct || 0) : 0;
+    var barPct = cmdOn ? Number(opts.barPct || 0) : 0;
+    var barMax = Number(opts.barMax || 100);
+
+    return {
+      hero: {
+        value: opts.heroValue,
+        label: opts.heroLabel,
+        sub: opts.heroSub || "Только команда на встрече",
+        ringPct: clampPct(ring)
+      },
+      rows: [
+        { label: opts.cmdLabel, value: dash(cmdOn, opts.cmdText), tone: cmdOn ? "primary" : "muted" },
+        { label: opts.extraLabel, value: dash(cmdOn, opts.extraText), tone: cmdOn ? "fg" : "muted" },
+        { label: "Сейчас", value: opts.nowText, tone: "primary" },
+        { label: "Итог", value: opts.resultText, tone: "ok", wide: true },
+        { label: "Режим", value: "Без постоянного бонуса", tone: "muted", wide: true }
+      ],
+      bars: barMax
+        ? [
+            {
+              label: opts.cmdLabel,
+              pct: barPct,
+              max: barMax,
+              display: dash(cmdOn, opts.cmdText),
+              tone: "pin"
+            }
+          ]
+        : [],
+      cd: opts.cd || 0
+    };
+  }
+
+  function packEconomy(opts) {
+    var cmdOn = !!opts.cmdOn;
+    var passN = Number(opts.passBarPct || 0);
+    var passMax = Number(opts.passBarMax || 100);
+    var cmdFill = cmdOn ? Number(opts.cmdBarPct || 100) : 0;
+
+    return {
+      hero: {
+        value: opts.heroValue,
+        label: opts.heroLabel,
+        sub: opts.heroSub || "",
+        ringPct: clampPct(Number(opts.ringPct || 0))
+      },
+      rows: [
+        { label: "Поиск (постоянно)", value: opts.passText, tone: "fg" },
+        {
+          label: opts.cmdLabel,
+          value: dash(cmdOn, opts.cmdText),
+          tone: cmdOn ? "primary" : "muted"
+        },
+        { label: opts.extraLabel, value: opts.extraText, tone: "fg" },
+        { label: "Сейчас", value: opts.nowText, tone: "primary" },
+        { label: "Итог", value: opts.resultText, tone: "ok", wide: true }
+      ],
+      bars: [
+        {
+          label: "Поиск",
+          pct: passN,
+          max: passMax,
+          display: opts.passText,
+          tone: "passive"
+        },
+        {
+          label: "Заряд",
+          pct: cmdFill,
+          max: 100,
+          display: dash(cmdOn, opts.cmdBarDisplay || opts.cmdText),
+          tone: "pin"
+        }
+      ],
+      cd: opts.cd || 0
+    };
+  }
+
+  // --- Stasis (combined_pct, special dodge) ---
 
   function calcStasis(mod, level, dodge, equipped, cmdOn) {
     var pEff = mod.passive || {};
@@ -208,7 +350,7 @@
         )
       : 0;
 
-    return pack({
+    return packCombinedPct({
       cmdOn: cmdOn,
       passN: passive,
       cmdN: Math.min(95, Number(cEff.enemy_evasion_penalty_per_level || 0.05) * level * 100),
@@ -230,59 +372,368 @@
     });
   }
 
-  function calcGeneric(mod, level, equipped, cmdOn) {
+  // --- split_metrics ---
+
+  function calcVitalWeave(mod, L, equipped, cmdOn) {
     var p = mod.passive || {};
     var c = (mod.command && mod.command.effect) || {};
-    var L = Math.max(1, level | 0);
-    var slash = (mod.command && mod.command.slash) || "";
+    var slash = (mod.command && mod.command.slash) || "stabilize";
     var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
 
-    if (!equipped) {
-      return {
-        hero: { value: "—", label: "Без модуля", sub: "", ringPct: 0 },
-        rows: [
-          { label: "Постоянный бонус", value: "—", tone: "muted" },
-          { label: slash ? "/" + slash : "Команда", value: "—", tone: "muted" },
-          { label: "Ещё", value: "—", tone: "muted" },
-          { label: "Сумма", value: "—", tone: "muted" },
-          { label: "Итог", value: "—", tone: "muted", wide: true }
-        ],
-        bars: [],
-        cd: 0
-      };
-    }
+    var heal = (c.heal_pct_base + c.heal_pct_per_level * (L - 1)) * 100;
+    var hp = p.max_health_per_level != null ? p.max_health_per_level * L : 0;
+    var regen = p.health_regen_flat != null ? p.health_regen_flat : 0;
+    var hpMaxL9 = (p.max_health_per_level || 10) * 9;
 
-    // --- Module families (same UX skeleton as stasis) ---
-
-    if (c.heal_pct_base != null) {
-      var heal = (c.heal_pct_base + c.heal_pct_per_level * (L - 1)) * 100;
-      var hp = p.max_health_per_level != null ? p.max_health_per_level * L : 0;
-      var liveHeal = cmdOn ? heal : 0;
-      return pack({
-        cmdOn: cmdOn,
-        passN: 0,
-        cmdN: heal,
-        ringPct: liveHeal,
-        heroValue: pct(liveHeal || heal, 1),
-        heroLabel: cmdOn ? "Лечение /" + slash : "Лечение (команда выкл.)",
-        passText: hp ? "+" + fmtNum(hp, 0) + " к здоровью" : p.health_regen_flat != null ? "+" + fmtNum(p.health_regen_flat, 0) + " за ход" : "есть",
+    if (cmdOn) {
+      return packSplit({
+        cmdOn: true,
+        ringPct: heal,
+        heroValue: pct(heal, 0),
+        heroLabel: "Лечение /" + slash,
+        passText: "+" + fmtNum(hp, 0) + " к здоровью",
         cmdLabel: "/" + slash,
-        cmdText: pct(heal, 1),
+        cmdText: pct(heal, 0),
         extraLabel: "Восстановление за ход",
-        extraText: p.health_regen_flat != null ? "+" + fmtNum(p.health_regen_flat, 0) : "—",
+        extraText: regen ? "+" + fmtNum(regen, 0) : "—",
         totalLabel: "Сейчас",
-        totalText: cmdOn ? pct(heal, 1) + " лечение" : "только бонус к здоровью",
+        totalText: pct(heal, 0) + " лечение",
         resultLabel: "Итог",
-        resultText: cmdOn ? pct(heal, 1) + " и бонус к здоровью" : "бонус к здоровью",
+        resultText: pct(heal, 0) + " и +" + fmtNum(hp, 0) + " к здоровью",
+        passBarPct: hp,
+        passBarMax: hpMaxL9,
+        passBarDisplay: "+" + fmtNum(hp, 0) + " HP",
+        cmdBarPct: heal,
+        cmdBarMax: 100,
+        cmdBarDisplay: pct(heal, 0),
         cd: cd
       });
     }
+
+    return packSplit({
+      cmdOn: false,
+      ringPct: clampPct((hp / hpMaxL9) * 100),
+      heroValue: "+" + fmtNum(hp, 0),
+      heroLabel: "Запас здоровья",
+      passText: "+" + fmtNum(hp, 0) + " к здоровью",
+      cmdLabel: "/" + slash,
+      cmdText: pct(heal, 0),
+      extraLabel: "Восстановление за ход",
+      extraText: regen ? "+" + fmtNum(regen, 0) : "—",
+      totalLabel: "Сейчас",
+      totalText: "только бонус к здоровью",
+      resultLabel: "Итог",
+      resultText: "+" + fmtNum(hp, 0) + " и +" + fmtNum(regen, 0) + "/ход",
+      passBarPct: hp,
+      passBarMax: hpMaxL9,
+      passBarDisplay: "+" + fmtNum(hp, 0),
+      cmdBarPct: 0,
+      cmdBarMax: 100,
+      cd: cd
+    });
+  }
+
+  function calcAegisMesh(mod, L, equipped, cmdOn) {
+    var p = mod.passive || {};
+    var c = (mod.command && mod.command.effect) || {};
+    var slash = (mod.command && mod.command.slash) || "aegis";
+    var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
+
+    var armor = (p.armor_bonus_per_level || 0) * L;
+    var armorMaxL9 = (p.armor_bonus_per_level || 0) * 9 || 1;
+    var sr = (c.shield_regen_mult_base + c.shield_regen_mult_per_level * (L - 1)) * 100;
+    var mr = (c.mythic_regen_mult_base + c.mythic_regen_mult_per_level * (L - 1)) * 100;
+
+    if (cmdOn) {
+      return packSplit({
+        cmdOn: true,
+        ringPct: sr,
+        heroValue: "+" + pct(sr, 0),
+        heroLabel: "Восстановление щита /" + slash,
+        passText: "+" + fmtNum(armor, 1) + " брони",
+        cmdLabel: "/" + slash,
+        cmdText: "+" + pct(sr, 0),
+        extraLabel: "Мифический щит /" + slash,
+        extraText: "+" + pct(mr, 0),
+        totalLabel: "Сейчас",
+        totalText: "+" + pct(sr, 0) + " к щиту",
+        resultLabel: "Итог",
+        resultText: "броня и восстановление щита",
+        passBarPct: armor,
+        passBarMax: armorMaxL9,
+        passBarDisplay: "+" + fmtNum(armor, 1),
+        cmdBarPct: sr,
+        cmdBarMax: 100,
+        cd: cd
+      });
+    }
+
+    return packSplit({
+      cmdOn: false,
+      ringPct: clampPct((armor / armorMaxL9) * 100),
+      heroValue: "+" + fmtNum(armor, 1),
+      heroLabel: "Броня без команды",
+      passText: "+" + fmtNum(armor, 1) + " брони",
+      cmdLabel: "/" + slash,
+      cmdText: "+" + pct(sr, 0),
+      extraLabel: "Мифический щит /" + slash,
+      extraText: "+" + pct(mr, 0),
+      totalLabel: "Сейчас",
+      totalText: "только броня",
+      resultLabel: "Итог",
+      resultText: "+" + fmtNum(armor, 1) + " брони",
+      passBarPct: armor,
+      passBarMax: armorMaxL9,
+      cmdBarPct: 0,
+      cmdBarMax: 100,
+      cd: cd
+    });
+  }
+
+  function calcLoadAnchor(mod, L, equipped, cmdOn) {
+    var p = mod.passive || {};
+    var c = (mod.command && mod.command.effect) || {};
+    var slash = (mod.command && mod.command.slash) || "compress";
+    var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
+
+    var slots = (p.inventory_slots_per_level || 0) * L;
+    var slotsMaxL9 = (p.inventory_slots_per_level || 1) * 9;
+    var wr = (c.weight_reduction_base + c.weight_reduction_per_level * (L - 1)) * 100;
+    var dur = Number(c.duration_sec || 0);
+
+    if (cmdOn) {
+      return packSplit({
+        cmdOn: true,
+        ringPct: wr,
+        heroValue: "−" + pct(wr, 0),
+        heroLabel: "Облегчение /" + slash,
+        passText: slots ? "+" + fmtNum(slots, 0) + " яч." : "—",
+        cmdLabel: "/" + slash,
+        cmdText: "−" + pct(wr, 0),
+        extraLabel: "Длительность",
+        extraText: fmtCd(dur),
+        totalLabel: "Сейчас",
+        totalText: "−" + pct(wr, 0) + " веса",
+        resultLabel: "Итог",
+        resultText: "ячейки и облегчение",
+        passBarPct: slots,
+        passBarMax: slotsMaxL9,
+        cmdBarPct: wr,
+        cmdBarMax: 100,
+        cd: cd
+      });
+    }
+
+    return packSplit({
+      cmdOn: false,
+      ringPct: clampPct((slots / slotsMaxL9) * 100),
+      heroValue: "+" + fmtNum(slots, 0),
+      heroLabel: "Ячейки инвентаря",
+      passText: "+" + fmtNum(slots, 0) + " яч.",
+      cmdLabel: "/" + slash,
+      cmdText: "−" + pct(wr, 0),
+      extraLabel: "Длительность",
+      extraText: fmtCd(dur),
+      totalLabel: "Сейчас",
+      totalText: "только ячейки",
+      resultLabel: "Итог",
+      resultText: "+" + fmtNum(slots, 0) + " ячеек",
+      passBarPct: slots,
+      passBarMax: slotsMaxL9,
+      cmdBarPct: 0,
+      cmdBarMax: 100,
+      cd: cd
+    });
+  }
+
+  function calcVectorThruster(mod, L, equipped, cmdOn) {
+    var p = mod.passive || {};
+    var c = (mod.command && mod.command.effect) || {};
+    var slash = (mod.command && mod.command.slash) || "teleport";
+    var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
+
+    var cap = Number(c.uses_cap || 9);
+    var uses = Math.min(cap, L);
+    var passV =
+      p.vigor_step_reduction_per_level != null
+        ? p.vigor_step_reduction_per_level * L * 100
+        : p.initiative_bonus_per_level != null
+          ? p.initiative_bonus_per_level * L * 100
+          : 0;
+    var passLabel = p.vigor_step_reduction_per_level != null ? "шагов тонуса" : "инициативы";
+
+    if (cmdOn) {
+      return packSplit({
+        cmdOn: true,
+        ringPct: (uses / cap) * 100,
+        heroValue: String(uses),
+        heroLabel: "Прыжков /" + slash,
+        passText: passV ? "−" + pct(passV, 1) + " " + passLabel : "—",
+        cmdLabel: "/" + slash,
+        cmdText: String(uses),
+        extraLabel: "Максимум",
+        extraText: String(cap),
+        totalLabel: "Сейчас",
+        totalText: uses + " прыжков",
+        resultLabel: "Итог",
+        resultText: uses + " прыжков на " + cap,
+        passBarPct: passV,
+        passBarMax: 100,
+        cmdBarPct: uses,
+        cmdBarMax: cap,
+        cd: cd
+      });
+    }
+
+    return packSplit({
+      cmdOn: false,
+      ringPct: passV,
+      heroValue: passV ? "−" + pct(passV, 1) : "—",
+      heroLabel: "Постоянный бонус",
+      passText: passV ? "−" + pct(passV, 1) + " " + passLabel : "—",
+      cmdLabel: "/" + slash,
+      cmdText: String(uses),
+      extraLabel: "Максимум",
+      extraText: String(cap),
+      totalLabel: "Сейчас",
+      totalText: "только постоянный бонус",
+      resultLabel: "Итог",
+      resultText: "−" + pct(passV, 1) + " " + passLabel,
+      passBarPct: passV,
+      passBarMax: 100,
+      cmdBarPct: 0,
+      cmdBarMax: cap,
+      cd: cd
+    });
+  }
+
+  // --- economy ---
+
+  function calcRelicHunter(mod, L, equipped, cmdOn) {
+    var p = mod.passive || {};
+    var c = (mod.command && mod.command.effect) || {};
+    var slash = (mod.command && mod.command.slash) || "prospect";
+    var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
+
+    var passFind =
+      p.rare_find_bonus_per_level != null
+        ? p.rare_find_bonus_per_level * L * 100
+        : p.bonus_rarity_tier_per_level != null
+          ? p.bonus_rarity_tier_per_level * L * 100
+          : 0;
+    var passMax = Math.max(15, (p.rare_find_bonus_per_level || 0.01) * 9 * 100, passFind, 1);
+    var boost = fmtNum(c.rarity_tier_boost, 0);
+    var ttl = fmtCd(Number(c.ttl_sec || 0));
+
+    if (cmdOn) {
+      return packEconomy({
+        cmdOn: true,
+        ringPct: 100,
+        heroValue: "+" + boost + " к редкости",
+        heroLabel: "Заряд /" + slash,
+        passText: passFind ? "+" + pct(passFind, 1) : "—",
+        cmdLabel: "/" + slash,
+        cmdText: "+" + boost + " к редкости",
+        extraLabel: "Время заряда",
+        extraText: ttl,
+        nowText: "поиск и заряд редкости",
+        resultText: "+" + boost + " к следующей находке",
+        passBarPct: passFind,
+        passBarMax: passMax,
+        cmdBarPct: 100,
+        cmdBarDisplay: "+" + boost,
+        cd: cd
+      });
+    }
+
+    return packEconomy({
+      cmdOn: false,
+      ringPct: passFind,
+      heroValue: passFind ? "+" + pct(passFind, 1) : "—",
+      heroLabel: "Бонус к находкам",
+      passText: passFind ? "+" + pct(passFind, 1) : "—",
+      cmdLabel: "/" + slash,
+      cmdText: "+" + boost + " к редкости",
+      extraLabel: "Время заряда",
+      extraText: ttl,
+      nowText: "только постоянный поиск",
+      resultText: "только бонус к находкам",
+      passBarPct: passFind,
+      passBarMax: passMax,
+      cmdBarPct: 0,
+      cd: cd
+    });
+  }
+
+  function calcSalvageLink(mod, L, equipped, cmdOn) {
+    var p = mod.passive || {};
+    var slash = (mod.command && mod.command.slash) || "instant_search";
+    var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
+
+    var passOnly = p.base_chance_bonus_per_level != null ? p.base_chance_bonus_per_level * L * 100 : 0;
+    var passMax = Math.max(10, (p.base_chance_bonus_per_level || 0.004) * 9 * 100);
+    var cdMax = cooldownSec(mod.command, 1);
+
+    if (cmdOn) {
+      return packEconomy({
+        cmdOn: true,
+        ringPct: clampPct((1 - cd / Math.max(cdMax, cd)) * 100),
+        heroValue: "Ускорен",
+        heroLabel: "Поиск /" + slash,
+        passText: "+" + pct(passOnly, 1),
+        cmdLabel: "/" + slash,
+        cmdText: "активна",
+        extraLabel: "Перезарядка",
+        extraText: fmtCd(cd),
+        nowText: "поиск ускорен",
+        resultText: "команда ускоряет текущий поиск",
+        passBarPct: passOnly,
+        passBarMax: passMax,
+        cmdBarPct: 75,
+        cmdBarDisplay: "ускорение",
+        cd: cd
+      });
+    }
+
+    return packEconomy({
+      cmdOn: false,
+      ringPct: passOnly,
+      heroValue: "+" + pct(passOnly, 1),
+      heroLabel: "Шанс находки",
+      passText: "+" + pct(passOnly, 1),
+      cmdLabel: "/" + slash,
+      cmdText: "ускорение",
+      extraLabel: "Перезарядка",
+      extraText: fmtCd(cd),
+      nowText: "только бонус к шансу",
+      resultText: "только постоянный бонус",
+      passBarPct: passOnly,
+      passBarMax: passMax,
+      cmdBarPct: 0,
+      cd: cd
+    });
+  }
+
+  // --- combined_pct (by effect family) ---
+
+  function calcCombinedPct(mod, L, equipped, cmdOn) {
+    var p = mod.passive || {};
+    var c = (mod.command && mod.command.effect) || {};
+    var slash = (mod.command && mod.command.slash) || "";
+    var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
 
     if (c.purge_pct_base != null) {
       var purge = (c.purge_pct_base + c.purge_pct_per_level * (L - 1)) * 100;
       var resist = p.status_resist != null ? p.status_resist * 100 : 0;
       var livePurge = cmdOn ? purge : 0;
-      return pack({
+      return packCombinedPct({
         cmdOn: cmdOn,
         passN: resist,
         cmdN: purge,
@@ -292,10 +743,11 @@
         passText: resist ? pct(resist, 0) : "—",
         cmdLabel: "/" + slash,
         cmdText: pct(purge, 0),
-        extraLabel: "Запас азота",
+        extraLabel: "Запас азота (не в кольце)",
         extraText:
           p.max_nitrogen_per_level != null ? "+" + fmtNum(p.max_nitrogen_per_level * L, 0) : "—",
-        totalLabel: "Сумма",
+        extraAlways: true,
+        totalLabel: "Сумма %",
         totalText: pct(resist + livePurge, 0),
         resultLabel: "Итог",
         resultText: cmdOn ? "постоянный бонус и очистка " + pct(purge, 0) : "только постоянный бонус",
@@ -308,7 +760,7 @@
       var cmdDmg = (c.damage_mult_base + c.damage_mult_per_level * (L - 1)) * 100;
       var liveDmg = cmdOn ? cmdDmg : 0;
       var totalDmg = passDmg + liveDmg;
-      return pack({
+      return packCombinedPct({
         cmdOn: cmdOn,
         passN: passDmg,
         cmdN: cmdDmg,
@@ -320,6 +772,7 @@
         cmdText: "+" + pct(cmdDmg, 0),
         extraLabel: "Добивание",
         extraText: p.execute_bonus != null ? "+" + pct(p.execute_bonus * 100, 0) : "—",
+        extraAlways: !!p.execute_bonus,
         totalLabel: "Сумма",
         totalText: "+" + pct(totalDmg, 1),
         resultLabel: "Урон с модулем",
@@ -339,19 +792,20 @@
       var cdmg = (c.crit_damage_base + c.crit_damage_per_level * (L - 1)) * 100;
       var liveCc = cmdOn ? cc : 0;
       var totalCrit = passCrit + liveCc;
-      return pack({
+      return packCombinedPct({
         cmdOn: cmdOn,
         passN: passCrit,
         cmdN: cc,
         ringPct: totalCrit,
         heroValue: "+" + pct(totalCrit, 1),
-        heroLabel: "Критический удар",
+        heroLabel: "Шанс крита",
         passText: "+" + pct(passCrit, 1),
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(cc, 0),
-        extraLabel: "Урон крита /" + slash,
+        extraLabel: "Урон крита (не в кольце)",
         extraText: "+" + pct(cdmg, 0),
-        totalLabel: "Сумма",
+        extraAlways: true,
+        totalLabel: "Сумма %",
         totalText: "+" + pct(totalCrit, 1),
         resultLabel: "Итог",
         resultText: cmdOn ? "постоянный бонус и шанс +" + pct(cc, 0) : "только постоянный бонус",
@@ -363,73 +817,25 @@
       var passDr = p.control_resist != null ? p.control_resist * 100 : 0;
       var dr = (c.damage_reduction_base + c.damage_reduction_per_level * (L - 1)) * 100;
       var liveDr = cmdOn ? dr : 0;
-      return pack({
+      var hpBonus = p.max_health_per_level != null ? p.max_health_per_level * L : 0;
+      var ringDr = passDr + liveDr;
+      return packCombinedPct({
         cmdOn: cmdOn,
         passN: passDr,
         cmdN: dr,
-        ringPct: passDr + liveDr,
-        heroValue: pct(cmdOn ? dr : passDr, 1),
+        ringPct: ringDr,
+        heroValue: cmdOn ? pct(dr, 1) : passDr ? pct(passDr, 1) : hpBonus ? "+" + fmtNum(hpBonus, 0) : "—",
         heroLabel: cmdOn ? "Меньше урона /" + slash : "Постоянная защита",
-        passText: passDr ? pct(passDr, 0) : p.max_health_per_level != null ? "+" + fmtNum(p.max_health_per_level * L, 0) + " к здоровью" : "—",
+        passText: passDr ? pct(passDr, 0) : hpBonus ? "+" + fmtNum(hpBonus, 0) + " к здоровью" : "—",
         cmdLabel: "/" + slash,
         cmdText: pct(dr, 1),
         extraLabel: "Запас здоровья",
-        extraText:
-          p.max_health_per_level != null ? "+" + fmtNum(p.max_health_per_level * L, 0) : "—",
-        totalLabel: "Сумма",
-        totalText: pct(passDr + liveDr, 1),
+        extraText: hpBonus ? "+" + fmtNum(hpBonus, 0) : "—",
+        extraAlways: !!hpBonus,
+        totalLabel: "Сумма %",
+        totalText: pct(ringDr, 1),
         resultLabel: "Защита",
         resultText: cmdOn ? "постоянный бонус и −" + pct(dr, 1) + " урона" : "только постоянный бонус",
-        cd: cd
-      });
-    }
-
-    if (c.shield_regen_mult_base != null) {
-      var passSh = p.armor_bonus_per_level != null ? p.armor_bonus_per_level * L : 0;
-      var sr = (c.shield_regen_mult_base + c.shield_regen_mult_per_level * (L - 1)) * 100;
-      var mr = (c.mythic_regen_mult_base + c.mythic_regen_mult_per_level * (L - 1)) * 100;
-      var liveSr = cmdOn ? sr : 0;
-      return pack({
-        cmdOn: cmdOn,
-        passN: Math.min(100, passSh * 10),
-        cmdN: sr,
-        ringPct: liveSr || Math.min(100, passSh * 10),
-        heroValue: cmdOn ? "+" + pct(sr, 0) : "+" + fmtNum(passSh, 1),
-        heroLabel: cmdOn ? "Восстановление щита /" + slash : "Броня без команды",
-        passText: "+" + fmtNum(passSh, 1) + " брони",
-        cmdLabel: "/" + slash,
-        cmdText: "+" + pct(sr, 0),
-        extraLabel: "Мифический щит /" + slash,
-        extraText: "+" + pct(mr, 0),
-        totalLabel: "Сейчас",
-        totalText: cmdOn ? "+" + pct(sr, 0) + " к щиту" : "только броня",
-        resultLabel: "Итог",
-        resultText: cmdOn ? "броня и восстановление щита" : "только броня",
-        cd: cd
-      });
-    }
-
-    if (c.weight_reduction_base != null) {
-      var slots = p.inventory_slots_per_level != null ? p.inventory_slots_per_level * L : 0;
-      var wr = (c.weight_reduction_base + c.weight_reduction_per_level * (L - 1)) * 100;
-      var dur = Number(c.duration_sec || 0);
-      var liveWr = cmdOn ? wr : 0;
-      return pack({
-        cmdOn: cmdOn,
-        passN: 0,
-        cmdN: wr,
-        ringPct: liveWr,
-        heroValue: cmdOn ? "−" + pct(wr, 0) : "+" + fmtNum(slots, 0),
-        heroLabel: cmdOn ? "Облегчение /" + slash : "Ячейки без команды",
-        passText: slots ? "+" + fmtNum(slots, 0) + " яч." : p.max_weight_per_level != null ? "+" + fmtNum(p.max_weight_per_level * L, 0) + " к весу" : "—",
-        cmdLabel: "/" + slash,
-        cmdText: "−" + pct(wr, 0),
-        extraLabel: "Длительность",
-        extraText: fmtCd(dur),
-        totalLabel: "Сейчас",
-        totalText: cmdOn ? "−" + pct(wr, 0) + " веса" : "только ячейки",
-        resultLabel: "Итог",
-        resultText: cmdOn ? "ячейки и облегчение" : "только ячейки",
         cd: cd
       });
     }
@@ -441,7 +847,7 @@
         Number(c.duration_rounds_base || 0) + Number(c.duration_rounds_per_level || 0) * (L - 1);
       var liveEb = cmdOn ? eb : 0;
       var totalEn = passEn + liveEb;
-      return pack({
+      return packCombinedPct({
         cmdOn: cmdOn,
         passN: passEn,
         cmdN: eb,
@@ -461,32 +867,50 @@
       });
     }
 
-    if (c.uses_equals_level) {
-      var cap = Number(c.uses_cap || 9);
-      var uses = Math.min(cap, L);
-      var passV =
-        p.vigor_step_reduction_per_level != null
-          ? p.vigor_step_reduction_per_level * L * 100
-          : p.initiative_bonus_per_level != null
-            ? p.initiative_bonus_per_level * L * 100
-            : 0;
-      var liveUses = cmdOn ? (uses / cap) * 100 : 0;
-      return pack({
+    return packCombinedPct({
+      cmdOn: false,
+      passN: 0,
+      cmdN: 0,
+      ringPct: 0,
+      heroValue: "—",
+      heroLabel: "Модуль",
+      passText: "—",
+      cmdLabel: "/" + slash,
+      cmdText: "—",
+      extraLabel: "Ещё",
+      extraText: "—",
+      totalLabel: "Сумма",
+      totalText: "—",
+      resultLabel: "Итог",
+      resultText: "—",
+      cd: cd
+    });
+  }
+
+  // --- command_only ---
+
+  function calcCommandOnlyModule(mod, L, equipped, cmdOn) {
+    var c = (mod.command && mod.command.effect) || {};
+    var slash = (mod.command && mod.command.slash) || "";
+    var cd = cooldownSec(mod.command, L);
+    if (!equipped) return unequippedView(slash);
+
+    if (c.analysis_cap != null) {
+      var alvl = Math.min(Number(c.analysis_cap || 9), L);
+      var acap = Number(c.analysis_cap || 9);
+      return packCommandOnly({
         cmdOn: cmdOn,
-        passN: passV,
-        cmdN: (uses / cap) * 100,
-        ringPct: passV + liveUses > 100 ? 100 : passV + liveUses,
-        heroValue: cmdOn ? String(uses) : passV ? "−" + pct(passV, 1) : "—",
-        heroLabel: cmdOn ? "Зарядов /" + slash : "Постоянный бонус",
-        passText: passV ? "−" + pct(passV, 1) : "—",
+        ringPct: cmdOn ? (alvl / acap) * 100 : 0,
+        heroValue: cmdOn ? String(alvl) : "—",
+        heroLabel: "Разбор /" + slash,
         cmdLabel: "/" + slash,
-        cmdText: String(uses),
-        extraLabel: "Максимум",
-        extraText: String(cap),
-        totalLabel: "Сейчас",
-        totalText: cmdOn ? uses + " прыжков" : "только постоянный бонус",
-        resultLabel: "Итог",
-        resultText: cmdOn ? "постоянный бонус и " + uses + " прыжков" : "только постоянный бонус",
+        cmdText: String(alvl),
+        extraLabel: "Максимальный разбор",
+        extraText: String(acap),
+        nowText: cmdOn ? "уровень " + alvl : "—",
+        resultText: cmdOn ? "разбор уровня " + alvl : "команда выкл.",
+        barPct: alvl,
+        barMax: acap,
         cd: cd
       });
     }
@@ -496,127 +920,62 @@
         Number(c.uses_base || 1) + Math.floor(L / 2) * Number(c.uses_per_two_levels || 0);
       var maxUses =
         Number(c.uses_base || 1) + Math.floor(9 / 2) * Number(c.uses_per_two_levels || 0);
-      return pack({
+      return packCommandOnly({
         cmdOn: cmdOn,
-        passN: 0,
-        cmdN: (rUses / Math.max(1, maxUses)) * 100,
         ringPct: cmdOn ? (rUses / Math.max(1, maxUses)) * 100 : 0,
         heroValue: cmdOn ? String(rUses) : "—",
-        heroLabel: "Зарядов /" + slash,
-        passText: "—",
+        heroLabel: "Смен дистанции",
         cmdLabel: "/" + slash,
         cmdText: String(rUses),
         extraLabel: "Максимум на 9 ур.",
         extraText: String(maxUses),
-        totalLabel: "Сейчас",
-        totalText: cmdOn ? rUses + " зарядов" : "—",
-        resultLabel: "Итог",
+        nowText: cmdOn ? rUses + " зарядов" : "—",
         resultText: cmdOn ? String(rUses) + " зарядов" : "команда выкл.",
+        barPct: rUses,
+        barMax: maxUses,
         cd: cd
       });
     }
 
-    if (c.analysis_cap != null) {
-      var alvl = Math.min(Number(c.analysis_cap || 9), L);
-      var acap = Number(c.analysis_cap || 9);
-      return pack({
-        cmdOn: cmdOn,
-        passN: 0,
-        cmdN: (alvl / acap) * 100,
-        ringPct: cmdOn ? (alvl / acap) * 100 : 0,
-        heroValue: cmdOn ? String(alvl) : "—",
-        heroLabel: "Уровень /" + slash,
-        passText: "—",
-        cmdLabel: "/" + slash,
-        cmdText: String(alvl),
-        extraLabel: "Максимальный разбор",
-        extraText: String(acap),
-        totalLabel: "Сейчас",
-        totalText: cmdOn ? "уровень " + alvl : "—",
-        resultLabel: "Итог",
-        resultText: cmdOn ? "разбор уровня " + alvl : "команда выкл.",
-        cd: cd
-      });
-    }
-
-    if (c.rarity_tier_boost != null) {
-      var passFind =
-        p.rare_find_bonus_per_level != null
-          ? p.rare_find_bonus_per_level * L * 100
-          : p.bonus_rarity_tier_per_level != null
-            ? p.bonus_rarity_tier_per_level * L * 100
-            : 0;
-      return pack({
-        cmdOn: cmdOn,
-        passN: passFind,
-        cmdN: 100,
-        ringPct: passFind + (cmdOn ? 40 : 0),
-        heroValue: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " к редкости" : "+" + pct(passFind, 1),
-        heroLabel: cmdOn ? "/" + slash : "Поиск без команды",
-        passText: passFind ? "+" + pct(passFind, 1) : "—",
-        cmdLabel: "/" + slash,
-        cmdText: "+" + fmtNum(c.rarity_tier_boost, 0) + " к редкости",
-        extraLabel: "Время заряда",
-        extraText: fmtCd(Number(c.ttl_sec || 0)),
-        totalLabel: "Сейчас",
-        totalText: cmdOn ? "+" + fmtNum(c.rarity_tier_boost, 0) + " к редкости" : "только поиск",
-        resultLabel: "Итог",
-        resultText: cmdOn ? "поиск и заряд редкости" : "только поиск",
-        cd: cd
-      });
-    }
-
-    // Passive-only or CD-only command (instant search etc.)
-    var passOnly =
-      p.base_chance_bonus_per_level != null
-        ? p.base_chance_bonus_per_level * L * 100
-        : p.scrap_bonus_per_level != null
-          ? p.scrap_bonus_per_level * L * 100
-          : p.damage_pct_per_level != null
-            ? p.damage_pct_per_level * L * 100
-            : p.vigor_step_reduction_per_level != null
-              ? p.vigor_step_reduction_per_level * L * 100
-              : 0;
-
-    if (slash) {
-      return pack({
-        cmdOn: cmdOn,
-        passN: passOnly,
-        cmdN: 100,
-        ringPct: passOnly + (cmdOn ? 25 : 0),
-        heroValue: passOnly ? "+" + pct(passOnly, 1) : fmtCd(cd),
-        heroLabel: passOnly ? "Постоянный бонус" : "Перезарядка /" + slash,
-        passText: passOnly ? "+" + pct(passOnly, 1) : "—",
-        cmdLabel: "/" + slash,
-        cmdText: "готово",
-        extraLabel: "Перезарядка",
-        extraText: fmtCd(cd),
-        totalLabel: "Сейчас",
-        totalText: cmdOn ? "бонус и команда" : passOnly ? "только постоянный бонус" : "—",
-        resultLabel: "Итог",
-        resultText: cmdOn ? "команда включена" : "команда выкл.",
-        cd: cd
-      });
-    }
-
-    return pack({
-      cmdOn: false,
-      passN: passOnly,
-      cmdN: 0,
-      ringPct: passOnly,
-      heroValue: passOnly ? "+" + pct(passOnly, 1) : "—",
-      heroLabel: "Постоянный бонус",
-      passText: passOnly ? "+" + pct(passOnly, 1) : "—",
-      cmdLabel: "Команда",
+    return packCommandOnly({
+      cmdOn: cmdOn,
+      ringPct: 0,
+      heroValue: "—",
+      heroLabel: "Команда",
+      cmdLabel: "/" + slash,
       cmdText: "—",
       extraLabel: "Ещё",
       extraText: "—",
-      totalLabel: "Сумма",
-      totalText: passOnly ? "+" + pct(passOnly, 1) : "—",
-      resultLabel: "Итог",
-      resultText: passOnly ? "+" + pct(passOnly, 1) : "—",
-      cd: 0
+      nowText: "—",
+      resultText: "—",
+      cd: cd
     });
+  }
+
+  function calcSplitMetrics(mod, L, equipped, cmdOn) {
+    var id = mod.id;
+    if (id === "survival_vital_weave") return calcVitalWeave(mod, L, equipped, cmdOn);
+    if (id === "defense_aegis_mesh") return calcAegisMesh(mod, L, equipped, cmdOn);
+    if (id === "mobility_load_anchor") return calcLoadAnchor(mod, L, equipped, cmdOn);
+    if (id === "mobility_vector_thruster") return calcVectorThruster(mod, L, equipped, cmdOn);
+    return calcCombinedPct(mod, L, equipped, cmdOn);
+  }
+
+  function calcEconomy(mod, L, equipped, cmdOn) {
+    if (mod.id === "economy_relic_hunter") return calcRelicHunter(mod, L, equipped, cmdOn);
+    if (mod.id === "economy_salvage_link") return calcSalvageLink(mod, L, equipped, cmdOn);
+    return calcCombinedPct(mod, L, equipped, cmdOn);
+  }
+
+  function calcModuleView(mod, level, dodge, equipped, cmdOn) {
+    if (mod.sim_kind === "stasis_anchor") {
+      return calcStasis(mod, level, dodge, equipped, cmdOn);
+    }
+    var display = mod.sim_display || "combined_pct";
+    if (display === "split_metrics") return calcSplitMetrics(mod, level, equipped, cmdOn);
+    if (display === "command_only") return calcCommandOnlyModule(mod, level, equipped, cmdOn);
+    if (display === "economy") return calcEconomy(mod, level, equipped, cmdOn);
+    return calcCombinedPct(mod, level, equipped, cmdOn);
   }
 
   function renderStats(grid, rows) {
@@ -657,8 +1016,7 @@
     host.innerHTML = bars
       .map(function (b) {
         var w = Math.min(100, (b.pct / (b.max || 100)) * 100);
-        var fill =
-          b.tone === "pin" ? "bg-primary" : "bg-muted-foreground/50";
+        var fill = b.tone === "pin" ? "bg-primary" : "bg-muted-foreground/50";
         return (
           '<div class="flex items-center gap-3 py-1 font-mono text-xs">' +
           '<span class="w-14 shrink-0 text-muted-foreground">' +
@@ -763,13 +1121,9 @@
         if (range) range.value = String(state.dodge);
         if (dodgeValueEl) dodgeValueEl.textContent = pct(state.dodge, 0);
 
-        if (mod.sim_kind === "stasis_anchor") {
-          applyView(
-            calcStasis(mod, state.level, state.dodge, state.equipped, state.cmdOn)
-          );
-        } else {
-          applyView(calcGeneric(mod, state.level, state.equipped, state.cmdOn));
-        }
+        applyView(
+          calcModuleView(mod, state.level, state.dodge, state.equipped, state.cmdOn)
+        );
       } catch (err) {
         console.error(err);
         showUiError("Ошибка расчёта");
@@ -891,7 +1245,7 @@
       return;
     }
 
-    var jsonUrl = new URL("../data/modules.json?v=4", window.location.href).href;
+    var jsonUrl = new URL("../data/modules.json?v=5", window.location.href).href;
     fetch(jsonUrl)
       .then(function (r) {
         if (!r.ok) throw new Error("modules.json " + r.status);

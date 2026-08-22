@@ -20,7 +20,7 @@
   - SVG-кольцо (hero) + **5 карточек статов + 2 полоски** (layout как в cardify);
   - для **Стазис-якоря** — доп. блок «Уклонение врага» (10/20/35/50% + слайдер 0–60%).
 - **Офлайн-загрузка баланса** — JSON встроен в страницу (base64), fetch `modules.json` только fallback.
-- **Кеш-бusting** — `module_sim.js?v=8` (номер версии поднимать при каждом изменении JS).
+- **Кеш-бusting** — `module_sim.js?v=10` (номер версии поднимать при каждом изменении JS).
 
 ### Технический стек
 
@@ -30,7 +30,7 @@
 | Генератор HTML | `scripts/build_module_cards.py` |
 | Симулятор (runtime) | `modules/module_sim.js` |
 | Стили | `assets/site-motion.css`, `rarity.css`, `compact.css`, `touch-safe.css`, `catalog.css` |
-| Тесты | `scripts/test_module_sim_embed.py`, `scripts/audit_module_sim_wiring.py` |
+| Тесты | `scripts/test_module_sim_embed.py`, `scripts/test_module_sim_hero.py`, `scripts/audit_module_sim_wiring.py` |
 
 ---
 
@@ -93,15 +93,28 @@ flowchart TD
 
 ### Маршрутизация формул
 
+Поле **`sim_display`** задаётся в `build_module_cards.py` (карта `SIM_DISPLAY`) и попадает в b64 embed.
+
 ```javascript
-if (mod.sim_kind === "stasis_anchor") {
-  calcStasis(mod, level, dodge, equipped, cmdOn);
-} else {
-  calcGeneric(mod, level, equipped, cmdOn);
+function calcModuleView(mod, level, dodge, equipped, cmdOn) {
+  if (mod.sim_kind === "stasis_anchor") return calcStasis(...);
+  switch (mod.sim_display) {
+    case "split_metrics": return calcSplitMetrics(...);
+    case "command_only": return calcCommandOnlyModule(...);
+    case "economy": return calcEconomy(...);
+    default: return calcCombinedPct(...);
+  }
 }
 ```
 
-Общий каркас отображения — `pack()`: 5 rows + 2 bars. Стазис — отдельные формулы в `calcStasis()` (шанс попадания, dodge, раунды `/pin`).
+| `sim_display` | pack-функция | Смысл кольца |
+|---------------|--------------|--------------|
+| `combined_pct` | `packCombinedPct` | сумма % одной оси (стазис, entangle, kinetic, crit, detox, bastion) |
+| `split_metrics` | `packSplit` | одна величина (HP, броня, ячейки, прыжки…) — **не** сумма с % |
+| `command_only` | `packCommandOnly` | заряды команды (recon, stasis tuner) |
+| `economy` | `packEconomy` | поиск + заряд `/prospect` / ускорение |
+
+Стазис — отдельный `calcStasis()` (шанс попадания, dodge, раунды `/pin`).
 
 ---
 
@@ -201,28 +214,28 @@ heroRing.setAttribute("class", "transition-[stroke-dashoffset] ...");
 
 ---
 
-## 5. Карта модулей → ветки калькулятора
+## 5. Карта модулей → профили `sim_display`
 
-Порядок `if` в `calcGeneric()` **важен** — совпадает с `scripts/audit_module_sim_wiring.py`.
+| id | sim_display | Калькулятор / примечание |
+|----|-------------|--------------------------|
+| tactical_stasis_anchor | combined_pct | `calcStasis()` — dodge, hit % |
+| tactical_entangle_node | combined_pct | ring = pass + cmd entangle % |
+| combat_kinetic_driver | combined_pct | ring = pass + cmd damage % |
+| combat_crit_matrix | combined_pct | ring = crit chance; урон крита в «Ещё» |
+| survival_detox_lattice | combined_pct | ring = resist + purge; азот в «Ещё» |
+| defense_guard_bastion | combined_pct | ring = DR %; HP в «Ещё» если нет resist |
+| survival_vital_weave | split_metrics | cmd off: +HP; cmd on: % лечения |
+| defense_aegis_mesh | split_metrics | cmd off: броня; cmd on: % regen щита |
+| mobility_load_anchor | split_metrics | cmd off: ячейки; cmd on: % веса |
+| mobility_vector_thruster | split_metrics | cmd off: тонус; cmd on: прыжки |
+| tactical_recon_lens | command_only | hero = разбор ур. N |
+| tactical_stasis_tuner | command_only | hero = смен дистанции |
+| economy_relic_hunter | economy | поиск % + заряд `/prospect` |
+| economy_salvage_link | economy | шанс % + ускорение поиска |
 
-| id | sim_kind | Ветка / калькулятор |
-|----|----------|---------------------|
-| survival_vital_weave | generic | `heal_pct_base` |
-| survival_detox_lattice | generic | `purge_pct_base` |
-| combat_crit_matrix | generic | `crit_chance_base` |
-| combat_kinetic_driver | generic | `damage_mult_base` |
-| economy_relic_hunter | generic | `rarity_tier_boost` |
-| economy_salvage_link | generic | `passive_only_slash` (пустой `command.effect`) |
-| mobility_vector_thruster | generic | `uses_equals_level` |
-| mobility_load_anchor | generic | `weight_reduction_base` |
-| defense_guard_bastion | generic | `damage_reduction_base` |
-| defense_aegis_mesh | generic | `shield_regen_mult_base` |
-| tactical_recon_lens | generic | `analysis_cap` |
-| **tactical_stasis_anchor** | **stasis_anchor** | **`calcStasis()`** |
-| tactical_entangle_node | generic | `entangle_bonus_base` |
-| tactical_stasis_tuner | generic | `uses_per_two_levels` |
+При экипировке: **5 карточек**; полоски: 2 (combined/split/economy), 1 (command_only). Без модуля: 5 «—», полоски скрыты.
 
-При экипировке: **5 карточек + 2 полоски**. Без модуля: 5 карточек «—», полоски скрыты.
+Регрессия hero (L3, dodge 20 где нужно, cmd off/on): `scripts/test_module_sim_hero.py` — stasis 83%/98%, vital +30/29%, kinetic, entangle, relic.
 
 ---
 
@@ -234,9 +247,9 @@ heroRing.setAttribute("class", "transition-[stroke-dashoffset] ...");
 2. Рабочая копия **visual-cards** на диске (у генератора путь `STW = Path(r"D:\STW_GAME")` в `build_module_cards.py` — при другом расположении поправить).
 3. Обложка (опционально): `assets/covers/{module_id}.png`.
 
-### 6.2 Если модуль попадает в существующую семью эффектов
+### 6.2 Если модуль попадает в существующий профиль
 
-Пример: новый модуль с `heal_pct_base` в `command.effect` — **достаточно пересборки**, новая ветка в JS не нужна.
+Пример: новый модуль с `heal_pct_base` — задайте `sim_display: split_metrics` или `combined_pct` в `SIM_DISPLAY` и пересоберите.
 
 **Шаги:**
 
@@ -244,24 +257,22 @@ heroRing.setAttribute("class", "transition-[stroke-dashoffset] ...");
 cd D:\visual-cards
 python scripts/build_module_cards.py
 python scripts/audit_module_sim_wiring.py
-python -m unittest scripts.test_module_sim_embed -q
+python -m unittest scripts.test_module_sim_embed scripts.test_module_sim_hero -q
 ```
 
-Добавить модуль в `EXPECTED_BRANCH` в `audit_module_sim_wiring.py`, если id новый.
+Добавить модуль в `SIM_DISPLAY` и `EXPECTED_SIM_DISPLAY` в audit, если id новый.
 
-### 6.3 Если новый тип эффекта (новая семья)
+### 6.3 Если новый тип отображения
 
 1. **`STW_GAME`** — баланс и предмет (канон игры).
-2. **`modules/module_sim.js`** — новая ветка в `calcGeneric()` **до** fallback `passive_only_slash`:
-   - формулы из `module_balance.json` (те же коэффициенты, что в игре);
-   - возврат через `pack({ cmdOn, passN, cmdN, ringPct, heroValue, ... })`.
-3. **`scripts/audit_module_sim_wiring.py`** — ключ в `BRANCH_KEYS` + строка в `EXPECTED_BRANCH`.
-4. При особом UI (как dodge у стазиса):
-   - `sim_kind: "новый_тип"` в `build_module_cards.py` → `build_modules()`;
-   - отдельный `calc*` и ветка в `bootModule` / `render()`.
-5. **Cache-bust:** увеличить `module_sim.js?v=N` в `build_module_cards.py`.
-6. **Пересборка + тесты** (см. 6.2).
-7. **Push** visual-cards; проверка live с `?v=N`.
+2. **`modules/module_sim.js`** — новый `pack*` или ветка в `calcModuleView` / dedicated `calc*`.
+3. **`scripts/build_module_cards.py`** — `SIM_DISPLAY[id]` + при необходимости `catalog_blurb`.
+4. **`scripts/audit_module_sim_wiring.py`** — `EXPECTED_SIM_DISPLAY` + `pack_shape`.
+5. **`scripts/test_module_sim_hero.py`** — строки hero L3 cmd off/on.
+6. При особом UI (как dodge у стазиса): `sim_kind: "stasis_anchor"` + блок в HTML.
+7. **Cache-bust:** `SIM_JS_VERSION` в `build_module_cards.py`.
+8. **Пересборка + тесты** (см. 6.2).
+9. **Push** visual-cards; проверка live с `?v=N`.
 
 ### 6.4 Чеклист перед push
 
@@ -297,11 +308,12 @@ https://nikitakozemyaka.github.io/visual-cards/modules/{filename}.html?v=N
 
 | Задача | Где править |
 |--------|-------------|
-| Тексты howto / sources | `build_module_cards.py` → `build_howto`, `build_sources` |
-| Подписи карточек, pack layout | `module_sim.js` → `pack()` |
+| Тексты howto / sources / blurb | `build_module_cards.py` |
+| Профиль симулятора | `SIM_DISPLAY` в `build_module_cards.py` |
+| Layout карточек | `module_sim.js` → `packCombinedPct`, `packSplit`, `packCommandOnly`, `packEconomy` |
 | Формулы стазиса | `calcStasis()` |
-| Формулы остальных | `calcGeneric()` — нужная ветка |
-| КД команды | `cooldownSec()` ← `cooldown_base_sec`, `cooldown_per_level_sec` |
+| Формулы по профилю | `calcSplitMetrics`, `calcEconomy`, `calcCombinedPct`, `calcCommandOnlyModule` |
+| КД команды | `cooldownSec()` ← поля command в embed |
 | Статический HTML симулятора | **только** через `build_module_cards.py` |
 
 После правки JS — **обязательно** bump `?v=` и `python scripts/build_module_cards.py`.
@@ -315,6 +327,11 @@ https://nikitakozemyaka.github.io/visual-cards/modules/{filename}.html?v=N
 - у каждого `modules/*.html` (кроме index): decode b64, `json.loads`, `id == data-module-id`;
 - версия script `module_sim.js?v=N` совпадает с каноном в тесте;
 - smoke формы стазиса (83% cmd off).
+
+### `scripts/test_module_sim_hero.py`
+
+- hero L3 cmd off/on для stasis (83%/98%), vital (+30 / 29%), relic, kinetic, entangle;
+- не проверяет DOM — только формулы зеркалом Python.
 
 ### `scripts/audit_module_sim_wiring.py`
 

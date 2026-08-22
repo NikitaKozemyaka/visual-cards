@@ -46,7 +46,7 @@ class TestModuleSimEmbed(unittest.TestCase):
             self.assertEqual(mod["id"], mid, f"{path.name}: id mismatch")
             v = SIM_JS_RE.search(text)
             self.assertIsNotNone(v, f"{path.name}: module_sim.js cache bust missing")
-            self.assertEqual(v.group(1), "9", f"{path.name}: expected module_sim.js?v=9")
+            self.assertEqual(v.group(1), "10", f"{path.name}: expected module_sim.js?v=10")
 
     def test_stasis_calc_shape_cmd_on_off(self) -> None:
         path = MODULES / "stasis_anchor.html"

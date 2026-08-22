@@ -15,6 +15,26 @@ COVERS = ROOT / "assets" / "covers"
 
 FILENAME_OVERRIDE = {"tactical_stasis_anchor": "stasis_anchor.html"}
 
+SIM_JS_VERSION = "10"
+
+# sim_display profiles for module_sim.js (see docs/module_cards_and_simulator.md §5)
+SIM_DISPLAY = {
+    "tactical_stasis_anchor": "combined_pct",
+    "tactical_entangle_node": "combined_pct",
+    "combat_kinetic_driver": "combined_pct",
+    "combat_crit_matrix": "combined_pct",
+    "survival_detox_lattice": "combined_pct",
+    "defense_guard_bastion": "combined_pct",
+    "survival_vital_weave": "split_metrics",
+    "defense_aegis_mesh": "split_metrics",
+    "mobility_load_anchor": "split_metrics",
+    "mobility_vector_thruster": "split_metrics",
+    "tactical_recon_lens": "command_only",
+    "tactical_stasis_tuner": "command_only",
+    "economy_relic_hunter": "economy",
+    "economy_salvage_link": "economy",
+}
+
 ARCHETYPE_ORDER = [
     "survival",
     "combat",
@@ -189,10 +209,25 @@ def build_sources(item: dict, arena: dict | None) -> list[str]:
 
 def catalog_blurb(mod: dict) -> str:
     slash = mod["command"]["slash"]
+    display = mod.get("sim_display") or "combined_pct"
     if mod["id"] == "tactical_stasis_anchor":
         return (
             "Потыкай уровни и команду /pin: покажем уклонение врага "
             "и примерный шанс попадания."
+        )
+    if display == "command_only":
+        return (
+            f"Уровни 1–9 и команда /{slash} — только на встрече, "
+            "без постоянного бонуса."
+        )
+    if display == "economy":
+        return (
+            f"Уровни 1–9 и /{slash}: отдельно бонус к поиску и заряд команды."
+        )
+    if display == "split_metrics":
+        return (
+            f"Уровни 1–9 и /{slash}: кольцо — один главный показатель "
+            "(здоровье, броня, ячейки…), без смешения разных единиц."
         )
     if not mod["passive"]:
         return f"Уровни 1–9 и команда /{slash} — цифры пересчитаются сразу."
@@ -203,7 +238,7 @@ def catalog_blurb(mod: dict) -> str:
 
 
 def cover_rel(mid: str, *, from_modules: bool = True) -> str:
-    name = f"{mid}.png?v=2"
+    name = f"{mid}.png?v=3"
     if from_modules:
         return f"../assets/covers/{name}"
     return f"./assets/covers/{name}"
@@ -246,6 +281,7 @@ def build_modules() -> list[dict]:
                 "effect": dict(cmd_cfg.get("effect") or {}),
             },
             "sim_kind": "stasis_anchor" if mid == "tactical_stasis_anchor" else "generic",
+            "sim_display": SIM_DISPLAY.get(mid, "combined_pct"),
             "craftable": bool(item.get("craftable")),
             "arena": arena.get(mid),
         }
@@ -517,7 +553,7 @@ def page_html(mod: dict) -> str:
       </footer>
     </div>
   </div>
-  <script src="./module_sim.js?v=9" defer></script>
+  <script src="./module_sim.js?v={SIM_JS_VERSION}" defer></script>
   <script src="../assets/nav-refresh.js?v=7" defer></script>
 </body>
 </html>

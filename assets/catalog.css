@@ -50,8 +50,10 @@ a.vc-mod-card {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
+  padding: 12%;
+  box-sizing: border-box;
   transition: transform 200ms ease;
   transform-origin: center;
 }
@@ -139,7 +141,9 @@ a.vc-mod-card.vc-press .vc-mod-cover img {
 .vc-mod-page-cover img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 8%;
+  box-sizing: border-box;
 }
 
 .vc-mod-page-cover .vc-mod-emoji {
