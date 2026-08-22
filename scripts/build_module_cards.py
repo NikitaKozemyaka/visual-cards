@@ -238,7 +238,7 @@ def catalog_blurb(mod: dict) -> str:
 
 
 def cover_rel(mid: str, *, from_modules: bool = True) -> str:
-    name = f"{mid}.png?v=6"
+    name = f"{mid}.png?v=7"
     if from_modules:
         return f"../assets/covers/{name}"
     return f"./assets/covers/{name}"

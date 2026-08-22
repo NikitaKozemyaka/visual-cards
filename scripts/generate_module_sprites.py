@@ -24,7 +24,7 @@ SCENES = ROOT / "assets" / "module_scenes"
 STYLE_REF = Path(r"C:\Users\Tema\.cursor\projects\d-STW-GAME\assets")
 
 TARGET_W, TARGET_H = 1536, 1024
-SPRITE_HEIGHT_RATIO = 0.62  # module sprite height vs canvas (compact but hero)
+SPRITE_FILL = 0.96  # module fills canvas (was wrongly 0.62 — looked shrunk in card frame)
 
 RARITY_GLOW = {
     "common": (143, 163, 184),
@@ -97,11 +97,11 @@ MODULE_SPRITE_SPEC: dict[str, tuple[str, str]] = {
 
 SPRITE_PROMPT = (
     "Pixel art game sprite, isolated armor module item ONLY, {detail}. "
-    "Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, "
+    "Hero-size cybernetic insert for power armor slot, 3/4 isometric view, "
     "detailed worn metal and emissive glow. "
     "NO landscape background, NO character, NO text, NO UI. "
     "Plain very dark navy background. "
-    "Module is the only subject, compact NOT a huge slab, "
+    "Module is the only subject, large in frame, "
     "similar rendering style and mood to the reference module artwork."
 )
 
@@ -149,15 +149,11 @@ def pack_sprite_cover(sprite_path: Path, module_id: str, dst: Path) -> None:
         sprite = sprite.crop(bbox)
 
     sw, sh = sprite.size
-    target_h = int(TARGET_H * SPRITE_HEIGHT_RATIO)
-    scale = target_h / sh
+    max_w = int(TARGET_W * SPRITE_FILL)
+    max_h = int(TARGET_H * SPRITE_FILL)
+    scale = min(max_w / sw, max_h / sh)
     target_w = int(sw * scale)
-    if target_w > TARGET_W * 0.85:
-        scale = (TARGET_W * 0.85) / sw
-        target_w = int(sw * scale)
-        target_h = int(sh * scale)
-    else:
-        target_h = int(sh * scale)
+    target_h = int(sh * scale)
 
     sprite = sprite.resize((target_w, target_h), Image.Resampling.LANCZOS)
     x = (TARGET_W - target_w) // 2
