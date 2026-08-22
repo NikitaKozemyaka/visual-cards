@@ -86,7 +86,7 @@ CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=8"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
   <link rel="stylesheet" href="../assets/touch-safe.css?v=6"/>
   <link rel="stylesheet" href="../assets/rarity.css?v=9"/>
-  <link rel="stylesheet" href="../assets/catalog.css?v=3"/>"""
+  <link rel="stylesheet" href="../assets/catalog.css?v=4"/>"""
 
 
 def extract_emoji(text: str) -> str:
@@ -238,7 +238,7 @@ def catalog_blurb(mod: dict) -> str:
 
 
 def cover_rel(mid: str, *, from_modules: bool = True) -> str:
-    name = f"{mid}.png?v=4"
+    name = f"{mid}.png?v=6"
     if from_modules:
         return f"../assets/covers/{name}"
     return f"./assets/covers/{name}"

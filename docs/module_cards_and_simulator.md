@@ -239,13 +239,38 @@ heroRing.setAttribute("class", "transition-[stroke-dashoffset] ...");
 
 ---
 
+## 5.1 Обложки: спрайт модуля + сцены
+
+| Слой | Путь | Назначение |
+|------|------|------------|
+| **Cover (каталог)** | `assets/covers/{id}.png?v=6` | 1536×1024 full-bleed: спрайт модуля на градиенте редкости |
+| **Sprite (исходник)** | `assets/covers/_sprites/{id}.png` | Изолированный предмет; после правки → `generate_module_sprites.py` |
+| **Scene (запас)** | `assets/module_scenes/{id}.png` | Пейзаж с оператором (стиль локаций STW) — для других экранов |
+
+**Пайплайн спрайта:**
+
+```powershell
+cd D:\visual-cards
+# 1) Положить/сгенерировать спрайты в assets/covers/_sprites/
+# 2) Собрать обложки 1536x1024:
+python scripts/generate_module_sprites.py
+python scripts/build_module_cards.py
+```
+
+Спеки промптов: `scripts/module_sprite_specs.json` (`--export-specs`).  
+Сцены из батча `*_gen.png`: `scripts/archive_module_scenes.py`.
+
+**CSS:** `catalog.css` — `aspect-ratio: 3/2`, `object-fit: cover` (без padding).
+
+---
+
 ## 6. Инструкция для агентов: новая карточка модуля
 
 ### 6.1 Предусловия
 
 1. Модуль уже есть в **STW_GAME**: `module_balance.json` (passive + command), `global_items.json` (type `module`).
 2. Рабочая копия **visual-cards** на диске (у генератора путь `STW = Path(r"D:\STW_GAME")` в `build_module_cards.py` — при другом расположении поправить).
-3. Обложка (опционально): `assets/covers/{module_id}.png`.
+3. Обложка: `assets/covers/{module_id}.png` — через `generate_module_sprites.py` (см. §5.1).
 
 ### 6.2 Если модуль попадает в существующий профиль
 

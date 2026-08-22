@@ -1,0 +1,114 @@
+[
+  {
+    "id": "survival_vital_weave",
+    "rarity": "uncommon",
+    "detail": "green neural life-weave implant chip, bio-circuit glow, compact armor slot module",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, green neural life-weave implant chip, bio-circuit glow, compact armor slot module. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\survival_vital_weave.png",
+    "scene_asset": "assets/module_scenes/survival_vital_weave.png"
+  },
+  {
+    "id": "survival_detox_lattice",
+    "rarity": "uncommon",
+    "detail": "cyan detox filter lattice module, nitrogen purge ports, small armor insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, cyan detox filter lattice module, nitrogen purge ports, small armor insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\survival_detox_lattice.png",
+    "scene_asset": "assets/module_scenes/survival_detox_lattice.png"
+  },
+  {
+    "id": "combat_crit_matrix",
+    "rarity": "rare",
+    "detail": "red crit matrix combat module, crosshair core, compact chest-slot insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, red crit matrix combat module, crosshair core, compact chest-slot insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\combat_crit_matrix.png",
+    "scene_asset": "assets/module_scenes/combat_crit_matrix.png"
+  },
+  {
+    "id": "combat_kinetic_driver",
+    "rarity": "epic",
+    "detail": "orange kinetic overcharge driver module, capacitor ridges, shoulder-slot size",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, orange kinetic overcharge driver module, capacitor ridges, shoulder-slot size. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\combat_kinetic_driver.png",
+    "scene_asset": "assets/module_scenes/combat_kinetic_driver.png"
+  },
+  {
+    "id": "economy_relic_hunter",
+    "rarity": "rare",
+    "detail": "gold relic hunter PGM scanner module, artifact sensor, belt-kit size insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, gold relic hunter PGM scanner module, artifact sensor, belt-kit size insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\economy_relic_hunter.png",
+    "scene_asset": "assets/module_scenes/economy_relic_hunter.png"
+  },
+  {
+    "id": "economy_salvage_link",
+    "rarity": "uncommon",
+    "detail": "amber ferro-sensor salvage link module, magnet coil, scavenger armor insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, amber ferro-sensor salvage link module, magnet coil, scavenger armor insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\economy_salvage_link.png",
+    "scene_asset": "assets/module_scenes/economy_salvage_link.png"
+  },
+  {
+    "id": "mobility_vector_thruster",
+    "rarity": "rare",
+    "detail": "blue vector thruster module, micro jet nozzles, leg-armor slot insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, blue vector thruster module, micro jet nozzles, leg-armor slot insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\mobility_vector_thruster.png",
+    "scene_asset": "assets/module_scenes/mobility_vector_thruster.png"
+  },
+  {
+    "id": "mobility_load_anchor",
+    "rarity": "uncommon",
+    "detail": "teal grav load-anchor module, stabilizer fins, backpack-frame insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, teal grav load-anchor module, stabilizer fins, backpack-frame insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\mobility_load_anchor.png",
+    "scene_asset": "assets/module_scenes/mobility_load_anchor.png"
+  },
+  {
+    "id": "defense_guard_bastion",
+    "rarity": "epic",
+    "detail": "steel guard bastion module, shield plating, bracer armor insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, steel guard bastion module, shield plating, bracer armor insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\defense_guard_bastion.png",
+    "scene_asset": "assets/module_scenes/defense_guard_bastion.png"
+  },
+  {
+    "id": "defense_aegis_mesh",
+    "rarity": "rare",
+    "detail": "blue aegis mesh shield module, hex energy grid, forearm slot insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, blue aegis mesh shield module, hex energy grid, forearm slot insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\defense_aegis_mesh.png",
+    "scene_asset": "assets/module_scenes/defense_aegis_mesh.png"
+  },
+  {
+    "id": "tactical_recon_lens",
+    "rarity": "rare",
+    "detail": "purple tactical recon lens module, optics stack, helmet-side insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, purple tactical recon lens module, optics stack, helmet-side insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\tactical_recon_lens.png",
+    "scene_asset": "assets/module_scenes/tactical_recon_lens.png"
+  },
+  {
+    "id": "tactical_stasis_anchor",
+    "rarity": "legendary",
+    "detail": "legendary purple stasis anchor module, crystal anchor core, chest slot insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, legendary purple stasis anchor module, crystal anchor core, chest slot insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\tactical_stasis_anchor.png",
+    "scene_asset": "assets/module_scenes/tactical_stasis_anchor.png"
+  },
+  {
+    "id": "tactical_entangle_node",
+    "rarity": "epic",
+    "detail": "violet quantum entangle node module, swirl core, wrist armor insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, violet quantum entangle node module, swirl core, wrist armor insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\tactical_entangle_node.png",
+    "scene_asset": "assets/module_scenes/tactical_entangle_node.png"
+  },
+  {
+    "id": "tactical_stasis_tuner",
+    "rarity": "rare",
+    "detail": "indigo stasis tuner module, distance dial ring, gauntlet insert",
+    "prompt": "Pixel art game sprite, isolated armor module item ONLY, indigo stasis tuner module, distance dial ring, gauntlet insert. Palm-sized compact cybernetic insert for power armor slot, 3/4 isometric view, detailed worn metal and emissive glow. NO landscape background, NO character, NO text, NO UI. Plain very dark navy background. Module is the only subject, compact NOT a huge slab, similar rendering style and mood to the reference module artwork.",
+    "style_ref": "C:\\Users\\Tema\\.cursor\\projects\\d-STW-GAME\\assets\\tactical_stasis_tuner.png",
+    "scene_asset": "assets/module_scenes/tactical_stasis_tuner.png"
+  }
+]
