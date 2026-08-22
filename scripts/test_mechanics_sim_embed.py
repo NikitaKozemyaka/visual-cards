@@ -34,7 +34,7 @@ class TestMechanicsSimEmbed(unittest.TestCase):
         self.assertEqual(len(data.get("default_slots") or []), 3)
         v = SIM_JS_RE.search(text)
         self.assertIsNotNone(v, "mechanics_sim.js cache bust missing")
-        self.assertEqual(v.group(1), "1")
+        self.assertEqual(v.group(1), "2")
 
     def test_catalog_page_exists(self) -> None:
         path = MECH / "index.html"

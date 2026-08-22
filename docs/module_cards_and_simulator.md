@@ -393,7 +393,7 @@ python -m unittest scripts.test_module_sim_embed -q
 
 | Файл | Роль |
 |------|------|
-| `mechanics/mechanics_sim.js?v=1` | Формулы стабилизатора + осколков (канон `STW_GAME/game_core/module_death_stabilizer.py`) |
+| `mechanics/mechanics_sim.js?v=2` | Формулы стабилизатора + осколков (канон `STW_GAME/game_core/module_death_stabilizer.py`) |
 | `scripts/build_mechanics_cards.py` | Генерирует `data/mechanics.json`, `mechanics/index.html`, `mechanics/stabilizer.html` |
 | `scripts/test_mechanics_sim.py` | Mirror-тесты формул vs Python |
 | `scripts/test_mechanics_sim_embed.py` | b64 embed + cache-bust `mechanics_sim.js?v=` |

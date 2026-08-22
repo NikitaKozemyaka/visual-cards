@@ -166,11 +166,21 @@
     return lines;
   }
 
+  function decodeMechanicsB64(b64) {
+    var bin = atob(b64);
+    if (typeof TextDecoder !== "undefined") {
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder("utf-8").decode(bytes);
+    }
+    return bin;
+  }
+
   function parseMechanicsData(root) {
     var b64 = root.getAttribute("data-stw-mechanics-b64");
     if (b64) {
       try {
-        return JSON.parse(atob(b64));
+        return JSON.parse(decodeMechanicsB64(b64));
       } catch (e1) {
         /* fall through */
       }
