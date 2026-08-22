@@ -86,7 +86,7 @@ CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=8"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
   <link rel="stylesheet" href="../assets/touch-safe.css?v=6"/>
   <link rel="stylesheet" href="../assets/rarity.css?v=9"/>
-  <link rel="stylesheet" href="../assets/catalog.css?v=5"/>"""
+  <link rel="stylesheet" href="../assets/catalog.css?v=6"/>"""
 
 
 def extract_emoji(text: str) -> str:
@@ -570,7 +570,7 @@ def catalog_card(mod: dict, delay: str) -> str:
           <a class="vc-rise {delay} vc-mod-card vc-rarity-{rarity} group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-{rarity}/70" href="./{esc(mod["filename"])}">
             <div class="vc-mod-card-inner">
               <div class="vc-mod-cover">
-                <img src="{esc(cover)}" alt="" width="320" height="200" loading="lazy" decoding="async"/>
+                <img src="{esc(cover)}" alt="" loading="lazy" decoding="async"/>
                 {emoji}
               </div>
               <div class="vc-mod-body">

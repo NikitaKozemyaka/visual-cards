@@ -48,9 +48,10 @@ a.vc-mod-card {
   position: absolute;
   inset: 0;
   display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  min-height: 100%;
   object-fit: cover;
   object-position: center;
   transition: transform 200ms ease;
@@ -104,18 +105,20 @@ a.vc-mod-card.vc-press .vc-mod-cover img {
 
 @media (min-width: 640px) {
   .vc-mod-card-inner {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 168px 1fr;
     align-items: stretch;
   }
 
   .vc-mod-cover {
-    width: 168px;
+    width: 100%;
+    height: 100%;
     min-height: 100%;
-    aspect-ratio: auto;
+    aspect-ratio: unset;
   }
 
   .vc-mod-body {
-    flex: 1;
+    flex: unset;
     padding: 1.15rem 1.25rem 1.25rem 1.1rem;
   }
 }
