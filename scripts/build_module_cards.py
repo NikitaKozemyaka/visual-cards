@@ -82,10 +82,10 @@ EMOJI_RE = re.compile(
     flags=re.UNICODE,
 )
 
-CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=8"/>
+CSS_LINKS = """  <link rel="stylesheet" href="../assets/site-motion.css?v=9"/>
   <link rel="stylesheet" href="../assets/compact.css?v=1"/>
-  <link rel="stylesheet" href="../assets/touch-safe.css?v=6"/>
-  <link rel="stylesheet" href="../assets/rarity.css?v=9"/>
+  <link rel="stylesheet" href="../assets/touch-safe.css?v=7"/>
+  <link rel="stylesheet" href="../assets/rarity.css?v=10"/>
   <link rel="stylesheet" href="../assets/catalog.css?v=6"/>"""
 
 

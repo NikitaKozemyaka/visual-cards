@@ -34,61 +34,70 @@
 .before\:bg-epic\/70::before { background: rgba(176, 124, 255, 0.7) !important; }
 .before\:bg-legendary\/70::before { background: rgba(212, 164, 64, 0.7) !important; }
 
-/* Catalog tiles */
-a.vc-rarity-uncommon.group.relative.block {
+/* Catalog tiles + module/mechanics cards */
+a.vc-rarity-uncommon.group.relative.block,
+a.vc-rarity-uncommon.vc-mod-card {
   border-color: rgba(94, 207, 138, 0.32);
   background:
     linear-gradient(135deg, rgba(94, 207, 138, 0.1), transparent 42%),
     linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
   box-shadow: 0 0 0 1px rgba(94, 207, 138, 0.06);
 }
-a.vc-rarity-uncommon.group.relative.block::before {
+a.vc-rarity-uncommon.group.relative.block::before,
+a.vc-rarity-uncommon.vc-mod-card::before {
   width: 3px;
   background: var(--rarity-uncommon) !important;
   box-shadow: 0 0 18px 1px var(--rarity-uncommon-glow);
 }
 
-a.vc-rarity-rare.group.relative.block {
+a.vc-rarity-rare.group.relative.block,
+a.vc-rarity-rare.vc-mod-card {
   border-color: rgba(94, 184, 255, 0.34);
   background:
     linear-gradient(135deg, rgba(94, 184, 255, 0.1), transparent 42%),
     linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
   box-shadow: 0 0 0 1px rgba(94, 184, 255, 0.06);
 }
-a.vc-rarity-rare.group.relative.block::before {
+a.vc-rarity-rare.group.relative.block::before,
+a.vc-rarity-rare.vc-mod-card::before {
   width: 3px;
   background: var(--rarity-rare) !important;
   box-shadow: 0 0 18px 1px var(--rarity-rare-glow);
 }
 
-a.vc-rarity-epic.group.relative.block {
+a.vc-rarity-epic.group.relative.block,
+a.vc-rarity-epic.vc-mod-card {
   border-color: rgba(176, 124, 255, 0.34);
   background:
     linear-gradient(135deg, rgba(176, 124, 255, 0.12), transparent 42%),
     linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
   box-shadow: 0 0 0 1px rgba(176, 124, 255, 0.08);
 }
-a.vc-rarity-epic.group.relative.block::before {
+a.vc-rarity-epic.group.relative.block::before,
+a.vc-rarity-epic.vc-mod-card::before {
   width: 3px;
   background: var(--rarity-epic) !important;
   box-shadow: 0 0 18px 1px var(--rarity-epic-glow);
 }
 
-a.vc-rarity-legendary.group.relative.block {
+a.vc-rarity-legendary.group.relative.block,
+a.vc-rarity-legendary.vc-mod-card {
   border-color: rgba(212, 164, 64, 0.34);
   background:
     linear-gradient(135deg, rgba(212, 164, 64, 0.12), transparent 42%),
     linear-gradient(180deg, rgba(18, 28, 43, 0.96), rgba(12, 18, 28, 0.96));
   box-shadow: 0 0 0 1px rgba(212, 164, 64, 0.08);
 }
-a.vc-rarity-legendary.group.relative.block::before {
+a.vc-rarity-legendary.group.relative.block::before,
+a.vc-rarity-legendary.vc-mod-card::before {
   width: 3px;
   background: var(--rarity-legendary) !important;
   box-shadow: 0 0 18px 1px var(--rarity-legendary-glow);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  a.vc-rarity-uncommon.group.relative.block:hover {
+  a.vc-rarity-uncommon.group.relative.block:hover,
+  a.vc-rarity-uncommon.vc-mod-card:hover {
     border-color: rgba(94, 207, 138, 0.58) !important;
     box-shadow:
       0 22px 44px rgba(0, 0, 0, 0.38),
@@ -96,7 +105,12 @@ a.vc-rarity-legendary.group.relative.block::before {
       0 0 32px rgba(94, 207, 138, 0.18);
     filter: brightness(1.05);
   }
-  a.vc-rarity-rare.group.relative.block:hover {
+  a.vc-rarity-uncommon.group.relative.block:hover::before,
+  a.vc-rarity-uncommon.vc-mod-card:hover::before {
+    box-shadow: 0 0 22px 2px var(--rarity-uncommon-glow) !important;
+  }
+  a.vc-rarity-rare.group.relative.block:hover,
+  a.vc-rarity-rare.vc-mod-card:hover {
     border-color: rgba(94, 184, 255, 0.58) !important;
     box-shadow:
       0 22px 44px rgba(0, 0, 0, 0.38),
@@ -104,7 +118,12 @@ a.vc-rarity-legendary.group.relative.block::before {
       0 0 32px rgba(94, 184, 255, 0.18);
     filter: brightness(1.05);
   }
-  a.vc-rarity-epic.group.relative.block:hover {
+  a.vc-rarity-rare.group.relative.block:hover::before,
+  a.vc-rarity-rare.vc-mod-card:hover::before {
+    box-shadow: 0 0 22px 2px var(--rarity-rare-glow) !important;
+  }
+  a.vc-rarity-epic.group.relative.block:hover,
+  a.vc-rarity-epic.vc-mod-card:hover {
     border-color: rgba(176, 124, 255, 0.6) !important;
     box-shadow:
       0 22px 44px rgba(0, 0, 0, 0.38),
@@ -112,13 +131,22 @@ a.vc-rarity-legendary.group.relative.block::before {
       0 0 34px rgba(176, 124, 255, 0.2);
     filter: brightness(1.05);
   }
-  a.vc-rarity-legendary.group.relative.block:hover {
+  a.vc-rarity-epic.group.relative.block:hover::before,
+  a.vc-rarity-epic.vc-mod-card:hover::before {
+    box-shadow: 0 0 22px 2px var(--rarity-epic-glow) !important;
+  }
+  a.vc-rarity-legendary.group.relative.block:hover,
+  a.vc-rarity-legendary.vc-mod-card:hover {
     border-color: rgba(212, 164, 64, 0.62) !important;
     box-shadow:
       0 22px 44px rgba(0, 0, 0, 0.38),
       0 0 0 1px rgba(212, 164, 64, 0.28),
       0 0 36px rgba(212, 164, 64, 0.22);
     filter: brightness(1.05);
+  }
+  a.vc-rarity-legendary.group.relative.block:hover::before,
+  a.vc-rarity-legendary.vc-mod-card:hover::before {
+    box-shadow: 0 0 22px 2px var(--rarity-legendary-glow) !important;
   }
 }
 
@@ -186,8 +214,61 @@ header.vc-rarity-legendary {
 
 /* Live-dot stays green (ok) even on legendary cards — product preference */
 
+/* Rarity press flash (touch + click) — loads after touch-safe base */
+a.vc-rarity-uncommon.group.relative.block.vc-press,
+a.vc-rarity-uncommon.vc-mod-card.vc-press {
+  transform: translateY(-4px) scale(0.99) !important;
+  border-color: rgba(94, 207, 138, 0.72) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(94, 207, 138, 0.3),
+    0 0 34px rgba(94, 207, 138, 0.28) !important;
+  filter: brightness(1.08) !important;
+}
+a.vc-rarity-uncommon.group.relative.block.vc-press::before,
+a.vc-rarity-uncommon.vc-mod-card.vc-press::before {
+  width: 3px !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 22px 2px rgba(94, 207, 138, 0.7) !important;
+}
+
+a.vc-rarity-rare.group.relative.block.vc-press,
+a.vc-rarity-rare.vc-mod-card.vc-press {
+  transform: translateY(-4px) scale(0.99) !important;
+  border-color: rgba(94, 184, 255, 0.72) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(94, 184, 255, 0.3),
+    0 0 34px rgba(94, 184, 255, 0.28) !important;
+  filter: brightness(1.08) !important;
+}
+a.vc-rarity-rare.group.relative.block.vc-press::before,
+a.vc-rarity-rare.vc-mod-card.vc-press::before {
+  width: 3px !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 22px 2px rgba(94, 184, 255, 0.7) !important;
+}
+
+a.vc-rarity-epic.group.relative.block.vc-press,
+a.vc-rarity-epic.vc-mod-card.vc-press {
+  transform: translateY(-4px) scale(0.99) !important;
+  border-color: rgba(176, 124, 255, 0.75) !important;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(176, 124, 255, 0.32),
+    0 0 36px rgba(176, 124, 255, 0.3) !important;
+  filter: brightness(1.08) !important;
+}
+a.vc-rarity-epic.group.relative.block.vc-press::before,
+a.vc-rarity-epic.vc-mod-card.vc-press::before {
+  width: 3px !important;
+  opacity: 1 !important;
+  box-shadow: 0 0 22px 2px rgba(176, 124, 255, 0.7) !important;
+}
+
 /* Legendary press flash (touch) */
-a.vc-rarity-legendary.group.relative.block.vc-press {
+a.vc-rarity-legendary.group.relative.block.vc-press,
+a.vc-rarity-legendary.vc-mod-card.vc-press {
   transform: translateY(-4px) scale(0.995) !important;
   border-color: rgba(212, 164, 64, 0.78) !important;
   box-shadow:
@@ -196,7 +277,8 @@ a.vc-rarity-legendary.group.relative.block.vc-press {
     0 0 36px rgba(212, 164, 64, 0.32) !important;
   filter: brightness(1.08) !important;
 }
-a.vc-rarity-legendary.group.relative.block.vc-press::before {
+a.vc-rarity-legendary.group.relative.block.vc-press::before,
+a.vc-rarity-legendary.vc-mod-card.vc-press::before {
   width: 3px !important;
   opacity: 1 !important;
   box-shadow: 0 0 26px 3px rgba(212, 164, 64, 0.7) !important;

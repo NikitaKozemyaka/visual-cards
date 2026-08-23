@@ -138,8 +138,7 @@ a.vc-mod-card .size-4 {
 
 /* Real mouse hover only — phones must not rely on sticky :hover */
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  a.group.relative.block:hover,
-  a.vc-mod-card:hover,
+  a.group.relative.block:not([class*="vc-rarity-"]):hover,
   .vc-card:hover {
     transform: translateY(-6px);
     border-color: rgba(94, 184, 255, 0.55) !important;
@@ -150,20 +149,19 @@ a.vc-mod-card .size-4 {
     filter: brightness(1.06);
   }
 
-  a.group.relative.block:hover::before,
-  a.vc-mod-card:hover::before {
+  a.group.relative.block:not([class*="vc-rarity-"]):hover::before,
+  .vc-card:hover::before {
     width: 3px;
     opacity: 1;
     box-shadow: 0 0 22px 2px rgba(94, 184, 255, 0.65);
   }
 
-  a.group.relative.block:hover .size-4,
-  a.vc-mod-card:hover .size-4 {
+  a.group.relative.block:not([class*="vc-rarity-"]):hover .size-4,
+  .vc-card:hover .size-4 {
     transform: translate(3px, -3px);
   }
 
-  a.group.relative.block:active,
-  a.vc-mod-card:active,
+  a.group.relative.block:not([class*="vc-rarity-"]):active,
   .vc-card:active {
     transform: translateY(-3px) scale(0.995);
   }
@@ -178,8 +176,6 @@ a.vc-mod-card .size-4 {
 
   a.group.relative.block:hover,
   a.group.relative.block.vc-press,
-  a.vc-mod-card:hover,
-  a.vc-mod-card.vc-press,
   .vc-card:hover,
   .vc-card.vc-press {
     transform: none;

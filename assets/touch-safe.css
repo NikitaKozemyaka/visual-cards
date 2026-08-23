@@ -66,7 +66,7 @@ html.vc-kill-hover * {
 
 /* Press feedback via JS class — short flash even on quick taps */
 a.group.relative.block.vc-press,
-a.vc-mod-card.vc-press,
+a.vc-mod-card:not([class*="vc-rarity-"]).vc-press,
 .vc-card.vc-press {
   transition-duration: 70ms;
   transform: translateY(-4px) scale(0.99) !important;
@@ -79,14 +79,14 @@ a.vc-mod-card.vc-press,
 }
 
 a.group.relative.block.vc-press::before,
-a.vc-mod-card.vc-press::before {
+a.vc-mod-card:not([class*="vc-rarity-"]).vc-press::before {
   width: 3px !important;
   opacity: 1 !important;
   box-shadow: 0 0 22px 2px rgba(94, 184, 255, 0.7) !important;
 }
 
 a.group.relative.block.vc-press .size-4,
-a.vc-mod-card.vc-press .size-4 {
+a.vc-mod-card:not([class*="vc-rarity-"]).vc-press .size-4 {
   transform: translate(2px, -2px);
 }
 
