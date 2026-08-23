@@ -13,7 +13,7 @@ OUT_DATA = ROOT / "data" / "mechanics.json"
 OUT_MECH = ROOT / "mechanics"
 MODULES_DATA = ROOT / "data" / "modules.json"
 
-SIM_JS_VERSION = "2"
+SIM_JS_VERSION = "3"
 STABILIZER_ID = "module_emergency_stabilizer"
 SHARDS_ID = "module_shards"
 

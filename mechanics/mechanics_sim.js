@@ -224,9 +224,58 @@
     }
   }
 
+  var RARITY_SLOT_CLASSES = [
+    "vc-rarity-common",
+    "vc-rarity-uncommon",
+    "vc-rarity-rare",
+    "vc-rarity-epic",
+    "vc-rarity-legendary",
+    "vc-rarity-mythic",
+  ];
+
+  function normalizeRarity(rarity) {
+    var r = String(rarity || "common").toLowerCase();
+    return RARITY_SLOT_CLASSES.indexOf("vc-rarity-" + r) >= 0 ? r : "common";
+  }
+
+  function cleanModuleName(name) {
+    return String(name || "")
+      .replace(/^[\s\uFE0F\u200B]+/, "")
+      .trim();
+  }
+
+  function moduleLabel(mod) {
+    if (!mod) return "";
+    var emoji = mod.emoji ? mod.emoji + " " : "";
+    return emoji + cleanModuleName(mod.name || mod.id);
+  }
+
+  function applySlotRarity(row, moduleId, modulesById) {
+    if (!row) return;
+    var meta = (modulesById && modulesById[moduleId]) || null;
+    var rarity = normalizeRarity(meta && meta.rarity);
+    row.className =
+      "vc-mechanics-slot vc-rarity-" +
+      rarity +
+      " rounded-xl border p-4 transition-colors";
+  }
+
+  function fillModuleSelect(select, selectedId, modulesList) {
+    select.innerHTML = "";
+    for (var i = 0; i < modulesList.length; i++) {
+      var m = modulesList[i];
+      var opt = document.createElement("option");
+      opt.value = m.id;
+      opt.textContent = moduleLabel(m);
+      if (m.id === selectedId) opt.selected = true;
+      select.appendChild(opt);
+    }
+  }
+
   function bootStabilizer(root, data) {
     var catalog = data || {};
     var modulesList = catalog.demo_modules || [];
+    var modulesById = catalog.modules_by_id || {};
     var defaultSlots = catalog.default_slots || [];
 
     var armedBtn = document.getElementById("sim-armed");
@@ -241,23 +290,6 @@
     var slotCount = 3;
     var slots = [];
 
-    function moduleOptions(selectedId) {
-      var html = "";
-      for (var i = 0; i < modulesList.length; i++) {
-        var m = modulesList[i];
-        var sel = m.id === selectedId ? " selected" : "";
-        html +=
-          '<option value="' +
-          m.id +
-          '"' +
-          sel +
-          ">" +
-          (m.name || m.id) +
-          "</option>";
-      }
-      return html;
-    }
-
     function renderSlots() {
       var host = document.getElementById("slot-rows");
       if (!host) return;
@@ -267,22 +299,22 @@
           slots[i] = defaultSlots[i] || { id: modulesList[0].id, level: 1 };
         }
         var row = document.createElement("div");
-        row.className = "rounded-xl border border-border bg-secondary/40 p-4";
+        applySlotRarity(row, slots[i].id, modulesById);
         row.innerHTML =
           '<div class="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Слот ' +
           (i + 1) +
           '</div><select class="sim-module-select mb-3 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm" data-slot="' +
           i +
-          '">' +
-          moduleOptions(slots[i].id) +
-          '</select><div class="flex flex-wrap gap-2 sim-level-pills" data-slot="' +
+          '"></select><div class="flex flex-wrap gap-2 sim-level-pills" data-slot="' +
           i +
           '" role="group" aria-label="Уровень модуля"></div>';
         host.appendChild(row);
         var sel = row.querySelector("select");
+        fillModuleSelect(sel, slots[i].id, modulesList);
         sel.addEventListener("change", function () {
           var idx = parseInt(this.getAttribute("data-slot"), 10);
           slots[idx].id = this.value;
+          applySlotRarity(this.closest(".vc-mechanics-slot"), this.value, modulesById);
         });
         var pillsHost = row.querySelector(".sim-level-pills");
         for (var lv = 1; lv <= 9; lv++) {

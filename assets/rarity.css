@@ -283,3 +283,90 @@ a.vc-rarity-legendary.vc-mod-card.vc-press::before {
   opacity: 1 !important;
   box-shadow: 0 0 26px 3px rgba(212, 164, 64, 0.7) !important;
 }
+
+/* Mechanics stabilizer — module slot rows */
+.vc-mechanics-slot {
+  position: relative;
+  overflow: hidden;
+  border-width: 1px;
+  border-style: solid;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+.vc-mechanics-slot::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 0.75rem 0 0 0.75rem;
+  background: rgba(148, 163, 184, 0.35);
+  transition: background 160ms ease, box-shadow 160ms ease;
+}
+.vc-mechanics-slot.vc-rarity-common {
+  border-color: rgba(148, 163, 184, 0.28);
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.06), transparent 48%), rgba(18, 28, 43, 0.45);
+}
+.vc-mechanics-slot.vc-rarity-uncommon {
+  border-color: rgba(94, 207, 138, 0.34);
+  background: linear-gradient(135deg, rgba(94, 207, 138, 0.1), transparent 48%), rgba(18, 28, 43, 0.45);
+  box-shadow: 0 0 0 1px rgba(94, 207, 138, 0.06);
+}
+.vc-mechanics-slot.vc-rarity-uncommon::before {
+  background: var(--rarity-uncommon);
+  box-shadow: 0 0 14px 1px var(--rarity-uncommon-glow);
+}
+.vc-mechanics-slot.vc-rarity-rare {
+  border-color: rgba(94, 184, 255, 0.36);
+  background: linear-gradient(135deg, rgba(94, 184, 255, 0.1), transparent 48%), rgba(18, 28, 43, 0.45);
+  box-shadow: 0 0 0 1px rgba(94, 184, 255, 0.06);
+}
+.vc-mechanics-slot.vc-rarity-rare::before {
+  background: var(--rarity-rare);
+  box-shadow: 0 0 14px 1px var(--rarity-rare-glow);
+}
+.vc-mechanics-slot.vc-rarity-epic {
+  border-color: rgba(176, 124, 255, 0.36);
+  background: linear-gradient(135deg, rgba(176, 124, 255, 0.12), transparent 48%), rgba(18, 28, 43, 0.45);
+  box-shadow: 0 0 0 1px rgba(176, 124, 255, 0.08);
+}
+.vc-mechanics-slot.vc-rarity-epic::before {
+  background: var(--rarity-epic);
+  box-shadow: 0 0 14px 1px var(--rarity-epic-glow);
+}
+.vc-mechanics-slot.vc-rarity-legendary {
+  border-color: rgba(212, 164, 64, 0.38);
+  background: linear-gradient(135deg, rgba(212, 164, 64, 0.12), transparent 48%), rgba(18, 28, 43, 0.45);
+  box-shadow: 0 0 0 1px rgba(212, 164, 64, 0.08);
+}
+.vc-mechanics-slot.vc-rarity-legendary::before {
+  background: var(--rarity-legendary);
+  box-shadow: 0 0 14px 1px var(--rarity-legendary-glow);
+}
+.vc-mechanics-slot.vc-rarity-mythic {
+  border-color: rgba(255, 94, 138, 0.38);
+  background: linear-gradient(135deg, rgba(255, 94, 138, 0.12), transparent 48%), rgba(18, 28, 43, 0.45);
+  box-shadow: 0 0 0 1px rgba(255, 94, 138, 0.08);
+}
+.vc-mechanics-slot.vc-rarity-mythic::before {
+  background: #ff5e8a;
+  box-shadow: 0 0 14px 1px rgba(255, 94, 138, 0.45);
+}
+.vc-mechanics-slot .sim-module-select {
+  transition: border-color 160ms ease;
+}
+.vc-mechanics-slot.vc-rarity-uncommon .sim-module-select {
+  border-color: rgba(94, 207, 138, 0.35);
+}
+.vc-mechanics-slot.vc-rarity-rare .sim-module-select {
+  border-color: rgba(94, 184, 255, 0.35);
+}
+.vc-mechanics-slot.vc-rarity-epic .sim-module-select {
+  border-color: rgba(176, 124, 255, 0.35);
+}
+.vc-mechanics-slot.vc-rarity-legendary .sim-module-select {
+  border-color: rgba(212, 164, 64, 0.38);
+}
