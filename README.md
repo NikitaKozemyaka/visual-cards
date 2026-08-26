@@ -11,10 +11,11 @@
 
 Баланс подтягивается из репозитория **STW_GAME** (`module_balance.json`, `global_items.json`).
 
-## Механики (1 сценарий)
+## Механики (2 сценария)
 
 - Каталог: [`mechanics/`](mechanics/)
-- Демо: [стабилизатор и осколки](mechanics/stabilizer.html) — параметры → «Погиб» → итог (формулы из `module_death_stabilizer.py` в STW_GAME)
+- Демо: [стабилизатор и осколки](mechanics/stabilizer.html) — параметры → «Погиб» → итог (`module_death_stabilizer.py`)
+- Демо: [групповой поиск — сила пати](mechanics/group_search.html) — конструктор уровней → скейл HP/урона (`group_search_combat_policy.json`)
 - Сборка: `python scripts/build_mechanics_cards.py`
 - Тесты: `python scripts/test_mechanics_sim.py` · `python -m unittest scripts.test_mechanics_sim_embed -q`
 

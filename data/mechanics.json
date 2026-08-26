@@ -1,286 +1,353 @@
 {
-  "version": 1,
-  "source": "STW_GAME module_death_stabilizer + global_items",
-  "mechanics_id": "death_stabilizer",
-  "craft_shards_cost": 100,
-  "quantum_shop": {
-    "price": 70,
-    "min_level": 8,
-    "period": "weekly",
-    "max": 1
-  },
-  "items": {
-    "module_emergency_stabilizer": {
-      "id": "module_emergency_stabilizer",
-      "name": "Аварийный стабилизатор модулей",
-      "emoji": "🛡"
+  "version": 2,
+  "source": "STW_GAME stabilizer + group_search_combat_policy",
+  "mechanics": [
+    {
+      "version": 1,
+      "source": "STW_GAME module_death_stabilizer + global_items",
+      "mechanics_id": "death_stabilizer",
+      "href": "stabilizer.html",
+      "craft_shards_cost": 100,
+      "quantum_shop": {
+        "price": 70,
+        "min_level": 8,
+        "period": "weekly",
+        "max": 1
+      },
+      "items": {
+        "module_emergency_stabilizer": {
+          "id": "module_emergency_stabilizer",
+          "name": "Аварийный стабилизатор модулей",
+          "emoji": "🛡"
+        },
+        "module_shards": {
+          "id": "module_shards",
+          "name": "Осколки модулей",
+          "emoji": "🔩"
+        },
+        "survival_vital_weave": {
+          "id": "survival_vital_weave",
+          "name": "Нейроимплант «Жизненная нить»",
+          "rarity": "uncommon"
+        },
+        "survival_detox_lattice": {
+          "id": "survival_detox_lattice",
+          "name": "️ Решётка «Детокс-канал»",
+          "rarity": "rare"
+        },
+        "combat_crit_matrix": {
+          "id": "combat_crit_matrix",
+          "name": "Матрица критических попаданий",
+          "rarity": "epic"
+        },
+        "combat_kinetic_driver": {
+          "id": "combat_kinetic_driver",
+          "name": "️ Кинетический привод «Удар»",
+          "rarity": "rare"
+        },
+        "economy_relic_hunter": {
+          "id": "economy_relic_hunter",
+          "name": "ПГМ «Охотник за реликвиями»",
+          "rarity": "rare"
+        },
+        "economy_salvage_link": {
+          "id": "economy_salvage_link",
+          "name": "Ферросенсор «Связка утилизации»",
+          "rarity": "uncommon"
+        },
+        "mobility_vector_thruster": {
+          "id": "mobility_vector_thruster",
+          "name": "Векторный ускоритель «Рывок»",
+          "rarity": "rare"
+        },
+        "mobility_load_anchor": {
+          "id": "mobility_load_anchor",
+          "name": "Якорь нагрузки «Тяжеловоз»",
+          "rarity": "uncommon"
+        },
+        "defense_guard_bastion": {
+          "id": "defense_guard_bastion",
+          "name": "Бастион «Страж»",
+          "rarity": "epic"
+        },
+        "defense_aegis_mesh": {
+          "id": "defense_aegis_mesh",
+          "name": "Эгида «Защитная сетка»",
+          "rarity": "rare"
+        },
+        "tactical_recon_lens": {
+          "id": "tactical_recon_lens",
+          "name": "Линза тактического разбора",
+          "rarity": "rare"
+        },
+        "tactical_stasis_anchor": {
+          "id": "tactical_stasis_anchor",
+          "name": "Стазис-якорь",
+          "rarity": "legendary"
+        },
+        "tactical_entangle_node": {
+          "id": "tactical_entangle_node",
+          "name": "Узел квантового запутывания",
+          "rarity": "epic"
+        },
+        "tactical_stasis_tuner": {
+          "id": "tactical_stasis_tuner",
+          "name": "⏱️ Настройщик боевого стазиса",
+          "rarity": "rare"
+        }
+      },
+      "modules_by_id": {
+        "survival_vital_weave": {
+          "id": "survival_vital_weave",
+          "name": "Нейроимплант «Жизненная нить»",
+          "rarity": "uncommon",
+          "emoji": "🧬"
+        },
+        "survival_detox_lattice": {
+          "id": "survival_detox_lattice",
+          "name": "️ Решётка «Детокс-канал»",
+          "rarity": "rare",
+          "emoji": "🌬"
+        },
+        "combat_crit_matrix": {
+          "id": "combat_crit_matrix",
+          "name": "Матрица критических попаданий",
+          "rarity": "epic",
+          "emoji": "🎯"
+        },
+        "combat_kinetic_driver": {
+          "id": "combat_kinetic_driver",
+          "name": "️ Кинетический привод «Удар»",
+          "rarity": "rare",
+          "emoji": "⚔"
+        },
+        "economy_relic_hunter": {
+          "id": "economy_relic_hunter",
+          "name": "ПГМ «Охотник за реликвиями»",
+          "rarity": "rare",
+          "emoji": "⚡"
+        },
+        "economy_salvage_link": {
+          "id": "economy_salvage_link",
+          "name": "Ферросенсор «Связка утилизации»",
+          "rarity": "uncommon",
+          "emoji": "🧲"
+        },
+        "mobility_vector_thruster": {
+          "id": "mobility_vector_thruster",
+          "name": "Векторный ускоритель «Рывок»",
+          "rarity": "rare",
+          "emoji": "🚀"
+        },
+        "mobility_load_anchor": {
+          "id": "mobility_load_anchor",
+          "name": "Якорь нагрузки «Тяжеловоз»",
+          "rarity": "uncommon",
+          "emoji": "🎒"
+        },
+        "defense_guard_bastion": {
+          "id": "defense_guard_bastion",
+          "name": "Бастион «Страж»",
+          "rarity": "epic",
+          "emoji": "🏰"
+        },
+        "defense_aegis_mesh": {
+          "id": "defense_aegis_mesh",
+          "name": "Эгида «Защитная сетка»",
+          "rarity": "rare",
+          "emoji": "🔰"
+        },
+        "tactical_recon_lens": {
+          "id": "tactical_recon_lens",
+          "name": "Линза тактического разбора",
+          "rarity": "rare",
+          "emoji": "🔬"
+        },
+        "tactical_stasis_anchor": {
+          "id": "tactical_stasis_anchor",
+          "name": "Стазис-якорь",
+          "rarity": "legendary",
+          "emoji": "⚓"
+        },
+        "tactical_entangle_node": {
+          "id": "tactical_entangle_node",
+          "name": "Узел квантового запутывания",
+          "rarity": "epic",
+          "emoji": "🌀"
+        },
+        "tactical_stasis_tuner": {
+          "id": "tactical_stasis_tuner",
+          "name": "⏱️ Настройщик боевого стазиса",
+          "rarity": "rare",
+          "emoji": ""
+        }
+      },
+      "demo_modules": [
+        {
+          "id": "survival_vital_weave",
+          "name": "Нейроимплант «Жизненная нить»",
+          "rarity": "uncommon",
+          "emoji": "🧬"
+        },
+        {
+          "id": "survival_detox_lattice",
+          "name": "️ Решётка «Детокс-канал»",
+          "rarity": "rare",
+          "emoji": "🌬"
+        },
+        {
+          "id": "combat_crit_matrix",
+          "name": "Матрица критических попаданий",
+          "rarity": "epic",
+          "emoji": "🎯"
+        },
+        {
+          "id": "combat_kinetic_driver",
+          "name": "️ Кинетический привод «Удар»",
+          "rarity": "rare",
+          "emoji": "⚔"
+        },
+        {
+          "id": "economy_relic_hunter",
+          "name": "ПГМ «Охотник за реликвиями»",
+          "rarity": "rare",
+          "emoji": "⚡"
+        },
+        {
+          "id": "economy_salvage_link",
+          "name": "Ферросенсор «Связка утилизации»",
+          "rarity": "uncommon",
+          "emoji": "🧲"
+        },
+        {
+          "id": "mobility_vector_thruster",
+          "name": "Векторный ускоритель «Рывок»",
+          "rarity": "rare",
+          "emoji": "🚀"
+        },
+        {
+          "id": "mobility_load_anchor",
+          "name": "Якорь нагрузки «Тяжеловоз»",
+          "rarity": "uncommon",
+          "emoji": "🎒"
+        },
+        {
+          "id": "defense_guard_bastion",
+          "name": "Бастион «Страж»",
+          "rarity": "epic",
+          "emoji": "🏰"
+        },
+        {
+          "id": "defense_aegis_mesh",
+          "name": "Эгида «Защитная сетка»",
+          "rarity": "rare",
+          "emoji": "🔰"
+        },
+        {
+          "id": "tactical_recon_lens",
+          "name": "Линза тактического разбора",
+          "rarity": "rare",
+          "emoji": "🔬"
+        },
+        {
+          "id": "tactical_stasis_anchor",
+          "name": "Стазис-якорь",
+          "rarity": "legendary",
+          "emoji": "⚓"
+        },
+        {
+          "id": "tactical_entangle_node",
+          "name": "Узел квантового запутывания",
+          "rarity": "epic",
+          "emoji": "🌀"
+        },
+        {
+          "id": "tactical_stasis_tuner",
+          "name": "⏱️ Настройщик боевого стазиса",
+          "rarity": "rare",
+          "emoji": ""
+        }
+      ],
+      "default_slots": [
+        {
+          "id": "survival_detox_lattice",
+          "level": 5
+        },
+        {
+          "id": "combat_kinetic_driver",
+          "level": 9
+        },
+        {
+          "id": "defense_aegis_mesh",
+          "level": 3
+        }
+      ],
+      "catalog": {
+        "title": "Аварийный стабилизатор и осколки",
+        "blurb": "Активируй стабилизатор → умри → один модуль на броне сохранится, остальные превратятся в осколки. 100 осколков — крафт нового стабилизатора.",
+        "emoji": "🛡",
+        "rarity": "epic",
+        "badge": "Эпический"
+      }
     },
-    "module_shards": {
-      "id": "module_shards",
-      "name": "Осколки модулей",
-      "emoji": "🔩"
-    },
-    "survival_vital_weave": {
-      "id": "survival_vital_weave",
-      "name": "Нейроимплант «Жизненная нить»",
-      "rarity": "uncommon"
-    },
-    "survival_detox_lattice": {
-      "id": "survival_detox_lattice",
-      "name": "️ Решётка «Детокс-канал»",
-      "rarity": "rare"
-    },
-    "combat_crit_matrix": {
-      "id": "combat_crit_matrix",
-      "name": "Матрица критических попаданий",
-      "rarity": "epic"
-    },
-    "combat_kinetic_driver": {
-      "id": "combat_kinetic_driver",
-      "name": "️ Кинетический привод «Удар»",
-      "rarity": "rare"
-    },
-    "economy_relic_hunter": {
-      "id": "economy_relic_hunter",
-      "name": "ПГМ «Охотник за реликвиями»",
-      "rarity": "rare"
-    },
-    "economy_salvage_link": {
-      "id": "economy_salvage_link",
-      "name": "Ферросенсор «Связка утилизации»",
-      "rarity": "uncommon"
-    },
-    "mobility_vector_thruster": {
-      "id": "mobility_vector_thruster",
-      "name": "Векторный ускоритель «Рывок»",
-      "rarity": "rare"
-    },
-    "mobility_load_anchor": {
-      "id": "mobility_load_anchor",
-      "name": "Якорь нагрузки «Тяжеловоз»",
-      "rarity": "uncommon"
-    },
-    "defense_guard_bastion": {
-      "id": "defense_guard_bastion",
-      "name": "Бастион «Страж»",
-      "rarity": "epic"
-    },
-    "defense_aegis_mesh": {
-      "id": "defense_aegis_mesh",
-      "name": "Эгида «Защитная сетка»",
-      "rarity": "rare"
-    },
-    "tactical_recon_lens": {
-      "id": "tactical_recon_lens",
-      "name": "Линза тактического разбора",
-      "rarity": "rare"
-    },
-    "tactical_stasis_anchor": {
-      "id": "tactical_stasis_anchor",
-      "name": "Стазис-якорь",
-      "rarity": "legendary"
-    },
-    "tactical_entangle_node": {
-      "id": "tactical_entangle_node",
-      "name": "Узел квантового запутывания",
-      "rarity": "epic"
-    },
-    "tactical_stasis_tuner": {
-      "id": "tactical_stasis_tuner",
-      "name": "⏱️ Настройщик боевого стазиса",
-      "rarity": "rare"
+    {
+      "version": 1,
+      "source": "STW_GAME data/group_search_combat_policy.json party_scale",
+      "mechanics_id": "group_search_party_scale",
+      "href": "group_search.html",
+      "party_scale": {
+        "hp_pct_per_level_sum": 1.0,
+        "damage_pct_per_level_sum": 0.1
+      },
+      "limits": {
+        "min_players": 1,
+        "max_players": 5,
+        "min_level": 1,
+        "max_level": 60
+      },
+      "default_levels": [
+        40,
+        30
+      ],
+      "presets": [
+        {
+          "id": "duo_40_30",
+          "label": "40+30",
+          "levels": [
+            40,
+            30
+          ]
+        },
+        {
+          "id": "duo_10_10",
+          "label": "10+10",
+          "levels": [
+            10,
+            10
+          ]
+        },
+        {
+          "id": "trio_40",
+          "label": "40+40+40",
+          "levels": [
+            40,
+            40,
+            40
+          ]
+        }
+      ],
+      "demo_enemy": {
+        "name": "Демо-противник",
+        "base_hp": 1000,
+        "base_damage": 100
+      },
+      "catalog": {
+        "title": "Групповой поиск: сила пати",
+        "blurb": "Собери состав по уровням — увидишь, насколько толще и сильнее становятся мобы в group search PvE (сумма уровней пати).",
+        "emoji": "👥",
+        "rarity": "rare",
+        "badge": "Редкий"
+      }
     }
-  },
-  "modules_by_id": {
-    "survival_vital_weave": {
-      "id": "survival_vital_weave",
-      "name": "Нейроимплант «Жизненная нить»",
-      "rarity": "uncommon",
-      "emoji": "🧬"
-    },
-    "survival_detox_lattice": {
-      "id": "survival_detox_lattice",
-      "name": "️ Решётка «Детокс-канал»",
-      "rarity": "rare",
-      "emoji": "🌬"
-    },
-    "combat_crit_matrix": {
-      "id": "combat_crit_matrix",
-      "name": "Матрица критических попаданий",
-      "rarity": "epic",
-      "emoji": "🎯"
-    },
-    "combat_kinetic_driver": {
-      "id": "combat_kinetic_driver",
-      "name": "️ Кинетический привод «Удар»",
-      "rarity": "rare",
-      "emoji": "⚔"
-    },
-    "economy_relic_hunter": {
-      "id": "economy_relic_hunter",
-      "name": "ПГМ «Охотник за реликвиями»",
-      "rarity": "rare",
-      "emoji": "⚡"
-    },
-    "economy_salvage_link": {
-      "id": "economy_salvage_link",
-      "name": "Ферросенсор «Связка утилизации»",
-      "rarity": "uncommon",
-      "emoji": "🧲"
-    },
-    "mobility_vector_thruster": {
-      "id": "mobility_vector_thruster",
-      "name": "Векторный ускоритель «Рывок»",
-      "rarity": "rare",
-      "emoji": "🚀"
-    },
-    "mobility_load_anchor": {
-      "id": "mobility_load_anchor",
-      "name": "Якорь нагрузки «Тяжеловоз»",
-      "rarity": "uncommon",
-      "emoji": "🎒"
-    },
-    "defense_guard_bastion": {
-      "id": "defense_guard_bastion",
-      "name": "Бастион «Страж»",
-      "rarity": "epic",
-      "emoji": "🏰"
-    },
-    "defense_aegis_mesh": {
-      "id": "defense_aegis_mesh",
-      "name": "Эгида «Защитная сетка»",
-      "rarity": "rare",
-      "emoji": "🔰"
-    },
-    "tactical_recon_lens": {
-      "id": "tactical_recon_lens",
-      "name": "Линза тактического разбора",
-      "rarity": "rare",
-      "emoji": "🔬"
-    },
-    "tactical_stasis_anchor": {
-      "id": "tactical_stasis_anchor",
-      "name": "Стазис-якорь",
-      "rarity": "legendary",
-      "emoji": "⚓"
-    },
-    "tactical_entangle_node": {
-      "id": "tactical_entangle_node",
-      "name": "Узел квантового запутывания",
-      "rarity": "epic",
-      "emoji": "🌀"
-    },
-    "tactical_stasis_tuner": {
-      "id": "tactical_stasis_tuner",
-      "name": "⏱️ Настройщик боевого стазиса",
-      "rarity": "rare",
-      "emoji": ""
-    }
-  },
-  "demo_modules": [
-    {
-      "id": "survival_vital_weave",
-      "name": "Нейроимплант «Жизненная нить»",
-      "rarity": "uncommon",
-      "emoji": "🧬"
-    },
-    {
-      "id": "survival_detox_lattice",
-      "name": "️ Решётка «Детокс-канал»",
-      "rarity": "rare",
-      "emoji": "🌬"
-    },
-    {
-      "id": "combat_crit_matrix",
-      "name": "Матрица критических попаданий",
-      "rarity": "epic",
-      "emoji": "🎯"
-    },
-    {
-      "id": "combat_kinetic_driver",
-      "name": "️ Кинетический привод «Удар»",
-      "rarity": "rare",
-      "emoji": "⚔"
-    },
-    {
-      "id": "economy_relic_hunter",
-      "name": "ПГМ «Охотник за реликвиями»",
-      "rarity": "rare",
-      "emoji": "⚡"
-    },
-    {
-      "id": "economy_salvage_link",
-      "name": "Ферросенсор «Связка утилизации»",
-      "rarity": "uncommon",
-      "emoji": "🧲"
-    },
-    {
-      "id": "mobility_vector_thruster",
-      "name": "Векторный ускоритель «Рывок»",
-      "rarity": "rare",
-      "emoji": "🚀"
-    },
-    {
-      "id": "mobility_load_anchor",
-      "name": "Якорь нагрузки «Тяжеловоз»",
-      "rarity": "uncommon",
-      "emoji": "🎒"
-    },
-    {
-      "id": "defense_guard_bastion",
-      "name": "Бастион «Страж»",
-      "rarity": "epic",
-      "emoji": "🏰"
-    },
-    {
-      "id": "defense_aegis_mesh",
-      "name": "Эгида «Защитная сетка»",
-      "rarity": "rare",
-      "emoji": "🔰"
-    },
-    {
-      "id": "tactical_recon_lens",
-      "name": "Линза тактического разбора",
-      "rarity": "rare",
-      "emoji": "🔬"
-    },
-    {
-      "id": "tactical_stasis_anchor",
-      "name": "Стазис-якорь",
-      "rarity": "legendary",
-      "emoji": "⚓"
-    },
-    {
-      "id": "tactical_entangle_node",
-      "name": "Узел квантового запутывания",
-      "rarity": "epic",
-      "emoji": "🌀"
-    },
-    {
-      "id": "tactical_stasis_tuner",
-      "name": "⏱️ Настройщик боевого стазиса",
-      "rarity": "rare",
-      "emoji": ""
-    }
-  ],
-  "default_slots": [
-    {
-      "id": "survival_detox_lattice",
-      "level": 5
-    },
-    {
-      "id": "combat_kinetic_driver",
-      "level": 9
-    },
-    {
-      "id": "defense_aegis_mesh",
-      "level": 3
-    }
-  ],
-  "catalog": {
-    "title": "Аварийный стабилизатор и осколки",
-    "blurb": "Активируй стабилизатор → умри → один модуль на броне сохранится, остальные превратятся в осколки. 100 осколков — крафт нового стабилизатора.",
-    "emoji": "🛡",
-    "rarity": "epic"
-  }
+  ]
 }

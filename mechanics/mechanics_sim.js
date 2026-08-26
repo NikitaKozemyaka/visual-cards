@@ -426,6 +426,218 @@
     hideResult();
   }
 
+  function computePartyScaleMults(levelSum, nPlayers, partyScale) {
+    var n = Math.max(0, parseInt(nPlayers, 10) || 0);
+    if (n <= 1) return { hpMult: 1.0, dmgMult: 1.0 };
+    var total = Math.max(0, parseInt(levelSum, 10) || 0);
+    var cfg = partyScale || {};
+    var hpPct = parseFloat(cfg.hp_pct_per_level_sum);
+    if (isNaN(hpPct)) hpPct = 1.0;
+    var dmgPct = parseFloat(cfg.damage_pct_per_level_sum);
+    if (isNaN(dmgPct)) dmgPct = 0.1;
+    var hpMult = 1.0 + (total * hpPct) / 100.0;
+    var dmgMult = 1.0 + (total * dmgPct) / 100.0;
+    return {
+      hpMult: Math.max(1.0, hpMult),
+      dmgMult: Math.max(1.0, dmgMult),
+    };
+  }
+
+  function bootGroupSearch(root, data) {
+    var catalog = data || {};
+    var limits = catalog.limits || {};
+    var minPlayers = Math.max(1, parseInt(limits.min_players, 10) || 1);
+    var maxPlayers = Math.max(minPlayers, parseInt(limits.max_players, 10) || 5);
+    var minLevel = Math.max(1, parseInt(limits.min_level, 10) || 1);
+    var maxLevel = Math.max(minLevel, parseInt(limits.max_level, 10) || 60);
+    var partyScale = catalog.party_scale || {};
+    var demoEnemy = catalog.demo_enemy || { name: "Демо-противник", base_hp: 1000, base_damage: 100 };
+    var presets = catalog.presets || [];
+    var labels = ["A", "B", "C", "D", "E"];
+
+    var levels = (catalog.default_levels || [40, 30]).slice();
+    levels = levels.map(function (lv) {
+      var n = parseInt(lv, 10) || minLevel;
+      return Math.max(minLevel, Math.min(maxLevel, n));
+    });
+    if (levels.length < minPlayers) {
+      while (levels.length < Math.max(2, minPlayers)) levels.push(10);
+    }
+
+    var slotsHost = document.getElementById("party-slots");
+    var resultHost = document.getElementById("sim-result");
+    var addBtn = document.getElementById("party-add");
+    var removeBtn = document.getElementById("party-remove");
+    var presetsHost = document.getElementById("party-presets");
+    if (!slotsHost || !resultHost) return;
+
+    function clampLevel(v) {
+      var n = parseInt(v, 10);
+      if (isNaN(n)) n = minLevel;
+      return Math.max(minLevel, Math.min(maxLevel, n));
+    }
+
+    function renderResult() {
+      var n = levels.length;
+      var sum = 0;
+      for (var i = 0; i < n; i++) sum += levels[i];
+      var mults = computePartyScaleMults(sum, n, partyScale);
+      var hpPct = ((mults.hpMult - 1) * 100).toFixed(0);
+      var dmgPct = ((mults.dmgMult - 1) * 100).toFixed(1);
+      if (dmgPct.indexOf(".0") === dmgPct.length - 2) dmgPct = dmgPct.slice(0, -2);
+
+      var baseHp = parseFloat(demoEnemy.base_hp) || 1000;
+      var baseDmg = parseFloat(demoEnemy.base_damage) || 100;
+      var scaledHp = Math.round(baseHp * mults.hpMult);
+      var scaledDmg = Math.round(baseDmg * mults.dmgMult * 10) / 10;
+
+      var note =
+        n <= 1
+          ? "Один участник — без буста (как в игре для n≤1)."
+          : "В бою group search PvE; боссы и рейды этим скейлом не усиливаются.";
+
+      resultHost.innerHTML =
+        '<section class="vc-rise vc-card rounded-2xl border border-border bg-card p-5">' +
+        '<h3 class="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Итог скейла</h3>' +
+        '<ul class="flex flex-col gap-2 text-sm leading-relaxed text-foreground">' +
+        "<li>Участников: <strong>" +
+        n +
+        "</strong> · сумма уровней: <strong>" +
+        sum +
+        "</strong></li>" +
+        "<li>HP мобов: <strong class=\"text-primary\">×" +
+        mults.hpMult.toFixed(2) +
+        "</strong> (+" +
+        hpPct +
+        "%)</li>" +
+        "<li>Урон мобов: <strong class=\"text-primary\">×" +
+        mults.dmgMult.toFixed(2) +
+        "</strong> (+" +
+        dmgPct +
+        "%)</li>" +
+        "</ul>" +
+        '<div class="mt-4 rounded-xl border border-border bg-secondary/40 p-4 text-sm">' +
+        '<div class="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground mb-2">Демо-моб</div>' +
+        "<div>" +
+        (demoEnemy.name || "Противник") +
+        ": HP <span class=\"tabular-nums\">" +
+        baseHp +
+        " → <strong>" +
+        scaledHp +
+        "</strong></span> · урон <span class=\"tabular-nums\">" +
+        baseDmg +
+        " → <strong>" +
+        scaledDmg +
+        "</strong></span></div>" +
+        "</div>" +
+        '<p class="mt-3 text-xs leading-relaxed text-muted-foreground">' +
+        note +
+        "</p>" +
+        "</section>";
+    }
+
+    function renderSlots() {
+      slotsHost.innerHTML = "";
+      for (var i = 0; i < levels.length; i++) {
+        (function (idx) {
+          var row = document.createElement("div");
+          row.className = "rounded-xl border border-border bg-secondary/30 p-4";
+          var label = "Игрок " + (labels[idx] || String(idx + 1));
+          row.innerHTML =
+            '<div class="mb-2 flex items-center justify-between gap-2">' +
+            '<span class="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">' +
+            label +
+            "</span>" +
+            '<span class="font-mono text-sm tabular-nums text-foreground" data-level-readout>' +
+            levels[idx] +
+            " ур.</span></div>" +
+            '<input type="range" min="' +
+            minLevel +
+            '" max="' +
+            maxLevel +
+            '" value="' +
+            levels[idx] +
+            '" class="w-full accent-primary" data-level-range aria-label="Уровень ' +
+            label +
+            '"/>' +
+            '<div class="mt-2 flex items-center gap-2">' +
+            '<input type="number" min="' +
+            minLevel +
+            '" max="' +
+            maxLevel +
+            '" value="' +
+            levels[idx] +
+            '" class="w-20 rounded-lg border border-border bg-background px-2 py-1 font-mono text-sm tabular-nums" data-level-num/>' +
+            '<span class="text-xs text-muted-foreground">1–' +
+            maxLevel +
+            "</span></div>";
+          slotsHost.appendChild(row);
+
+          var range = row.querySelector("[data-level-range]");
+          var num = row.querySelector("[data-level-num]");
+          var readout = row.querySelector("[data-level-readout]");
+
+          function setLevel(v) {
+            levels[idx] = clampLevel(v);
+            range.value = String(levels[idx]);
+            num.value = String(levels[idx]);
+            readout.textContent = levels[idx] + " ур.";
+            renderResult();
+          }
+
+          range.addEventListener("input", function () {
+            setLevel(this.value);
+          });
+          num.addEventListener("change", function () {
+            setLevel(this.value);
+          });
+        })(i);
+      }
+      if (addBtn) addBtn.disabled = levels.length >= maxPlayers;
+      if (removeBtn) removeBtn.disabled = levels.length <= minPlayers;
+      renderResult();
+    }
+
+    if (presetsHost) {
+      presetsHost.innerHTML = "";
+      for (var p = 0; p < presets.length; p++) {
+        (function (preset) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className =
+            "rounded-lg border border-border bg-secondary px-3 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground hover:border-primary/50 hover:text-primary";
+          btn.textContent = preset.label || preset.id;
+          btn.addEventListener("click", function () {
+            levels = (preset.levels || []).map(clampLevel);
+            if (levels.length < minPlayers) {
+              while (levels.length < Math.max(2, minPlayers)) levels.push(minLevel);
+            }
+            if (levels.length > maxPlayers) levels = levels.slice(0, maxPlayers);
+            renderSlots();
+          });
+          presetsHost.appendChild(btn);
+        })(presets[p]);
+      }
+    }
+
+    if (addBtn) {
+      addBtn.addEventListener("click", function () {
+        if (levels.length >= maxPlayers) return;
+        levels.push(levels[levels.length - 1] || 10);
+        renderSlots();
+      });
+    }
+    if (removeBtn) {
+      removeBtn.addEventListener("click", function () {
+        if (levels.length <= minPlayers) return;
+        levels.pop();
+        renderSlots();
+      });
+    }
+
+    renderSlots();
+  }
+
   function boot() {
     var root = document.querySelector("[data-mechanics-id]");
     if (!root) return;
@@ -440,6 +652,7 @@
     }
     var kind = root.getAttribute("data-mechanics-id");
     if (kind === "death_stabilizer") bootStabilizer(root, data);
+    else if (kind === "group_search_party_scale") bootGroupSearch(root, data);
   }
 
   window.STWMechanicsSim = {
@@ -447,6 +660,7 @@
     pickSaveIndex: pickSaveIndex,
     simulateDeath: simulateDeath,
     formatResultLines: formatResultLines,
+    computePartyScaleMults: computePartyScaleMults,
   };
 
   if (document.readyState === "loading") {

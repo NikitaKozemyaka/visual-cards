@@ -1,21 +1,24 @@
 # -*- coding: utf-8 -*-
-"""Build visual-cards mechanics demos from STW_GAME stabilizer + modules."""
+"""Build visual-cards mechanics demos from STW_GAME (stabilizer + group search)."""
 from __future__ import annotations
 
 import base64
 import json
 import re
 from pathlib import Path
+from typing import Any, Dict, List
 
 STW = Path(r"D:\STW_GAME")
 ROOT = Path(r"D:\visual-cards")
 OUT_DATA = ROOT / "data" / "mechanics.json"
 OUT_MECH = ROOT / "mechanics"
 MODULES_DATA = ROOT / "data" / "modules.json"
+POLICY_PATH = STW / "data" / "group_search_combat_policy.json"
 
-SIM_JS_VERSION = "3"
+SIM_JS_VERSION = "4"
 STABILIZER_ID = "module_emergency_stabilizer"
 SHARDS_ID = "module_shards"
+GROUP_SEARCH_MECH_ID = "group_search_party_scale"
 
 DEFAULT_SLOTS = [
     {"id": "survival_detox_lattice", "level": 5},
@@ -39,6 +42,8 @@ EMOJI_RE = re.compile(
     "]+",
     flags=re.UNICODE,
 )
+
+PLAYER_LABELS = ["A", "B", "C", "D", "E"]
 
 
 def load_json(path: Path):
@@ -79,7 +84,7 @@ def quantum_stabilizer_offer(shop: dict) -> dict:
     return {"price": 70, "min_level": 8, "period": "weekly", "max": 1}
 
 
-def build_payload() -> dict:
+def build_stabilizer_payload() -> dict:
     global_items = load_json(STW / "global_items.json")["items"]
     modules_payload = load_json(MODULES_DATA)
     shop_path = STW / "data" / "quantum_credits_shop.json"
@@ -122,6 +127,7 @@ def build_payload() -> dict:
         "version": 1,
         "source": "STW_GAME module_death_stabilizer + global_items",
         "mechanics_id": "death_stabilizer",
+        "href": "stabilizer.html",
         "craft_shards_cost": 100,
         "quantum_shop": quantum,
         "items": items_map,
@@ -136,6 +142,52 @@ def build_payload() -> dict:
             ),
             "emoji": extract_emoji(stabilizer.get("name") or "") or "🛡",
             "rarity": stabilizer.get("rarity") or "epic",
+            "badge": "Эпический",
+        },
+    }
+
+
+def build_group_search_payload() -> dict:
+    policy: Dict[str, Any] = {}
+    if POLICY_PATH.is_file():
+        try:
+            policy = load_json(POLICY_PATH)
+        except (OSError, json.JSONDecodeError):
+            policy = {}
+    scale = policy.get("party_scale") or {}
+    hp_pct = float(scale.get("hp_pct_per_level_sum", 1.0) or 1.0)
+    dmg_pct = float(scale.get("damage_pct_per_level_sum", 0.1) or 0.1)
+
+    return {
+        "version": 1,
+        "source": "STW_GAME data/group_search_combat_policy.json party_scale",
+        "mechanics_id": GROUP_SEARCH_MECH_ID,
+        "href": "group_search.html",
+        "party_scale": {
+            "hp_pct_per_level_sum": hp_pct,
+            "damage_pct_per_level_sum": dmg_pct,
+        },
+        "limits": {"min_players": 1, "max_players": 5, "min_level": 1, "max_level": 60},
+        "default_levels": [40, 30],
+        "presets": [
+            {"id": "duo_40_30", "label": "40+30", "levels": [40, 30]},
+            {"id": "duo_10_10", "label": "10+10", "levels": [10, 10]},
+            {"id": "trio_40", "label": "40+40+40", "levels": [40, 40, 40]},
+        ],
+        "demo_enemy": {
+            "name": "Демо-противник",
+            "base_hp": 1000,
+            "base_damage": 100,
+        },
+        "catalog": {
+            "title": "Групповой поиск: сила пати",
+            "blurb": (
+                "Собери состав по уровням — увидишь, насколько толще и сильнее "
+                "становятся мобы в group search PvE (сумма уровней пати)."
+            ),
+            "emoji": "👥",
+            "rarity": "rare",
+            "badge": "Редкий",
         },
     }
 
@@ -148,12 +200,53 @@ def embed_json(data: dict) -> tuple[str, str]:
     return raw, b64
 
 
-def catalog_html(data: dict) -> str:
-    cat = data["catalog"]
+def _catalog_card_html(entry: dict, rise: str) -> str:
+    cat = entry["catalog"]
+    href = entry.get("href") or "#"
     title = cat["title"]
     blurb = cat["blurb"]
-    emoji = cat.get("emoji") or "🛡"
+    emoji = cat.get("emoji") or "⚙️"
+    rarity = cat.get("rarity") or "rare"
+    badge = cat.get("badge") or rarity
+    rarity_bar = {
+        "epic": "before:bg-epic/70",
+        "rare": "before:bg-rare/70",
+        "legendary": "before:bg-legendary/70",
+    }.get(rarity, "before:bg-primary/70")
+    rarity_pill = {
+        "epic": "text-epic border-epic/40 bg-epic/10",
+        "rare": "text-rare border-rare/40 bg-rare/10",
+        "legendary": "text-legendary border-legendary/40 bg-legendary/10",
+    }.get(rarity, "text-primary border-primary/40 bg-primary/10")
+
+    return f"""        <a class="vc-rise {rise} vc-mod-card vc-rarity-{esc(rarity)} group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px {rarity_bar}" href="./{esc(href)}">
+          <div class="vc-mod-card-inner p-5 sm:p-6">
+            <div class="mb-3 flex flex-wrap items-center gap-2">
+              <span class="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Live</span>
+              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] {rarity_pill}">{esc(badge)}</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-3xl" aria-hidden="true">{esc(emoji)}</span>
+              <div>
+                <h2 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">{esc(title)}</h2>
+                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">{esc(blurb)}</p>
+              </div>
+            </div>
+            <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+              Открыть сценарий
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </span>
+          </div>
+        </a>"""
+
+
+def catalog_html(mechanics: List[dict]) -> str:
+    n = len(mechanics)
+    cards = "\n".join(
+        _catalog_card_html(m, f"vc-rise-d{min(3 + i, 5)}") for i, m in enumerate(mechanics)
+    )
     canonical = "https://nikitakozemyaka.github.io/visual-cards/mechanics/"
+    count_label = f"{n:02d}"
 
     return f"""<!DOCTYPE html>
 <html lang="ru" class="dark bg-background space_grotesk_e6988195-module__RNs2Mq__variable jetbrains_mono_83faaeae-module__xxnQGG__variable">
@@ -168,10 +261,10 @@ def catalog_html(data: dict) -> str:
   <meta name="theme-color" content="#060911"/>
   <meta name="color-scheme" content="dark"/>
   <title>Механики — Space Text World</title>
-  <meta name="description" content="Демо игровых механик Space Text World: стабилизатор модулей и осколки."/>
+  <meta name="description" content="Демо игровых механик Space Text World: стабилизатор, групповой поиск."/>
   <link rel="canonical" href="{canonical}"/>
   <meta property="og:title" content="Механики — Space Text World"/>
-  <meta property="og:description" content="Демо игровых механик: стабилизатор и осколки при смерти."/>
+  <meta property="og:description" content="Демо игровых механик: стабилизатор и сила пати в group search."/>
   <meta property="og:url" content="{canonical}"/>
   <meta property="og:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
   <meta property="og:type" content="website"/>
@@ -199,34 +292,16 @@ def catalog_html(data: dict) -> str:
       <section class="vc-rise vc-rise-d2 mt-10">
         <h1 class="text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">Механики игры</h1>
         <p class="mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
-          Пошаговые демо: настрой параметры и посмотри итог. Сейчас — 1 сценарий про смерть и модули на броне.
+          Пошаговые демо: настрой параметры и посмотри итог. Сейчас — {n} сценария.
         </p>
       </section>
 
       <div class="vc-arch-cards mt-10 flex flex-col gap-4">
-        <a class="vc-rise vc-rise-d3 vc-mod-card vc-rarity-epic group relative block overflow-hidden rounded-xl border border-border bg-card transition-colors before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-epic/70" href="./stabilizer.html">
-          <div class="vc-mod-card-inner p-5 sm:p-6">
-            <div class="mb-3 flex flex-wrap items-center gap-2">
-              <span class="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Live</span>
-              <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-epic border-epic/40 bg-epic/10">Эпический</span>
-            </div>
-            <div class="flex items-start gap-3">
-              <span class="text-3xl" aria-hidden="true">{esc(emoji)}</span>
-              <div>
-                <h2 class="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">{esc(title)}</h2>
-                <p class="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">{esc(blurb)}</p>
-              </div>
-            </div>
-            <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-              Открыть сценарий
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 transition-transform" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-            </span>
-          </div>
-        </a>
+{cards}
       </div>
 
       <footer class="mt-16 border-t border-border pt-5">
-        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/60">Space Text World · механики · 01</p>
+        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/60">Space Text World · механики · {count_label}</p>
       </footer>
     </div>
   </div>
@@ -352,25 +427,118 @@ def stabilizer_html(data: dict) -> str:
 """
 
 
-def patch_hub() -> None:
-    path = ROOT / "index.html"
-    text = path.read_text(encoding="utf-8")
-    if "./mechanics/" in text:
-        return
-    # Hand-edited hub tile is preferred; build only patches section count if needed.
+def group_search_html(data: dict) -> str:
+    cat = data["catalog"]
+    title = cat["title"]
+    blurb = cat["blurb"]
+    raw, b64 = embed_json(data)
+    canonical = "https://nikitakozemyaka.github.io/visual-cards/mechanics/group_search.html"
+    scale = data.get("party_scale") or {}
+    hp_pct = scale.get("hp_pct_per_level_sum", 1.0)
+    dmg_pct = scale.get("damage_pct_per_level_sum", 0.1)
+
+    return f"""<!DOCTYPE html>
+<html lang="ru" class="dark bg-background space_grotesk_e6988195-module__RNs2Mq__variable jetbrains_mono_83faaeae-module__xxnQGG__variable">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="preload" href="../_next/static/immutable/media/0c89a48fa5027cee-s.p.1ii7211jqpzi_.woff2" as="font" crossorigin="" type="font/woff2"/>
+  <link rel="preload" href="../_next/static/immutable/media/70bc3e132a0a741e-s.p.269kn9uafm0ti.woff2" as="font" crossorigin="" type="font/woff2"/>
+  <link rel="preload" href="../_next/static/immutable/media/cc545e633e20c56d-s.p.2sb9jzhmrh7ny.woff2" as="font" crossorigin="" type="font/woff2"/>
+  <link rel="stylesheet" href="../_next/static/immutable/chunks/265wr7d9-g86g.css" data-precedence="next"/>
+{CSS_LINKS}
+  <meta name="theme-color" content="#060911"/>
+  <meta name="color-scheme" content="dark"/>
+  <title>{esc(title)} — Space Text World</title>
+  <meta name="description" content="{esc(blurb)}"/>
+  <link rel="canonical" href="{canonical}"/>
+  <meta property="og:title" content="{esc(title)} — Space Text World"/>
+  <meta property="og:description" content="{esc(blurb)}"/>
+  <meta property="og:url" content="{canonical}"/>
+  <meta property="og:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
+  <meta property="og:type" content="article"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="{esc(title)} — Space Text World"/>
+  <meta name="twitter:description" content="{esc(blurb)}"/>
+  <meta name="twitter:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
+</head>
+<body class="font-sans antialiased">
+  <div class="relative min-h-screen vc-page-rare">
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-[360px] tactical-grid"></div>
+    <div class="relative mx-auto w-full max-w-2xl px-5 py-8 sm:py-10">
+      <a class="vc-rise inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground transition-colors" href="./index.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+        Все механики
+      </a>
+
+      <header class="vc-rise vc-rise-d1 mt-6 rounded-2xl border border-border bg-card p-6 vc-card vc-rarity-rare">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Live</span>
+          <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10">Сценарий</span>
+        </div>
+        <h1 class="mt-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl">{esc(title)}</h1>
+        <p class="mt-4 text-pretty leading-relaxed text-muted-foreground">{esc(blurb)}</p>
+      </header>
+
+      <section class="vc-rise vc-rise-d2 mt-4 rounded-2xl border border-border bg-card p-6" data-mechanics-id="{GROUP_SEARCH_MECH_ID}" data-stw-mechanics-b64="{b64}">
+        <h2 class="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Конструктор группы</h2>
+
+        <div class="mb-4 flex flex-wrap gap-2" id="party-presets" role="group" aria-label="Пресеты состава"></div>
+
+        <div id="party-slots" class="flex flex-col gap-3"></div>
+
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button type="button" id="party-add" class="inline-flex items-center justify-center rounded-xl border border-border bg-secondary px-4 py-2 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-primary/50 hover:text-primary">+ Игрок</button>
+          <button type="button" id="party-remove" class="inline-flex items-center justify-center rounded-xl border border-border bg-secondary px-4 py-2 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-destructive/50 hover:text-destructive">− Игрок</button>
+        </div>
+
+        <div id="sim-result" class="mt-6" aria-live="polite"></div>
+        <p id="sim-error" class="mt-4 hidden text-sm text-destructive" role="alert"></p>
+        <script type="application/json" id="stw-mechanics-data">{raw}</script>
+      </section>
+
+      <section class="vc-rise vc-rise-d3 mt-4 rounded-2xl border border-border bg-card p-6">
+        <h2 class="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Как это работает в игре</h2>
+        <ol class="flex flex-col gap-3 text-sm leading-relaxed text-muted-foreground">
+          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">01</span><span>В group search PvE мобы усиливаются от <strong class="text-foreground">суммы уровней</strong> реальных участников (не от «просто +1 человек»).</span></li>
+          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">02</span><span>HP: +{esc(str(hp_pct))}% за каждый уровень в сумме. Урон: +{esc(str(dmg_pct))}% за уровень в сумме.</span></li>
+          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">03</span><span>Один игрок в сессии — без этого буста. Новичок в пати почти не раздувает бой; хай-лвлы — сильнее.</span></li>
+          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">04</span><span>Скейл только для group search PvE. Боссы и рейды этим множителем не масштабируются.</span></li>
+        </ol>
+      </section>
+
+      <footer class="mt-10 border-t border-border pt-5">
+        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/60">Space Text World · group search · demo</p>
+      </footer>
+    </div>
+  </div>
+  <script src="./mechanics_sim.js?v={SIM_JS_VERSION}" defer></script>
+<script src="../assets/nav-refresh.js?v=7" defer></script></body>
+</html>
+"""
 
 
 def main() -> None:
     OUT_MECH.mkdir(parents=True, exist_ok=True)
-    data = build_payload()
+    stabilizer = build_stabilizer_payload()
+    group_search = build_group_search_payload()
+    mechanics = [stabilizer, group_search]
+    bundle = {
+        "version": 2,
+        "source": "STW_GAME stabilizer + group_search_combat_policy",
+        "mechanics": mechanics,
+    }
     OUT_DATA.parent.mkdir(parents=True, exist_ok=True)
     OUT_DATA.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    (OUT_MECH / "index.html").write_text(catalog_html(data), encoding="utf-8")
-    (OUT_MECH / "stabilizer.html").write_text(stabilizer_html(data), encoding="utf-8")
+    (OUT_MECH / "index.html").write_text(catalog_html(mechanics), encoding="utf-8")
+    (OUT_MECH / "stabilizer.html").write_text(stabilizer_html(stabilizer), encoding="utf-8")
+    (OUT_MECH / "group_search.html").write_text(
+        group_search_html(group_search), encoding="utf-8"
+    )
     print("wrote", OUT_DATA)
-    print("wrote mechanics/index.html, mechanics/stabilizer.html")
+    print("wrote mechanics/index.html, stabilizer.html, group_search.html")
 
 
 if __name__ == "__main__":

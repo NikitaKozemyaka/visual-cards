@@ -243,5 +243,47 @@ class TestSimulateDeathMirror(unittest.TestCase):
         self.assertEqual(set(mirror["lost_modules"]), set(canon["lost_modules"]))
 
 
+class TestPartyScaleMirror(unittest.TestCase):
+    """Mirror computePartyScaleMults vs STW compute_party_scale_mults."""
+
+    def setUp(self) -> None:
+        from game_core import group_search_combat_policy as gscp
+
+        self.gscp = gscp
+        gscp.load_group_search_combat_policy(reload=True)
+
+    def _js_like(self, level_sum: int, n: int):
+        """Same formula as mechanics_sim.js computePartyScaleMults."""
+        if n <= 1:
+            return 1.0, 1.0
+        cfg = self.gscp.load_group_search_combat_policy().get("party_scale") or {}
+        hp_pct = float(cfg.get("hp_pct_per_level_sum", 1.0) or 0.0)
+        dmg_pct = float(cfg.get("damage_pct_per_level_sum", 0.1) or 0.0)
+        hp = max(1.0, 1.0 + (level_sum * hp_pct) / 100.0)
+        dmg = max(1.0, 1.0 + (level_sum * dmg_pct) / 100.0)
+        return hp, dmg
+
+    def test_duo_forty_thirty(self) -> None:
+        hp, dmg = self.gscp.compute_party_scale_mults(70, 2)
+        self.assertAlmostEqual(hp, 1.7)
+        self.assertAlmostEqual(dmg, 1.07)
+        jh, jd = self._js_like(70, 2)
+        self.assertAlmostEqual(jh, hp)
+        self.assertAlmostEqual(jd, dmg)
+
+    def test_solo_identity(self) -> None:
+        hp, dmg = self.gscp.compute_party_scale_mults(70, 1)
+        self.assertEqual((hp, dmg), (1.0, 1.0))
+        self.assertEqual(self._js_like(70, 1), (1.0, 1.0))
+
+    def test_trio_forty(self) -> None:
+        hp, dmg = self.gscp.compute_party_scale_mults(120, 3)
+        self.assertAlmostEqual(hp, 2.2)
+        self.assertAlmostEqual(dmg, 1.12)
+        jh, jd = self._js_like(120, 3)
+        self.assertAlmostEqual(jh, hp)
+        self.assertAlmostEqual(jd, dmg)
+
+
 if __name__ == "__main__":
     raise SystemExit(0 if unittest.main(verbosity=2).result.wasSuccessful() else 1)
