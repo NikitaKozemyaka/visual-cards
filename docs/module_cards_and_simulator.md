@@ -20,8 +20,9 @@
   - SVG-кольцо (hero) + **5 карточек статов + 2 полоски** (layout как в cardify);
   - для **Стазис-якоря** — доп. блок «Уклонение врага» (10/20/35/50% + слайдер 0–60%).
 - **Офлайн-загрузка баланса** — JSON встроен в страницу (base64), fetch `modules.json` только fallback.
-- **Кеш-бusting** — `module_sim.js?v=11` (номер версии поднимать при каждом изменении JS).
+- **Кеш-бusting** — `module_sim.js?v=12` (номер версии поднимать при каждом изменении JS).
 - **Длительность боевых зарядов (v5.2):** как в STW `_combat_charge_duration_rounds` — `min(cap, per_level × level)`, дефолт `3×L`, cap `27`. Тапалка «Раундов /cmd» на `/overcharge`, `/focus`, `/aegis`, `/brace`, `/jam`, `/pin`. Хелпер в JS: `chargeDurationRounds`.
+- **Подписи = смысл оси:** каждая тапалка и hero называют *что* за число (не «Постоянный бонус» / «Итог»). У Бастиона контроль и −урона не суммируются в кольце.
 
 ### Технический стек
 
@@ -131,6 +132,7 @@ function calcModuleView(mod, level, dodge, equipped, cmdOn) {
 | `3423681` | **fix_sim_boot_stats:** b64 на section, разделение parse/start, cmd **off** по умолчанию, `?v=7` |
 | `dbf1eb3` | **SVG className:** `setAttribute("class")` для кольца, `?v=8` |
 | (local) | **v5.2 sync:** `chargeDurationRounds` = `min(27, 3×L)`; Extra=раунды на timed combat; rebuild из STW; `?v=11` |
+| (local) | **Clear labels:** passLabel по смыслу оси; Бастион не суммирует контроль+DR; `?v=12` |
 
 ---
 
@@ -225,7 +227,7 @@ heroRing.setAttribute("class", "transition-[stroke-dashoffset] ...");
 | combat_kinetic_driver | combined_pct | ring = pass + cmd damage %; Extra = раунды `/overcharge` |
 | combat_crit_matrix | combined_pct | ring = crit chance; Extra = раунды `/focus`; урон крита в «Итог» |
 | survival_detox_lattice | combined_pct | ring = resist + purge; азот в «Ещё» |
-| defense_guard_bastion | combined_pct | ring = DR %; Extra = раунды `/brace`; HP в «Итог» |
+| defense_guard_bastion | combined_pct | кольцо = HP (cmd off) или DR (cmd on); pass = к оглушению; Extra = раунды `/brace`; оси не суммировать |
 | survival_vital_weave | split_metrics | cmd off: +HP; cmd on: % лечения |
 | defense_aegis_mesh | split_metrics | cmd off: броня; cmd on: % regen щита; Extra = раунды `/aegis` |
 | mobility_load_anchor | split_metrics | cmd off: ячейки; cmd on: % веса |

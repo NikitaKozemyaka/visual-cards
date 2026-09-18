@@ -15,7 +15,7 @@ COVERS = ROOT / "assets" / "covers"
 
 FILENAME_OVERRIDE = {"tactical_stasis_anchor": "stasis_anchor.html"}
 
-SIM_JS_VERSION = "11"
+SIM_JS_VERSION = "12"
 
 # sim_display profiles for module_sim.js (see docs/module_cards_and_simulator.md §5)
 SIM_DISPLAY = {

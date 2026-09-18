@@ -80,12 +80,24 @@ def hero_entangle(mod: dict, level: int, cmd_on: bool) -> str:
     return f"+{total:g}%"
 
 
+def hero_bastion(mod: dict, level: int, cmd_on: bool) -> str:
+    """Ring metric: HP when cmd off, DR% when cmd on (axes not summed)."""
+    p = mod["passive"]
+    c = mod["command"]["effect"]
+    if cmd_on:
+        dr = (c["damage_reduction_base"] + c["damage_reduction_per_level"] * (level - 1)) * 100
+        v = round(dr, 1)
+        return f"-{v:g}%" if v % 1 else f"-{v:.0f}%"
+    hp = p["max_health_per_level"] * level
+    return f"+{hp}"
+
+
 class TestModuleSimEmbed(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.by_id = {m["id"]: m for m in DATA["modules"]}
 
-    def test_all_module_pages_have_b64_and_v11(self) -> None:
+    def test_all_module_pages_have_b64_and_v12(self) -> None:
         html_files = sorted(p for p in MODULES.glob("*.html") if p.name != "index.html")
         self.assertGreaterEqual(len(html_files), 14, "expected 14 module pages")
         for path in html_files:
@@ -99,7 +111,7 @@ class TestModuleSimEmbed(unittest.TestCase):
             self.assertIn("sim_display", mod, f"{path.name}: sim_display missing")
             v = SIM_JS_RE.search(text)
             self.assertIsNotNone(v, f"{path.name}: module_sim.js cache bust missing")
-            self.assertEqual(v.group(1), "11", f"{path.name}: expected module_sim.js?v=11")
+            self.assertEqual(v.group(1), "12", f"{path.name}: expected module_sim.js?v=12")
 
     def test_stasis_hero_regression(self) -> None:
         mod = self.by_id["tactical_stasis_anchor"]
@@ -125,6 +137,14 @@ class TestModuleSimEmbed(unittest.TestCase):
         # v5.2: pass 1.2%/L, cmd 18%+1.5%*(L-1) → L3 off 3.6%, on 24.6%
         self.assertIn("3.6", hero_entangle(ent, 3, False))
         self.assertIn("24.6", hero_entangle(ent, 3, True))
+
+    def test_bastion_hero_axes_not_summed(self) -> None:
+        bastion = self.by_id["defense_guard_bastion"]
+        # L3: HP = 8*3 = 24; DR = 16% + 2.5%*2 = 21%
+        self.assertEqual(hero_bastion(bastion, 3, False), "+24")
+        self.assertIn("21", hero_bastion(bastion, 3, True))
+        # Must not be 5% control + 21% DR = 26%
+        self.assertNotIn("26", hero_bastion(bastion, 3, True))
 
     def test_timed_charge_rounds_l3_l9(self) -> None:
         timed_ids = (
