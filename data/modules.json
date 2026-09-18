@@ -10,9 +10,9 @@
       "rarity": "uncommon",
       "archetype": "survival",
       "slots": 1,
-      "description": "Имплант переплетает нервные контуры с регенератором тканей. Стабилизирует пульс носителя в бою и увеличивает запас жизненных сил.",
+      "description": "Вплетает в нервную систему регенеративный контур. Стабилизирует пульс и даёт регенерацию в бою.",
       "effect_text": "Усиливает максимальное здоровье и даёт +1 HP регенерации за ход в бою (фикс. за уровень модуля).",
-      "cover": "../assets/covers/survival_vital_weave.png?v=6",
+      "cover": "../assets/covers/survival_vital_weave.png?v=7",
       "passive": {
         "max_health_per_level": 10,
         "health_regen_flat": 1
@@ -20,8 +20,8 @@
       "command": {
         "slash": "stabilize",
         "context": "out_of_combat",
-        "cooldown_base_sec": 2700,
-        "cooldown_per_level_sec": -180,
+        "cooldown_base_sec": 4200,
+        "cooldown_per_level_sec": -240,
         "effect": {
           "heal_pct_base": 0.22,
           "heal_pct_per_level": 0.035
@@ -51,9 +51,9 @@
       "rarity": "rare",
       "archetype": "survival",
       "slots": 1,
-      "description": "Многослойный фильтр очищает кровь от радиации и токсинов. Расширяет запас азота и защищает от негативных статусов.",
+      "description": "Многослойный фильтр, вживляемый в грудную клетку. Повышает лимиты токсинов и азота в крови.",
       "effect_text": "Повышает лимиты азота и заражения; снижает урон от заражения и азота в бою (не шанс отравления).",
-      "cover": "../assets/covers/survival_detox_lattice.png?v=6",
+      "cover": "../assets/covers/survival_detox_lattice.png?v=7",
       "passive": {
         "max_nitrogen_per_level": 12,
         "max_infection_per_level": 12,
@@ -62,8 +62,8 @@
       "command": {
         "slash": "detox",
         "context": "out_of_combat",
-        "cooldown_base_sec": 1800,
-        "cooldown_per_level_sec": -120,
+        "cooldown_base_sec": 3300,
+        "cooldown_per_level_sec": -210,
         "effect": {
           "purge_pct_base": 0.55,
           "purge_pct_per_level": 0.05
@@ -98,23 +98,25 @@
       "rarity": "epic",
       "archetype": "combat",
       "slots": 1,
-      "description": "Нейросеть усиливает критические попадания и двойной удар. Команда /focus заряжает окно крита к следующему бою.",
-      "effect_text": "Пассив: двойной удар и сила крит. урона за уровень. /focus — +шанс и сила крита на N раундов следующего боя.",
-      "cover": "../assets/covers/combat_crit_matrix.png?v=6",
+      "description": "Нейросеть, просчитывающая траекторию для уязвимых мест. Повышает шанс крита и двойного удара.",
+      "effect_text": "Пассив: двойной удар и сила крит. урона за уровень. /focus — +шанс и сила крита на 3×уровень раундов (кап 27).",
+      "cover": "../assets/covers/combat_crit_matrix.png?v=7",
       "passive": {
-        "double_tap_per_level": 0.03,
-        "crit_bonus_per_level": 0.025
+        "double_tap_per_level": 0.025,
+        "crit_bonus_per_level": 0.02
       },
       "command": {
         "slash": "focus",
         "context": "pre_combat_buff",
-        "cooldown_base_sec": 1200,
-        "cooldown_per_level_sec": 0,
+        "cooldown_base_sec": 3000,
+        "cooldown_per_level_sec": -180,
         "effect": {
-          "crit_chance_base": 0.18,
-          "crit_chance_per_level": 0.04,
-          "crit_damage_base": 0.12,
-          "crit_damage_per_level": 0.04
+          "crit_chance_base": 0.15,
+          "crit_chance_per_level": 0.03,
+          "crit_damage_base": 0.1,
+          "crit_damage_per_level": 0.03,
+          "duration_rounds_per_level": 3,
+          "duration_rounds_cap": 27
         }
       },
       "sim_kind": "generic",
@@ -129,7 +131,8 @@
         "Установи модуль на экипированную броню (нужен свободный слот).",
         "Команда /focus доступна на карточке встречи до старта боя.",
         "Перезарядка команды зависит от уровня модуля — как в игре.",
-        "Постоянно: двойной удар и сила крит. урона за уровень. /focus — +шанс и сила крита на N раундов следующего боя."
+        "Постоянно: двойной удар и сила крит. урона за уровень. /focus — +шанс и сила крита на 3× уровень раундов (максимум 27).",
+        "Заряд /focus длится 3×уровень раундов (на 9 ур. — 27, не дольше)."
       ],
       "sources": [
         "Крафт (рецепт модуля)",
@@ -146,21 +149,23 @@
       "rarity": "rare",
       "archetype": "combat",
       "slots": 1,
-      "description": "Усилитель передаёт энергию от силового контура брони к оружию. Каждый выстрел и удар несут больший импульс.",
-      "effect_text": "Наращивает урон с каждым уровнем и усиливает добивание раненых врагов.",
-      "cover": "../assets/covers/combat_kinetic_driver.png?v=6",
+      "description": "Усилитель, передающий энергию от силовой шины прямо в оружие. Делает попадания тяжелее.",
+      "effect_text": "Пассив: урон и добивание за уровень. /overcharge — +урон на 3×уровень раундов (кап 27).",
+      "cover": "../assets/covers/combat_kinetic_driver.png?v=7",
       "passive": {
-        "damage_pct_per_level": 0.025,
-        "execute_bonus": 0.03
+        "damage_pct_per_level": 0.02,
+        "execute_bonus": 0.025
       },
       "command": {
         "slash": "overcharge",
         "context": "pre_combat_buff",
-        "cooldown_base_sec": 1200,
-        "cooldown_per_level_sec": 0,
+        "cooldown_base_sec": 3000,
+        "cooldown_per_level_sec": -180,
         "effect": {
-          "damage_mult_base": 0.3,
-          "damage_mult_per_level": 0.05
+          "damage_mult_base": 0.25,
+          "damage_mult_per_level": 0.04,
+          "duration_rounds_per_level": 3,
+          "duration_rounds_cap": 27
         }
       },
       "sim_kind": "generic",
@@ -175,7 +180,8 @@
         "Установи модуль на экипированную броню (нужен свободный слот).",
         "Команда /overcharge доступна на карточке встречи до старта боя.",
         "Перезарядка команды зависит от уровня модуля — как в игре.",
-        "Наращивает урон с каждым уровнем и усиливает добивание раненых врагов."
+        "Постоянно: урон и добивание за уровень. /overcharge — +урон на 3× уровень раундов (максимум 27).",
+        "Заряд /overcharge длится 3×уровень раундов (на 9 ур. — 27, не дольше)."
       ],
       "sources": [
         "Крафт (рецепт модуля)",
@@ -192,9 +198,9 @@
       "rarity": "rare",
       "archetype": "economy",
       "slots": 1,
-      "description": "Переносимый сканер артефактов и материи. Повышает шанс редкого лута и находок материи при поиске.",
+      "description": "Переносимый сканер аномалий. Повышает шанс найти редкую материю.",
       "effect_text": "Повышает шанс редкого лута, лома и материи. /prospect — +1 tier следующего предмета (углубление 5+).",
-      "cover": "../assets/covers/economy_relic_hunter.png?v=6",
+      "cover": "../assets/covers/economy_relic_hunter.png?v=7",
       "passive": {
         "rare_find_bonus_per_level": 0.012,
         "scrap_bonus_per_level": 0.005,
@@ -204,8 +210,8 @@
       "command": {
         "slash": "prospect",
         "context": "out_of_combat",
-        "cooldown_base_sec": 9600,
-        "cooldown_per_level_sec": -600,
+        "cooldown_base_sec": 14400,
+        "cooldown_per_level_sec": -750,
         "effect": {
           "rarity_tier_boost": 1,
           "ttl_sec": 2100
@@ -240,9 +246,9 @@
       "rarity": "uncommon",
       "archetype": "economy",
       "slots": 1,
-      "description": "Магнитный сенсор сканирует грунт и обломки, вытягивая скрытый металлолом. Базовый модуль для выживальщиков.",
+      "description": "Магнитный контур в голени. Тянет металлолом из земли при поиске.",
       "effect_text": "Увеличивает шанс находок при поиске и количество добываемого лома.",
-      "cover": "../assets/covers/economy_salvage_link.png?v=6",
+      "cover": "../assets/covers/economy_salvage_link.png?v=7",
       "passive": {
         "base_chance_bonus_per_level": 0.004,
         "scrap_range_bonus_per_level": 1
@@ -250,8 +256,8 @@
       "command": {
         "slash": "instant_search",
         "context": "gathering",
-        "cooldown_base_sec": 12600,
-        "cooldown_per_level_sec": -720,
+        "cooldown_base_sec": 18000,
+        "cooldown_per_level_sec": -900,
         "effect": {}
       },
       "sim_kind": "generic",
@@ -278,9 +284,9 @@
       "rarity": "rare",
       "archetype": "mobility",
       "slots": 1,
-      "description": "Микрореакторы на манжетах брони снижают расход тонуса и открывают аварийный телепорт.",
+      "description": "Микрореакторы на голеностопах. Снижают расход тонуса при движении.",
       "effect_text": "Снижает тонус за шаг, даёт телепорт (/teleport) с несколькими использованиями за сессию.",
-      "cover": "../assets/covers/mobility_vector_thruster.png?v=6",
+      "cover": "../assets/covers/mobility_vector_thruster.png?v=7",
       "passive": {
         "vigor_step_reduction_per_level": 0.035,
         "initiative_bonus_per_level": 0.015
@@ -288,8 +294,8 @@
       "command": {
         "slash": "teleport",
         "context": "teleport",
-        "cooldown_base_sec": 5400,
-        "cooldown_per_level_sec": -120,
+        "cooldown_base_sec": 9000,
+        "cooldown_per_level_sec": -480,
         "effect": {
           "uses_equals_level": true,
           "uses_cap": 9
@@ -324,9 +330,9 @@
       "rarity": "uncommon",
       "archetype": "mobility",
       "slots": 1,
-      "description": "Гравитационный распределитель переносит вес груза на каркас брони. Носитель тащит больше, не теряя подвижности.",
+      "description": "Гравитационный компенсатор на поясе. Увеличивает переносимый вес.",
       "effect_text": "Добавляет слоты инвентаря и увеличивает переносимый вес за каждый уровень.",
-      "cover": "../assets/covers/mobility_load_anchor.png?v=6",
+      "cover": "../assets/covers/mobility_load_anchor.png?v=7",
       "passive": {
         "inventory_slots_per_level": 3,
         "max_weight_per_level": 12
@@ -334,8 +340,8 @@
       "command": {
         "slash": "compress",
         "context": "out_of_combat",
-        "cooldown_base_sec": 5400,
-        "cooldown_per_level_sec": -300,
+        "cooldown_base_sec": 9000,
+        "cooldown_per_level_sec": -480,
         "effect": {
           "weight_reduction_base": 0.28,
           "weight_reduction_per_level": 0.04,
@@ -366,9 +372,9 @@
       "rarity": "epic",
       "archetype": "defense",
       "slots": 1,
-      "description": "Укреплённый контур выдерживает шквал атак и глушит попытки сбить носителя с ритма боя.",
-      "effect_text": "Повышает запас здоровья и устойчивость к оглушению (не ко всем видам контроля).",
-      "cover": "../assets/covers/defense_guard_bastion.png?v=6",
+      "description": "Укреплённые силовые направляющие на корпусе. Глушат оглушения и повышают живучесть.",
+      "effect_text": "Пассив: HP и устойчивость к оглушению. /brace — меньше входящего урона на 3×уровень раундов (кап 27).",
+      "cover": "../assets/covers/defense_guard_bastion.png?v=7",
       "passive": {
         "max_health_per_level": 8,
         "control_resist": 0.05
@@ -376,11 +382,13 @@
       "command": {
         "slash": "brace",
         "context": "pre_combat_buff",
-        "cooldown_base_sec": 1500,
-        "cooldown_per_level_sec": 0,
+        "cooldown_base_sec": 3600,
+        "cooldown_per_level_sec": -225,
         "effect": {
-          "damage_reduction_base": 0.2,
-          "damage_reduction_per_level": 0.035
+          "damage_reduction_base": 0.16,
+          "damage_reduction_per_level": 0.025,
+          "duration_rounds_per_level": 3,
+          "duration_rounds_cap": 27
         }
       },
       "sim_kind": "generic",
@@ -395,7 +403,8 @@
         "Установи модуль на экипированную броню (нужен свободный слот).",
         "Команда /brace доступна на карточке встречи до старта боя.",
         "Перезарядка команды зависит от уровня модуля — как в игре.",
-        "Повышает запас здоровья и устойчивость к оглушению (не ко всем видам контроля)."
+        "Постоянно: здоровья и устойчивость к оглушению. /brace — меньше входящего урона на 3× уровень раундов (максимум 27).",
+        "Заряд /brace длится 3×уровень раундов (на 9 ур. — 27, не дольше)."
       ],
       "sources": [
         "Крафт (рецепт модуля)",
@@ -412,9 +421,9 @@
       "rarity": "rare",
       "archetype": "defense",
       "slots": 1,
-      "description": "Энергетическая сетка перехватывает удары до контакта с бронёй, усиливает энергощит и мифический слой.",
-      "effect_text": "Усиливает броню, энергощит и мифический щит. Команда /aegis — буф регенерации щита (25–45%) и миф. щита (75–115%) в следующем бою по уровню модуля.",
-      "cover": "../assets/covers/defense_aegis_mesh.png?v=6",
+      "description": "Энергетический контур, перехватывающий удары до контакта с броней.",
+      "effect_text": "Усиливает броню, энергощит и мифический щит. /aegis — буф регена щита на 3×уровень раундов (кап 27).",
+      "cover": "../assets/covers/defense_aegis_mesh.png?v=7",
       "passive": {
         "armor_bonus_per_level": 2.0,
         "shield_bonus_flat": 2,
@@ -424,13 +433,15 @@
       "command": {
         "slash": "aegis",
         "context": "pre_combat_buff",
-        "cooldown_base_sec": 1500,
-        "cooldown_per_level_sec": -60,
+        "cooldown_base_sec": 3600,
+        "cooldown_per_level_sec": -225,
         "effect": {
-          "shield_regen_mult_base": 0.4,
-          "shield_regen_mult_per_level": 0.07,
-          "mythic_regen_mult_base": 1.0,
-          "mythic_regen_mult_per_level": 0.15
+          "shield_regen_mult_base": 0.32,
+          "shield_regen_mult_per_level": 0.05,
+          "mythic_regen_mult_base": 0.8,
+          "mythic_regen_mult_per_level": 0.1,
+          "duration_rounds_per_level": 3,
+          "duration_rounds_cap": 27
         }
       },
       "sim_kind": "generic",
@@ -445,7 +456,8 @@
         "Установи модуль на экипированную броню (нужен свободный слот).",
         "Команда /aegis доступна на карточке встречи до старта боя.",
         "Перезарядка команды зависит от уровня модуля — как в игре.",
-        "Усиливает броню, энергощит и мифический щит. Команда /aegis — буф восстановления щита (25–45%) и миф. щита (75–115%) в следующем бою по уровню модуля."
+        "Усиливает броню, энергощит и мифический щит. /aegis — буф регена щита на 3× уровень раундов (максимум 27).",
+        "Заряд /aegis длится 3×уровень раундов (на 9 ур. — 27, не дольше)."
       ],
       "sources": [
         "Крафт (рецепт модуля)",
@@ -464,7 +476,7 @@
       "slots": 1,
       "description": "Оптика тактического сканирования цели на карточке встречи. Без боевых пассивок — только разведка.",
       "effect_text": "На встрече: /analyze — тактический разбор (детализация по уровню модуля).",
-      "cover": "../assets/covers/tactical_recon_lens.png?v=6",
+      "cover": "../assets/covers/tactical_recon_lens.png?v=7",
       "passive": {},
       "command": {
         "slash": "analyze",
@@ -506,15 +518,15 @@
       "slots": 1,
       "description": "Якорь стазиса давит уклонение цели при ваших атаках. Для автобоя и длинных схваток; не обнуляет dodge полностью.",
       "effect_text": "Пассив: −1% уклонения врага за уровень при ваших атаках. /pin — доп. снижение уклонения на 3×уровень раундов (кап 27).",
-      "cover": "../assets/covers/tactical_stasis_anchor.png?v=6",
+      "cover": "../assets/covers/tactical_stasis_anchor.png?v=7",
       "passive": {
         "enemy_evasion_penalty_per_level": 0.01
       },
       "command": {
         "slash": "pin",
         "context": "pre_combat_buff",
-        "cooldown_base_sec": 1200,
-        "cooldown_per_level_sec": 0,
+        "cooldown_base_sec": 3000,
+        "cooldown_per_level_sec": -180,
         "effect": {
           "enemy_evasion_penalty_per_level": 0.05,
           "duration_rounds_per_level": 3,
@@ -533,7 +545,7 @@
         "Установи модуль на экипированную броню (нужен свободный слот).",
         "Команда /pin доступна на карточке встречи до старта боя.",
         "Перезарядка команды зависит от уровня модуля — как в игре.",
-        "Постоянно: −1% уклонения врага за каждый уровень модуля при ваших атаках. Команда /pin дополнительно снижает уклонение на несколько раундов (не больше 27)."
+        "Постоянно: −1% уклонения врага за каждый уровень модуля при ваших атаках. Команда /pin дополнительно снижает уклонение на 3×уровень раундов (кап 27)."
       ],
       "sources": [
         "Крафт (рецепт модуля)",
@@ -551,22 +563,22 @@
       "archetype": "tactical",
       "slots": 1,
       "description": "Генерирует локальные аномалии, сбивающие врага с такта. Синергирует с модулями двойного удара.",
-      "effect_text": "Шанс заставить врага пропустить ход; усиливает двойные атаки. Команда /jam.",
-      "cover": "../assets/covers/tactical_entangle_node.png?v=6",
+      "effect_text": "Пассив: запутывание и двойной удар. /jam — +запутывание на 3×уровень раундов (кап 27).",
+      "cover": "../assets/covers/tactical_entangle_node.png?v=7",
       "passive": {
-        "entangler_per_level": 0.015,
-        "double_tap_per_level": 0.015
+        "entangler_per_level": 0.012,
+        "double_tap_per_level": 0.012
       },
       "command": {
         "slash": "jam",
         "context": "pre_combat_buff",
-        "cooldown_base_sec": 1080,
-        "cooldown_per_level_sec": 0,
+        "cooldown_base_sec": 2700,
+        "cooldown_per_level_sec": -180,
         "effect": {
-          "entangle_bonus_base": 0.22,
-          "entangle_bonus_per_level": 0.02,
-          "duration_rounds_base": 2,
-          "duration_rounds_per_level": 1
+          "entangle_bonus_base": 0.18,
+          "entangle_bonus_per_level": 0.015,
+          "duration_rounds_per_level": 3,
+          "duration_rounds_cap": 27
         }
       },
       "sim_kind": "generic",
@@ -581,7 +593,8 @@
         "Установи модуль на экипированную броню (нужен свободный слот).",
         "Команда /jam доступна на карточке встречи до старта боя.",
         "Перезарядка команды зависит от уровня модуля — как в игре.",
-        "Шанс заставить врага пропустить ход; усиливает двойные атаки. Команда /jam."
+        "Постоянно: запутывание и двойной удар. /jam — +запутывание на 3× уровень раундов (максимум 27).",
+        "Заряд /jam длится 3×уровень раундов (на 9 ур. — 27, не дольше)."
       ],
       "sources": [
         "Крафт (рецепт модуля)",
@@ -600,7 +613,7 @@
       "slots": 1,
       "description": "Калибрует дистанцию контакта на карточке встречи. Не даёт боевых пассивок — только переброс дистанции.",
       "effect_text": "На встрече: /rerange — переброс дистанции (использования растут с уровнем).",
-      "cover": "../assets/covers/tactical_stasis_tuner.png?v=6",
+      "cover": "../assets/covers/tactical_stasis_tuner.png?v=7",
       "passive": {},
       "command": {
         "slash": "rerange",

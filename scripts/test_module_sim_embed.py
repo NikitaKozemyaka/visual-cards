@@ -33,7 +33,7 @@ def calc_stasis_shape(mod: dict, level: int, dodge: int, equipped: bool, cmd_on:
 
 
 class TestModuleSimEmbed(unittest.TestCase):
-    def test_all_module_pages_have_b64_and_v7(self) -> None:
+    def test_all_module_pages_have_b64_and_v11(self) -> None:
         html_files = sorted(p for p in MODULES.glob("*.html") if p.name != "index.html")
         self.assertGreaterEqual(len(html_files), 14, "expected 14 module pages")
         for path in html_files:
@@ -46,7 +46,7 @@ class TestModuleSimEmbed(unittest.TestCase):
             self.assertEqual(mod["id"], mid, f"{path.name}: id mismatch")
             v = SIM_JS_RE.search(text)
             self.assertIsNotNone(v, f"{path.name}: module_sim.js cache bust missing")
-            self.assertEqual(v.group(1), "10", f"{path.name}: expected module_sim.js?v=10")
+            self.assertEqual(v.group(1), "11", f"{path.name}: expected module_sim.js?v=11")
 
     def test_stasis_calc_shape_cmd_on_off(self) -> None:
         path = MODULES / "stasis_anchor.html"

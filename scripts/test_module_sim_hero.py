@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Smoke: b64 embed + sim_display + hero regression (L3, cmd off/on)."""
+"""Smoke: b64 embed + sim_display + hero regression (L3, cmd off/on) + charge rounds."""
 from __future__ import annotations
 
 import base64
@@ -25,6 +25,14 @@ def _pct(n: float, digits: int = 0) -> str:
     if digits == 0:
         return f"{v:.0f}%"
     return f"{v:g}%" if v % 1 else f"{v:.0f}%"
+
+
+def charge_duration_rounds(effect: dict, level: int) -> int:
+    """Match STW _combat_charge_duration_rounds / module_sim chargeDurationRounds."""
+    per = int(effect.get("duration_rounds_per_level") or 3)
+    cap = int(effect.get("duration_rounds_cap") or 27)
+    lvl = max(1, int(level or 1))
+    return min(max(1, cap), max(1, per * lvl))
 
 
 def hero_stasis(mod: dict, level: int, dodge: int, cmd_on: bool) -> str:
@@ -77,7 +85,7 @@ class TestModuleSimEmbed(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.by_id = {m["id"]: m for m in DATA["modules"]}
 
-    def test_all_module_pages_have_b64_and_v10(self) -> None:
+    def test_all_module_pages_have_b64_and_v11(self) -> None:
         html_files = sorted(p for p in MODULES.glob("*.html") if p.name != "index.html")
         self.assertGreaterEqual(len(html_files), 14, "expected 14 module pages")
         for path in html_files:
@@ -91,7 +99,7 @@ class TestModuleSimEmbed(unittest.TestCase):
             self.assertIn("sim_display", mod, f"{path.name}: sim_display missing")
             v = SIM_JS_RE.search(text)
             self.assertIsNotNone(v, f"{path.name}: module_sim.js cache bust missing")
-            self.assertEqual(v.group(1), "10", f"{path.name}: expected module_sim.js?v=10")
+            self.assertEqual(v.group(1), "11", f"{path.name}: expected module_sim.js?v=11")
 
     def test_stasis_hero_regression(self) -> None:
         mod = self.by_id["tactical_stasis_anchor"]
@@ -107,14 +115,41 @@ class TestModuleSimEmbed(unittest.TestCase):
         self.assertIn("3.6", hero_relic_hunter(relic, 3, False))
         self.assertEqual(hero_relic_hunter(relic, 3, True), "+1 к редкости")
 
-    def test_combined_pct_hero_regression(self) -> None:
+    def test_combined_pct_hero_regression_v52(self) -> None:
         kinetic = self.by_id["combat_kinetic_driver"]
-        self.assertIn("7.5", hero_kinetic(kinetic, 3, False))
-        self.assertIn("47.5", hero_kinetic(kinetic, 3, True))
+        # v5.2: pass 2%/L, cmd 25%+4%*(L-1) → L3 off 6%, on 39%
+        self.assertIn("6", hero_kinetic(kinetic, 3, False))
+        self.assertIn("39", hero_kinetic(kinetic, 3, True))
 
         ent = self.by_id["tactical_entangle_node"]
-        self.assertIn("4.5", hero_entangle(ent, 3, False))
-        self.assertIn("30.5", hero_entangle(ent, 3, True))
+        # v5.2: pass 1.2%/L, cmd 18%+1.5%*(L-1) → L3 off 3.6%, on 24.6%
+        self.assertIn("3.6", hero_entangle(ent, 3, False))
+        self.assertIn("24.6", hero_entangle(ent, 3, True))
+
+    def test_timed_charge_rounds_l3_l9(self) -> None:
+        timed_ids = (
+            "combat_kinetic_driver",
+            "combat_crit_matrix",
+            "defense_aegis_mesh",
+            "defense_guard_bastion",
+            "tactical_entangle_node",
+            "tactical_stasis_anchor",
+        )
+        for mid in timed_ids:
+            effect = self.by_id[mid]["command"]["effect"]
+            self.assertIn(
+                "duration_rounds_per_level",
+                effect,
+                f"{mid}: missing duration_rounds_per_level after rebuild",
+            )
+            self.assertEqual(charge_duration_rounds(effect, 1), 3, mid)
+            self.assertEqual(charge_duration_rounds(effect, 3), 9, mid)
+            self.assertEqual(charge_duration_rounds(effect, 9), 27, mid)
+            self.assertNotIn(
+                "duration_rounds_base",
+                effect,
+                f"{mid}: legacy duration_rounds_base should be gone",
+            )
 
 
 if __name__ == "__main__":

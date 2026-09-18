@@ -20,7 +20,8 @@
   - SVG-кольцо (hero) + **5 карточек статов + 2 полоски** (layout как в cardify);
   - для **Стазис-якоря** — доп. блок «Уклонение врага» (10/20/35/50% + слайдер 0–60%).
 - **Офлайн-загрузка баланса** — JSON встроен в страницу (base64), fetch `modules.json` только fallback.
-- **Кеш-бusting** — `module_sim.js?v=10` (номер версии поднимать при каждом изменении JS).
+- **Кеш-бusting** — `module_sim.js?v=11` (номер версии поднимать при каждом изменении JS).
+- **Длительность боевых зарядов (v5.2):** как в STW `_combat_charge_duration_rounds` — `min(cap, per_level × level)`, дефолт `3×L`, cap `27`. Тапалка «Раундов /cmd» на `/overcharge`, `/focus`, `/aegis`, `/brace`, `/jam`, `/pin`. Хелпер в JS: `chargeDurationRounds`.
 
 ### Технический стек
 
@@ -129,6 +130,7 @@ function calcModuleView(mod, level, dodge, equipped, cmdOn) {
 | `74b1487` | Layout всех модулей как cardify: `pack()`, 5+2, cmd ON (временно) |
 | `3423681` | **fix_sim_boot_stats:** b64 на section, разделение parse/start, cmd **off** по умолчанию, `?v=7` |
 | `dbf1eb3` | **SVG className:** `setAttribute("class")` для кольца, `?v=8` |
+| (local) | **v5.2 sync:** `chargeDurationRounds` = `min(27, 3×L)`; Extra=раунды на timed combat; rebuild из STW; `?v=11` |
 
 ---
 
@@ -218,14 +220,14 @@ heroRing.setAttribute("class", "transition-[stroke-dashoffset] ...");
 
 | id | sim_display | Калькулятор / примечание |
 |----|-------------|--------------------------|
-| tactical_stasis_anchor | combined_pct | `calcStasis()` — dodge, hit % |
-| tactical_entangle_node | combined_pct | ring = pass + cmd entangle % |
-| combat_kinetic_driver | combined_pct | ring = pass + cmd damage % |
-| combat_crit_matrix | combined_pct | ring = crit chance; урон крита в «Ещё» |
+| tactical_stasis_anchor | combined_pct | `calcStasis()` — dodge, hit %; Extra = раунды `/pin` |
+| tactical_entangle_node | combined_pct | ring = pass + cmd entangle %; Extra = раунды `/jam` |
+| combat_kinetic_driver | combined_pct | ring = pass + cmd damage %; Extra = раунды `/overcharge` |
+| combat_crit_matrix | combined_pct | ring = crit chance; Extra = раунды `/focus`; урон крита в «Итог» |
 | survival_detox_lattice | combined_pct | ring = resist + purge; азот в «Ещё» |
-| defense_guard_bastion | combined_pct | ring = DR %; HP в «Ещё» если нет resist |
+| defense_guard_bastion | combined_pct | ring = DR %; Extra = раунды `/brace`; HP в «Итог» |
 | survival_vital_weave | split_metrics | cmd off: +HP; cmd on: % лечения |
-| defense_aegis_mesh | split_metrics | cmd off: броня; cmd on: % regen щита |
+| defense_aegis_mesh | split_metrics | cmd off: броня; cmd on: % regen щита; Extra = раунды `/aegis` |
 | mobility_load_anchor | split_metrics | cmd off: ячейки; cmd on: % веса |
 | mobility_vector_thruster | split_metrics | cmd off: тонус; cmd on: прыжки |
 | tactical_recon_lens | command_only | hero = разбор ур. N |

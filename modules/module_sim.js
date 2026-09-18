@@ -35,6 +35,14 @@
     return Math.max(0, base + per * (lvl - 1));
   }
 
+  /** Anchor-style combat charge: min(cap, per_level * level). Matches STW _combat_charge_duration_rounds. */
+  function chargeDurationRounds(effect, level) {
+    var per = Number((effect && effect.duration_rounds_per_level) || 3);
+    var cap = Number((effect && effect.duration_rounds_cap) || 27);
+    var L = Math.max(1, level | 0);
+    return Math.min(Math.max(1, cap), Math.max(1, per * L));
+  }
+
   function clampPct(n) {
     return Math.max(0, Math.min(100, n));
   }
@@ -343,12 +351,7 @@
     var total = passive + pin;
     var eff = Math.max(0, dodge - total);
     var hit = 100 - eff;
-    var rounds = cmdOn
-      ? Math.min(
-          Number(cEff.duration_rounds_cap || 27),
-          Number(cEff.duration_rounds_per_level || 3) * level
-        )
-      : 0;
+    var rounds = cmdOn ? chargeDurationRounds(cEff, level) : 0;
 
     return packCombinedPct({
       cmdOn: cmdOn,
@@ -445,6 +448,7 @@
     var armorMaxL9 = (p.armor_bonus_per_level || 0) * 9 || 1;
     var sr = (c.shield_regen_mult_base + c.shield_regen_mult_per_level * (L - 1)) * 100;
     var mr = (c.mythic_regen_mult_base + c.mythic_regen_mult_per_level * (L - 1)) * 100;
+    var rounds = chargeDurationRounds(c, L);
 
     if (cmdOn) {
       return packSplit({
@@ -455,12 +459,19 @@
         passText: "+" + fmtNum(armor, 1) + " брони",
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(sr, 0),
-        extraLabel: "Мифический щит /" + slash,
-        extraText: "+" + pct(mr, 0),
+        extraLabel: "Раундов /" + slash,
+        extraText: String(rounds),
         totalLabel: "Сейчас",
         totalText: "+" + pct(sr, 0) + " к щиту",
         resultLabel: "Итог",
-        resultText: "броня и восстановление щита",
+        resultText:
+          "броня и щит +" +
+          pct(sr, 0) +
+          "; миф. +" +
+          pct(mr, 0) +
+          "; " +
+          rounds +
+          " раундов",
         passBarPct: armor,
         passBarMax: armorMaxL9,
         passBarDisplay: "+" + fmtNum(armor, 1),
@@ -478,12 +489,13 @@
       passText: "+" + fmtNum(armor, 1) + " брони",
       cmdLabel: "/" + slash,
       cmdText: "+" + pct(sr, 0),
-      extraLabel: "Мифический щит /" + slash,
-      extraText: "+" + pct(mr, 0),
+      extraLabel: "Раундов /" + slash,
+      extraText: String(rounds),
       totalLabel: "Сейчас",
       totalText: "только броня",
       resultLabel: "Итог",
-      resultText: "+" + fmtNum(armor, 1) + " брони",
+      resultText:
+        "+" + fmtNum(armor, 1) + " брони; миф. щит +" + pct(mr, 0) + " при /" + slash,
       passBarPct: armor,
       passBarMax: armorMaxL9,
       cmdBarPct: 0,
@@ -760,6 +772,9 @@
       var cmdDmg = (c.damage_mult_base + c.damage_mult_per_level * (L - 1)) * 100;
       var liveDmg = cmdOn ? cmdDmg : 0;
       var totalDmg = passDmg + liveDmg;
+      var dmgRounds = chargeDurationRounds(c, L);
+      var execTxt =
+        p.execute_bonus != null ? "; добивание +" + pct(p.execute_bonus * 100, 0) : "";
       return packCombinedPct({
         cmdOn: cmdOn,
         passN: passDmg,
@@ -770,13 +785,12 @@
         passText: "+" + pct(passDmg, 1),
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(cmdDmg, 0),
-        extraLabel: "Добивание",
-        extraText: p.execute_bonus != null ? "+" + pct(p.execute_bonus * 100, 0) : "—",
-        extraAlways: !!p.execute_bonus,
+        extraLabel: "Раундов /" + slash,
+        extraText: String(dmgRounds),
         totalLabel: "Сумма",
         totalText: "+" + pct(totalDmg, 1),
         resultLabel: "Урон с модулем",
-        resultText: "+" + pct(totalDmg, 1),
+        resultText: "+" + pct(totalDmg, 1) + execTxt,
         cd: cd
       });
     }
@@ -792,6 +806,7 @@
       var cdmg = (c.crit_damage_base + c.crit_damage_per_level * (L - 1)) * 100;
       var liveCc = cmdOn ? cc : 0;
       var totalCrit = passCrit + liveCc;
+      var critRounds = chargeDurationRounds(c, L);
       return packCombinedPct({
         cmdOn: cmdOn,
         passN: passCrit,
@@ -802,13 +817,14 @@
         passText: "+" + pct(passCrit, 1),
         cmdLabel: "/" + slash,
         cmdText: "+" + pct(cc, 0),
-        extraLabel: "Урон крита (не в кольце)",
-        extraText: "+" + pct(cdmg, 0),
-        extraAlways: true,
+        extraLabel: "Раундов /" + slash,
+        extraText: String(critRounds),
         totalLabel: "Сумма %",
         totalText: "+" + pct(totalCrit, 1),
         resultLabel: "Итог",
-        resultText: cmdOn ? "постоянный бонус и шанс +" + pct(cc, 0) : "только постоянный бонус",
+        resultText: cmdOn
+          ? "шанс +" + pct(cc, 0) + "; урон крита +" + pct(cdmg, 0)
+          : "постоянный бонус; урон крита +" + pct(cdmg, 0) + " при /" + slash,
         cd: cd
       });
     }
@@ -819,6 +835,8 @@
       var liveDr = cmdOn ? dr : 0;
       var hpBonus = p.max_health_per_level != null ? p.max_health_per_level * L : 0;
       var ringDr = passDr + liveDr;
+      var braceRounds = chargeDurationRounds(c, L);
+      var hpPart = hpBonus ? "; +" + fmtNum(hpBonus, 0) + " HP" : "";
       return packCombinedPct({
         cmdOn: cmdOn,
         passN: passDr,
@@ -829,13 +847,14 @@
         passText: passDr ? pct(passDr, 0) : hpBonus ? "+" + fmtNum(hpBonus, 0) + " к здоровью" : "—",
         cmdLabel: "/" + slash,
         cmdText: pct(dr, 1),
-        extraLabel: "Запас здоровья",
-        extraText: hpBonus ? "+" + fmtNum(hpBonus, 0) : "—",
-        extraAlways: !!hpBonus,
+        extraLabel: "Раундов /" + slash,
+        extraText: String(braceRounds),
         totalLabel: "Сумма %",
         totalText: pct(ringDr, 1),
         resultLabel: "Защита",
-        resultText: cmdOn ? "постоянный бонус и −" + pct(dr, 1) + " урона" : "только постоянный бонус",
+        resultText: cmdOn
+          ? "−" + pct(dr, 1) + " урона" + hpPart
+          : "только постоянный бонус" + hpPart,
         cd: cd
       });
     }
@@ -843,8 +862,7 @@
     if (c.entangle_bonus_base != null) {
       var passEn = p.entangler_per_level != null ? p.entangler_per_level * L * 100 : 0;
       var eb = (c.entangle_bonus_base + c.entangle_bonus_per_level * (L - 1)) * 100;
-      var rounds =
-        Number(c.duration_rounds_base || 0) + Number(c.duration_rounds_per_level || 0) * (L - 1);
+      var rounds = chargeDurationRounds(c, L);
       var liveEb = cmdOn ? eb : 0;
       var totalEn = passEn + liveEb;
       return packCombinedPct({

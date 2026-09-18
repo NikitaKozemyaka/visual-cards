@@ -15,7 +15,7 @@ COVERS = ROOT / "assets" / "covers"
 
 FILENAME_OVERRIDE = {"tactical_stasis_anchor": "stasis_anchor.html"}
 
-SIM_JS_VERSION = "10"
+SIM_JS_VERSION = "11"
 
 # sim_display profiles for module_sim.js (see docs/module_cards_and_simulator.md §5)
 SIM_DISPLAY = {
@@ -167,11 +167,16 @@ def build_howto(mod: dict) -> list[str]:
     else:
         steps.append("У команды нет таймера: лимит — заряды или одна встреча.")
 
+    effect = cmd.get("effect") or {}
+    timed_charge = (
+        "duration_rounds_per_level" in effect or "duration_rounds_cap" in effect
+    )
+
     mid = mod["id"]
     if mid == "tactical_stasis_anchor":
         steps.append(
             "Постоянно: −1% уклонения врага за каждый уровень модуля при ваших атаках. "
-            "Команда /pin дополнительно снижает уклонение на несколько раундов (не больше 27)."
+            "Команда /pin дополнительно снижает уклонение на 3×уровень раундов (кап 27)."
         )
     elif mid == "tactical_stasis_tuner":
         steps.append("Постоянного бонуса нет — только /rerange (смена дистанции на встрече).")
@@ -186,6 +191,10 @@ def build_howto(mod: dict) -> list[str]:
         steps.append("/instant_search ускоряет текущий поиск; перезарядка длинная — так задумано.")
     else:
         steps.append(humanize_player_text(mod["effect_text"]))
+        if timed_charge:
+            steps.append(
+                f"Заряд /{slash} длится 3×уровень раундов (на 9 ур. — 27, не дольше)."
+            )
     return steps
 
 
