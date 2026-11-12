@@ -1,82 +1,32 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark bg-background space_grotesk_e6988195-module__RNs2Mq__variable jetbrains_mono_83faaeae-module__xxnQGG__variable">
+<html lang="ru">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link rel="preload" href="../_next/static/immutable/media/0c89a48fa5027cee-s.p.1ii7211jqpzi_.woff2" as="font" crossorigin="" type="font/woff2"/>
-  <link rel="preload" href="../_next/static/immutable/media/70bc3e132a0a741e-s.p.269kn9uafm0ti.woff2" as="font" crossorigin="" type="font/woff2"/>
-  <link rel="preload" href="../_next/static/immutable/media/cc545e633e20c56d-s.p.2sb9jzhmrh7ny.woff2" as="font" crossorigin="" type="font/woff2"/>
-  <link rel="stylesheet" href="../_next/static/immutable/chunks/265wr7d9-g86g.css" data-precedence="next"/>
-  <link rel="stylesheet" href="../assets/site-motion.css?v=9"/>
-  <link rel="stylesheet" href="../assets/compact.css?v=1"/>
-  <link rel="stylesheet" href="../assets/touch-safe.css?v=7"/>
-  <link rel="stylesheet" href="../assets/rarity.css?v=10"/>
-  <link rel="stylesheet" href="../assets/catalog.css?v=3"/>
-  <meta name="theme-color" content="#060911"/>
-  <meta name="color-scheme" content="dark"/>
-  <title>Групповой поиск: сила пати — Space Text World</title>
-  <meta name="description" content="Собери состав по уровням — увидишь, насколько толще и сильнее становятся мобы в group search PvE (сумма уровней пати)."/>
-  <link rel="canonical" href="https://nikitakozemyaka.github.io/visual-cards/mechanics/group_search.html"/>
-  <meta property="og:title" content="Групповой поиск: сила пати — Space Text World"/>
-  <meta property="og:description" content="Собери состав по уровням — увидишь, насколько толще и сильнее становятся мобы в group search PvE (сумма уровней пати)."/>
-  <meta property="og:url" content="https://nikitakozemyaka.github.io/visual-cards/mechanics/group_search.html"/>
-  <meta property="og:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
-  <meta property="og:type" content="article"/>
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Групповой поиск: сила пати — Space Text World"/>
-  <meta name="twitter:description" content="Собери состав по уровням — увидишь, насколько толще и сильнее становятся мобы в group search PvE (сумма уровней пати)."/>
-  <meta name="twitter:image" content="https://nikitakozemyaka.github.io/visual-cards/site-preview.png"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Карточки переехали на stw-game.ru/vcards</title>
+  <link rel="canonical" href="https://stw-game.ru/vcards/mechanics/group_search.html">
+  <meta name="robots" content="noindex,follow">
+  <meta http-equiv="refresh" content="0;url=https://stw-game.ru/vcards/mechanics/group_search.html">
+  <script>
+    (function () {
+      var dest = "https://stw-game.ru/vcards/mechanics/group_search.html";
+      location.replace(dest + window.location.search + window.location.hash);
+    })();
+  </script>
+  <style>
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: #060911;
+      color: #e8eef8;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    a { color: #7ec8ff; }
+  </style>
 </head>
-<body class="font-sans antialiased">
-  <div class="relative min-h-screen vc-page-rare">
-    <div class="pointer-events-none absolute inset-x-0 top-0 h-[360px] tactical-grid"></div>
-    <div class="relative mx-auto w-full max-w-2xl px-5 py-8 sm:py-10">
-      <a class="vc-rise inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground transition-colors" href="./index.html">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
-        Все механики
-      </a>
-
-      <header class="vc-rise vc-rise-d1 mt-6 rounded-2xl border border-border bg-card p-6 vc-card vc-rarity-rare">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Live</span>
-          <span class="rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-rare border-rare/40 bg-rare/10">Сценарий</span>
-        </div>
-        <h1 class="mt-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl">Групповой поиск: сила пати</h1>
-        <p class="mt-4 text-pretty leading-relaxed text-muted-foreground">Собери состав по уровням — увидишь, насколько толще и сильнее становятся мобы в group search PvE (сумма уровней пати).</p>
-      </header>
-
-      <section class="vc-rise vc-rise-d2 mt-4 rounded-2xl border border-border bg-card p-6" data-mechanics-id="group_search_party_scale" data-stw-mechanics-b64="eyJ2ZXJzaW9uIjoxLCJzb3VyY2UiOiJTVFdfR0FNRSBkYXRhL2dyb3VwX3NlYXJjaF9jb21iYXRfcG9saWN5Lmpzb24gcGFydHlfc2NhbGUiLCJtZWNoYW5pY3NfaWQiOiJncm91cF9zZWFyY2hfcGFydHlfc2NhbGUiLCJocmVmIjoiZ3JvdXBfc2VhcmNoLmh0bWwiLCJwYXJ0eV9zY2FsZSI6eyJocF9wY3RfcGVyX2xldmVsX3N1bSI6MS4wLCJkYW1hZ2VfcGN0X3Blcl9sZXZlbF9zdW0iOjAuMX0sImxpbWl0cyI6eyJtaW5fcGxheWVycyI6MSwibWF4X3BsYXllcnMiOjUsIm1pbl9sZXZlbCI6MSwibWF4X2xldmVsIjo2MH0sImRlZmF1bHRfbGV2ZWxzIjpbNDAsMzBdLCJwcmVzZXRzIjpbeyJpZCI6ImR1b180MF8zMCIsImxhYmVsIjoiNDArMzAiLCJsZXZlbHMiOls0MCwzMF19LHsiaWQiOiJkdW9fMTBfMTAiLCJsYWJlbCI6IjEwKzEwIiwibGV2ZWxzIjpbMTAsMTBdfSx7ImlkIjoidHJpb180MCIsImxhYmVsIjoiNDArNDArNDAiLCJsZXZlbHMiOls0MCw0MCw0MF19XSwiZGVtb19lbmVteSI6eyJuYW1lIjoi0JTQtdC80L4t0L/RgNC+0YLQuNCy0L3QuNC6IiwiYmFzZV9ocCI6MTAwMCwiYmFzZV9kYW1hZ2UiOjEwMH0sImNhdGFsb2ciOnsidGl0bGUiOiLQk9GA0YPQv9C/0L7QstC+0Lkg0L/QvtC40YHQujog0YHQuNC70LAg0L/QsNGC0LgiLCJibHVyYiI6ItCh0L7QsdC10YDQuCDRgdC+0YHRgtCw0LIg0L/QviDRg9GA0L7QstC90Y/QvCDigJQg0YPQstC40LTQuNGI0YwsINC90LDRgdC60L7Qu9GM0LrQviDRgtC+0LvRidC1INC4INGB0LjQu9GM0L3QtdC1INGB0YLQsNC90L7QstGP0YLRgdGPINC80L7QsdGLINCyIGdyb3VwIHNlYXJjaCBQdkUgKNGB0YPQvNC80LAg0YPRgNC+0LLQvdC10Lkg0L/QsNGC0LgpLiIsImVtb2ppIjoi8J+RpSIsInJhcml0eSI6InJhcmUiLCJiYWRnZSI6ItCg0LXQtNC60LjQuSJ9fQ==">
-        <h2 class="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Конструктор группы</h2>
-
-        <div class="mb-4 flex flex-wrap gap-2" id="party-presets" role="group" aria-label="Пресеты состава"></div>
-
-        <div id="party-slots" class="flex flex-col gap-3"></div>
-
-        <div class="mt-4 flex flex-wrap gap-2">
-          <button type="button" id="party-add" class="inline-flex items-center justify-center rounded-xl border border-border bg-secondary px-4 py-2 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-primary/50 hover:text-primary">+ Игрок</button>
-          <button type="button" id="party-remove" class="inline-flex items-center justify-center rounded-xl border border-border bg-secondary px-4 py-2 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:border-destructive/50 hover:text-destructive">− Игрок</button>
-        </div>
-
-        <div id="sim-result" class="mt-6" aria-live="polite"></div>
-        <p id="sim-error" class="mt-4 hidden text-sm text-destructive" role="alert"></p>
-        <script type="application/json" id="stw-mechanics-data">{"version":1,"source":"STW_GAME data/group_search_combat_policy.json party_scale","mechanics_id":"group_search_party_scale","href":"group_search.html","party_scale":{"hp_pct_per_level_sum":1.0,"damage_pct_per_level_sum":0.1},"limits":{"min_players":1,"max_players":5,"min_level":1,"max_level":60},"default_levels":[40,30],"presets":[{"id":"duo_40_30","label":"40+30","levels":[40,30]},{"id":"duo_10_10","label":"10+10","levels":[10,10]},{"id":"trio_40","label":"40+40+40","levels":[40,40,40]}],"demo_enemy":{"name":"Демо-противник","base_hp":1000,"base_damage":100},"catalog":{"title":"Групповой поиск: сила пати","blurb":"Собери состав по уровням — увидишь, насколько толще и сильнее становятся мобы в group search PvE (сумма уровней пати).","emoji":"👥","rarity":"rare","badge":"Редкий"}}</script>
-      </section>
-
-      <section class="vc-rise vc-rise-d3 mt-4 rounded-2xl border border-border bg-card p-6">
-        <h2 class="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Как это работает в игре</h2>
-        <ol class="flex flex-col gap-3 text-sm leading-relaxed text-muted-foreground">
-          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">01</span><span>В group search PvE мобы усиливаются от <strong class="text-foreground">суммы уровней</strong> реальных участников (не от «просто +1 человек»).</span></li>
-          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">02</span><span>HP: +1.0% за каждый уровень в сумме. Урон: +0.1% за уровень в сумме.</span></li>
-          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">03</span><span>Один игрок в сессии — без этого буста. Новичок в пати почти не раздувает бой; хай-лвлы — сильнее.</span></li>
-          <li class="flex gap-3"><span class="font-mono text-xs tabular-nums text-primary/70">04</span><span>Скейл только для group search PvE. Боссы и рейды этим множителем не масштабируются.</span></li>
-        </ol>
-      </section>
-
-      <footer class="mt-10 border-t border-border pt-5">
-        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground/60">Space Text World · group search · demo</p>
-      </footer>
-    </div>
-  </div>
-  <script src="./mechanics_sim.js?v=4" defer></script>
-<script src="../assets/nav-refresh.js?v=7" defer></script></body>
+<body>
+  <p><a href="https://stw-game.ru/vcards/mechanics/group_search.html">Карточки переехали на stw-game.ru/vcards</a></p>
+</body>
 </html>

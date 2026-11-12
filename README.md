@@ -1,31 +1,7 @@
 # visual-cards
 
-Здесь хранятся визуальные карточки с тап-эффектом для обучения по игре Space Text World.
+Актуальная версия карточек — в репозитории **stw-landing**, папка `vcards/`.
 
-**Live:** https://nikitakozemyaka.github.io/visual-cards/
+Сайт: https://stw-game.ru/vcards/
 
-## Модули брони (14 шт.)
-
-- Каталог: [`modules/`](modules/)
-- Симулятор и генерация: **[docs/module_cards_and_simulator.md](docs/module_cards_and_simulator.md)** — итог доработки, ошибки/фиксы, инструкция для агентов
-
-Баланс подтягивается из репозитория **STW_GAME** (`module_balance.json`, `global_items.json`).
-
-## Механики (2 сценария)
-
-- Каталог: [`mechanics/`](mechanics/)
-- Демо: [стабилизатор и осколки](mechanics/stabilizer.html) — параметры → «Погиб» → итог (`module_death_stabilizer.py`)
-- Демо: [групповой поиск — сила пати](mechanics/group_search.html) — конструктор уровней → скейл HP/урона (`group_search_combat_policy.json`)
-- Сборка: `python scripts/build_mechanics_cards.py`
-- Тесты: `python scripts/test_mechanics_sim.py` · `python -m unittest scripts.test_mechanics_sim_embed -q`
-
-## Быстрый пересбор
-
-```powershell
-cd D:\visual-cards
-python scripts/build_module_cards.py
-python scripts/build_mechanics_cards.py
-python scripts/audit_module_sim_wiring.py
-python -m unittest scripts.test_module_sim_embed scripts.test_mechanics_sim_embed -q
-python scripts/test_mechanics_sim.py
-```
+Этот репозиторий больше не содержит витрину. GitHub Pages (`https://nikitakozemyaka.github.io/visual-cards/`) отдаёт лёгкие страницы-редиректы на соответствующие URL `stw-game.ru/vcards/...` (canonical, `noindex,follow`), чтобы старые ссылки работали и не создавали дублей в поиске.
